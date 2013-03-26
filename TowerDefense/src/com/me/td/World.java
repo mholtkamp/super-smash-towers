@@ -26,6 +26,7 @@ import maps.PokemonMap;
 
 import towers.BasicTower;
 import towers.FireTower;
+import towers.GrassTower;
 import towers.HammerBros;
 import towers.PsychicTower;
 import towers.Tower;
@@ -38,7 +39,7 @@ public class World
 	final int MARIO_MAP = 0, POKEMON_MAP = 1;
 //	final int BASIC_TOWER = 0, HAMMER_BROS = 1, PSYCHIC_TOWER = 2, FIRE_TOWER = 3;
 	final int BASIC_ENEMY = 0, GOOMBA = 1, KOOPA = 2, BOWSER = 3;
-	final int SELL = 0, UPGRADE = 1, CASTLE = 2, HAMMER = 3, PSYCHIC = 4, FIRE = 5;	// TOWERS
+	final int SELL = 0, UPGRADE = 1, CASTLE = 2, HAMMER = 3, PSYCHIC = 4, FIRE = 5, GRASS = 6;	// TOWERS
 	final int ENEMY_COUNT = 4, TOWER_COUNT = 4, TIME_BETWEEN_WAVES = 10;
 	final int GRID_WIDTH = 40, GRID_HEIGHT = 40;
 	final int BAR_WIDTH = 300, BAR_HEIGHT = 16, BAR_X = 5, BAR_Y = 375;
@@ -47,6 +48,7 @@ public class World
 
 	// variables
 	int health, gold, wave_number, current_tower, current_enemy;
+	float current_range;
 	Map map;
 	TowerSelect tower_select;
 	Queue<Enemy> wave;
@@ -81,6 +83,7 @@ public class World
 		wave = map.getWave(0);
 //		current_tower = BASIC_TOWER;	// we are placing this type of Tower
 		current_tower = CASTLE;
+		current_range = create_tower(CASTLE).getRange();
 		current_enemy = BASIC_ENEMY;	// we are spawning this type of Enemy
 		gameover = false;
 		timeKeeper = true;
@@ -190,7 +193,7 @@ public class World
 			// RANGE CIRCLE
 			shape_renderer.begin(ShapeType.Circle);
 			shape_renderer.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-			shape_renderer.circle(x_circle(), y_circle(), create_tower(current_tower).getRange());
+			shape_renderer.circle(x_circle(), y_circle(), current_range);
 			shape_renderer.end();
 
 		}
@@ -220,7 +223,10 @@ public class World
 			else if (select_number == UPGRADE)
 				upgrade_state = !upgrade_state;
 			else
+			{
 				current_tower = select_number;
+				current_range = create_tower(current_tower).getRange();
+			}
 		}
 //		current_tower = (tower_number == -1) ? current_tower : tower_number;
 		
@@ -533,6 +539,7 @@ public class World
 		case HAMMER: return new HammerBros(enemies, x, y);
 		case PSYCHIC: return new PsychicTower(enemies, x, y);
 		case FIRE: return new FireTower(enemies, x, y);
+		case GRASS: return new GrassTower(enemies, x, y);
 		default: return new BasicTower(enemies, x, y);
 		}
 	}
@@ -547,6 +554,7 @@ public class World
 		case HAMMER: return new HammerBros(enemies, x, y);
 		case PSYCHIC: return new PsychicTower(enemies, x, y);
 		case FIRE: return new FireTower(enemies, x, y);
+		case GRASS: return new GrassTower(enemies, x, y);
 		default: return new BasicTower(enemies, x, y);
 		}
 	}
@@ -559,6 +567,7 @@ public class World
 		case HAMMER: return "HammerBros";
 		case PSYCHIC: return "PsychicTower";
 		case FIRE: return "FireTower";
+		case GRASS: return "GrassTower";
 		default: return "Error";
 		}
 	}

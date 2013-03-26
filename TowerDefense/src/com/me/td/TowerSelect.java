@@ -12,8 +12,8 @@ import com.badlogic.gdx.math.Vector3;
 public class TowerSelect
 {
 	
-	final int NUM_BUTTONS = 6;
-	final int SELL = 0, UPGRADE = 1, CASTLE = 2, HAMMER = 3, PSYCHIC = 4, FIRE = 5;
+	final int NUM_BUTTONS = 7;
+	final int SELL = 0, UPGRADE = 1, CASTLE = 2, HAMMER = 3, PSYCHIC = 4, FIRE = 5, GRASS = 6;
 	
 	OrthographicCamera camera;
 	
@@ -57,6 +57,7 @@ public class TowerSelect
 		tex[HAMMER] = new Texture("data/towers/hammer_bros_left_idle.png");
 		tex[PSYCHIC] = new Texture("data/towers/psychic_tower_1.png");
 		tex[FIRE] = new Texture("data/towers/fire_tower_1.png");
+		tex[GRASS] = new Texture("data/towers/grass_tower_1.png");
 		
 		buttons = new Rectangle[NUM_BUTTONS];
 		buttons[SELL] = new Rectangle(620, 20, 40, 40);
@@ -65,6 +66,7 @@ public class TowerSelect
 		buttons[HAMMER] = new Rectangle(680, 320, 40, 40);
 		buttons[PSYCHIC] = new Rectangle(620, 260, 40, 40);
 		buttons[FIRE] = new Rectangle(680, 260, 40, 40);
+		buttons[GRASS] = new Rectangle(620, 200, 40, 40);
 		
 //      Tower1Tex = new Texture("data/BasicTower.png");
 //		Tower2Tex = new Texture("data/BasicEnemy.png");

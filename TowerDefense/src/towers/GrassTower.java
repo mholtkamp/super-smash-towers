@@ -1,7 +1,5 @@
 package towers;
 
-import bullets.Bullet;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,8 +11,9 @@ import java.util.ArrayList;
 
 public class GrassTower extends Tower
 {
-
-	private final int WIDTH = 40, HEIGHT = 48;
+	
+	private final int DAMAGE = 10;
+	
 	private final int CALLS_BETWEEN_TOGGLE = 15;
 	private int current_tex, toggle_count;
 	private Texture[] tex;
@@ -37,27 +36,26 @@ public class GrassTower extends Tower
 	
 	public GrassTower(ArrayList<Enemy> enemies, float x, float y)
 	{
-		center_x = x + WIDTH/2;
-		center_y = y + HEIGHT/2;
-		time_since_last_shot = 0;
-		collider = new Rectangle(x, y, WIDTH, HEIGHT);
-		this.enemies = enemies;
-		bullets = new ArrayList<Bullet>();
-		target = null;
+		super(enemies, x, y);
 		
-		// attributes - change these for each new Tower
+		name = "GrassTower";
+		width = 40;
+		height = 48;
+		range = 100;
+		cost = 500;
+		firing_speed = 2.0f;
+		
+		center_x = x + width/2;
+		center_y = y + height/2;
+		collider = new Rectangle(x, y, width, height);
+		
 		tex = new Texture[2];
 		tex[0] = new Texture(Gdx.files.internal("data/towers/grass_tower_1.png"));
 		tex[1] = new Texture(Gdx.files.internal("data/towers/grass_tower_2.png"));
-		
-		leafTex = new Texture(Gdx.files.internal("data/bullets/leaf.png"));
 		current_tex = 0;
 		toggle_count = CALLS_BETWEEN_TOGGLE;
 		
-		name = "GrassTower";
-		range = 100;
-		cost = 500;
-		firing_speed = 2.0f;	// shoot every x seconds
+		leafTex = new Texture(Gdx.files.internal("data/bullets/leaf.png"));
 		
 		leaf1 = new Rectangle(center_x,center_y,leafTex.getWidth(),leafTex.getHeight());
 		leaf2 = new Rectangle(center_x,center_y,leafTex.getWidth(),leafTex.getHeight());
@@ -104,13 +102,13 @@ public class GrassTower extends Tower
 		for(int i = 0; i < enemies.size();i++)
 		{
 			if(leaf1.overlaps(enemies.get(i).getCollider()))
-				enemies.get(i).subHealth(2);
+				enemies.get(i).subHealth(DAMAGE);
 			else if (leaf2.overlaps(enemies.get(i).getCollider()))
-				enemies.get(i).subHealth(2);
+				enemies.get(i).subHealth(DAMAGE);
 			else if (leaf3.overlaps(enemies.get(i).getCollider()))
-				enemies.get(i).subHealth(2);
+				enemies.get(i).subHealth(DAMAGE);
 			else if (leaf4.overlaps(enemies.get(i).getCollider()))
-				enemies.get(i).subHealth(2);
+				enemies.get(i).subHealth(DAMAGE);
 		}
 		
 		leafRotationAngle += leafRotationAngularVelocity*Gdx.graphics.getDeltaTime();
