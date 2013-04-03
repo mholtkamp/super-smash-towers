@@ -52,7 +52,7 @@ public class Menu
 	private Rectangle[] stars_dimensions;
 	private Texture[] stars;
 
-	private int menu_state;
+	public int menu_state;
 	private boolean is_pressed = true;
 	
 	private BitmapFont font;
@@ -146,6 +146,8 @@ public class Menu
 
 	public void render(SpriteBatch batch)
 	{
+		batch.begin();
+		
 		if (menu_state == MAIN_STATE)
 		{
 			batch.draw(menubg, 0, 0, WIDTH, HEIGHT);
@@ -181,6 +183,8 @@ public class Menu
 			for (int i = 0; i < stars_dimensions.length; i++)
 				batch.draw(stars[0], stars_dimensions[i].x, stars_dimensions[i].y, stars_dimensions[i].width, stars_dimensions[i].height);
 		}
+		
+		batch.end();
 	}
 
 	public int update()

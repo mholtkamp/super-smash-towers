@@ -26,6 +26,11 @@ public class MarioMap extends Map
 		
 		bg_tex = new Texture("data/maps/mario_map_6.png");
 		
+//		this.width = width;
+//		this.height = height;
+		
+//		System.out.println(this.width + " " + this.height);
+		
 		song = Gdx.audio.newMusic(Gdx.files.internal("sounds/mario.mp3"));
 		song.setLooping(true);
 		song.play();

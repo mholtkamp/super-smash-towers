@@ -3,22 +3,24 @@ package com.me.td;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 
 public class TDGame implements ApplicationListener
 {
+	private final int MENU_STATE = 0, GAME_STATE = 1, PAUSE_STATE = 2;
+	private final int WIDTH = 740, HEIGHT = 400;
 	
-	SpriteBatch batch;
-	OrthographicCamera camera;
-	World world;
-	Menu menu;
-	int game_state, level;
-	boolean enable_pause;
-	final int MENU_STATE = 0, GAME_STATE = 1, PAUSE_STATE = 2;
-	final int WIDTH = 740, HEIGHT = 400;
+	private SpriteBatch batch;
+	private ShapeRenderer shape_renderer;
+	private OrthographicCamera camera;
+	private World world;
+	private Menu menu;
+	private int game_state, level;
+	private boolean enable_pause;
 
 	@Override
 	public void create()
@@ -26,7 +28,7 @@ public class TDGame implements ApplicationListener
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, WIDTH, HEIGHT);
 		batch = new SpriteBatch();
-//		world = new World(camera);
+		shape_renderer = new ShapeRenderer();
 		menu = new Menu(camera);
 		game_state = MENU_STATE;
 		enable_pause = true;
@@ -42,10 +44,11 @@ public class TDGame implements ApplicationListener
 	public void render()
 	{		
 		Gdx.gl.glClearColor(1f, 1f, 1f, 1f);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
-		
+		shape_renderer.setProjectionMatrix(camera.combined);
+
 		if (game_state == MENU_STATE)
 		{
 			level = menu.update();
@@ -53,11 +56,9 @@ public class TDGame implements ApplicationListener
 			{
 				world = new World(camera, level);
 				game_state = GAME_STATE;
-				world.enable_tower_spawn = false;
 			}
-			batch.begin();
+
 			menu.render(batch);
-			batch.end();
 		}
 		else if (game_state == GAME_STATE)
 		{
@@ -72,20 +73,23 @@ public class TDGame implements ApplicationListener
 			}
 			else
 				enable_pause = true;
-			
+
 			if (world.gameover)
 			{
-//				world = new World(camera);
-//				world.enable_tower_spawn = false;
 				menu = new Menu(camera);
+				if (OptionsMenu.restart)
+				{
+					OptionsMenu.restart = false;
+					game_state = GAME_STATE;
+					menu.menu_state = 2;
+				}
+				else
+					game_state = MENU_STATE;
 				game_state = MENU_STATE;
 			}
-			
-			world.update();
 
-			batch.begin();
-			world.render(batch);
-			batch.end();
+			world.update();
+			world.render(batch, shape_renderer);
 		}
 		else if (game_state == PAUSE_STATE)
 		{
@@ -105,18 +109,19 @@ public class TDGame implements ApplicationListener
 	@Override
 	public void resize(int width, int height)
 	{
-		
+
 	}
 
 	@Override
 	public void pause()
 	{
-		
+
 	}
 
 	@Override
 	public void resume()
 	{
-		
+
 	}
+
 }

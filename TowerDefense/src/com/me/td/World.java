@@ -35,11 +35,14 @@ import towers.Tower;
 public class World
 {
 	
+	public static float SOUND_VOLUME = 1.0f;
+	public static boolean mute;
+	float volume = 0.0f;
+	
 	// constants
 	final int MARIO_MAP = 0, POKEMON_MAP = 1;
-//	final int BASIC_TOWER = 0, HAMMER_BROS = 1, PSYCHIC_TOWER = 2, FIRE_TOWER = 3;
 	final int BASIC_ENEMY = 0, GOOMBA = 1, KOOPA = 2, BOWSER = 3;
-	final int SELL = 0, UPGRADE = 1, CASTLE = 2, HAMMER = 3, PSYCHIC = 4, FIRE = 5, GRASS = 6;	// TOWERS
+	final int PAUSE = 0, SELL = 1, UPGRADE = 2, CASTLE = 3, HAMMER = 4, PSYCHIC = 5, FIRE = 6, GRASS = 7;
 	final int ENEMY_COUNT = 4, TOWER_COUNT = 4, TIME_BETWEEN_WAVES = 10;
 	final int GRID_WIDTH = 40, GRID_HEIGHT = 40;
 	final int BAR_WIDTH = 300, BAR_HEIGHT = 16, BAR_X = 5, BAR_Y = 375;
@@ -51,6 +54,7 @@ public class World
 	float current_range;
 	Map map;
 	TowerSelect tower_select;
+	OptionsMenu options_menu;
 	Queue<Enemy> wave;
 	ArrayList<Enemy> enemies;
 	Tower[][] tower_grid;
@@ -59,13 +63,15 @@ public class World
 	Texture healthBarMax, healthBar, healthBarSafe, hover;
 //	Texture heart0, heart25, heart50, heart75, heart100;
 	Sound congratulations;
-	ShapeRenderer shape_renderer;
+	Vector3 touch_pos, circle_pos;
 	boolean enable_enemy_spawn, enable_tower_spawn, gameover, timeKeeper, enable_enemy_switch,
-		enable_tower_switch, enable_gold, congrats, enable_selling, selling_state, upgrade_state;
+		enable_tower_switch, enable_gold, congrats_played, enable_selling, selling_state, upgrade_state, pause_state, drawOptionMenu;
 	long prevTime, time;
 
 	public World(OrthographicCamera camera, int level)
 	{
+//		Vector3 map_dimensions = new Vector3(camera.viewportWidth, camera.viewportWidth, 0);
+//		camera.unproject(map_dimensions);
 		// SELECT MAP
 		if (level == MARIO_MAP)
 			map = new MarioMap();
@@ -74,12 +80,13 @@ public class World
 		
 		
 		health = 100;
-		gold = 500;
+		gold = 10000;
 		wave_number = 0;
 		time = 0;
 		prevTime = 0;
 //		map = new PokemonMap();
 		tower_select = new TowerSelect(camera);
+		options_menu = new OptionsMenu(camera);
 		wave = map.getWave(0);
 //		current_tower = BASIC_TOWER;	// we are placing this type of Tower
 		current_tower = CASTLE;
@@ -88,13 +95,15 @@ public class World
 		gameover = false;
 		timeKeeper = true;
 		enable_enemy_spawn = true;
-		enable_tower_spawn = true;
+		enable_tower_spawn = false;
 		enable_enemy_switch = true;
 		enable_tower_switch = true;
 		enable_gold = true;
 		enable_selling = true;
 		selling_state = false;
 		upgrade_state = false;
+		pause_state = false;
+		drawOptionMenu = false;
 		enemies = new ArrayList<Enemy>();
 		this.camera = camera;
 		font = new BitmapFont(Gdx.files.internal("data/nint.fnt"),
@@ -111,17 +120,19 @@ public class World
 //		heart75 = new Texture("data/textures/heart75.png");
 //		heart100 = new Texture("data/textures/heart100.png");
 		congratulations = Gdx.audio.newSound(Gdx.files.internal("sounds/congratulations.mp3"));
-		congrats = false;
-		shape_renderer = new ShapeRenderer();
+		congrats_played = false;
+		touch_pos = new Vector3();
+		circle_pos = new Vector3();
 
 		tower_grid = new Tower[map.getHeight()/GRID_HEIGHT][map.getWidth()/GRID_WIDTH];
 //		System.out.println("tower_grid: " + tower_grid.length + " " + tower_grid[0].length);
 
 	}
 
-	public void render(SpriteBatch batch)
+	public void render(SpriteBatch batch, ShapeRenderer shape_renderer)
 	{
-
+		batch.begin();
+		
 		// render map
 		map.render(batch);
 		
@@ -179,23 +190,33 @@ public class World
 			// gold letters for gold
 //			font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 			font.draw(batch, "Gold: "+gold, 350, 370);
+			
+			if (drawOptionMenu)
+				options_menu.render(batch);
+			else
+			{
+				// testing location to represent current tile
+				// TODO change it to a box representing the current tile
+				batch.draw(hover, (int)(Gdx.input.getX()/GRID_WIDTH)*GRID_WIDTH, map.getHeight()-((int)(Gdx.input.getY()/GRID_HEIGHT)*GRID_HEIGHT + GRID_HEIGHT));
 
-			// testing location to represent current tile
-			// TODO change it to a box representing the current tile
-			batch.draw(hover, xpos(), map.getHeight()-ypos());
 
+				// HEARTS
+				// batch.draw(blackdot, 25, 25, 200, 30);
+				// batch.draw(reddot, 25, 25, 2*health, 30);
+				// life(batch, 642, 450);	// batch.draw(heart0, 25, 25);
 
-			// HEARTS
-			// batch.draw(blackdot, 25, 25, 200, 30);
-			// batch.draw(reddot, 25, 25, 2*health, 30);
-			// life(batch, 642, 450);	// batch.draw(heart0, 25, 25);
+				// RANGE CIRCLE
+				circle_pos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+				camera.unproject(circle_pos);
+				circle_pos.x = ((int)(circle_pos.x / GRID_WIDTH)) * GRID_WIDTH + GRID_WIDTH / 2;
+				circle_pos.y = ((int)(circle_pos.y / GRID_HEIGHT)) * GRID_HEIGHT + GRID_HEIGHT / 2;
 
-			// RANGE CIRCLE
-			shape_renderer.begin(ShapeType.Circle);
-			shape_renderer.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-			shape_renderer.circle(x_circle(), y_circle(), current_range);
-			shape_renderer.end();
-
+				shape_renderer.begin(ShapeType.Circle);
+				shape_renderer.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+				shape_renderer.circle(circle_pos.x, circle_pos.y, current_range);
+				shape_renderer.end();
+			}
+			
 		}
 		else
 		{// NO LIFE
@@ -207,57 +228,89 @@ public class World
 			else
 			{
 				font.draw(batch, "CONGRATULATIONS!", 10, 200);
-				play_congrats();
+				play_once(congratulations, congrats_played, CONGRATS_VOLUME);
 			}
 		}
-
+		
+		batch.end();
 	}
 
 	public void update()
 	{
-		int select_number = tower_select.update();
-		if (select_number != -1)
+		// update options menu
+		// if in pause state, we want to halt operations
+		if (pause_state)
 		{
-			if (select_number == SELL)
-				selling_state = !selling_state;
-			else if (select_number == UPGRADE)
-				upgrade_state = !upgrade_state;
+//			System.out.println("paused pressed");
+			drawOptionMenu = true;
+			pause_state = options_menu.pause();
+			if (mute)
+			{
+				SOUND_VOLUME = 0.0f;
+				map.song.setVolume(SOUND_VOLUME);
+			}
 			else
 			{
-				current_tower = select_number;
-				current_range = create_tower(current_tower).getRange();
+				SOUND_VOLUME = 1.0f;
+				map.song.setVolume(SOUND_VOLUME);
+			}
+
+			if (options_menu.gameover)
+			{
+				map.song.stop();
+				gameover = true;
 			}
 		}
-//		current_tower = (tower_number == -1) ? current_tower : tower_number;
-		
-		if (health > 0)
+		else
 		{
-			if (wave_number < map.numWaves())
+			drawOptionMenu = false;
+
+
+			int select_number = tower_select.update();
+			if (select_number != -1)
 			{
-				if (!wave.isEmpty())
+				if (select_number == PAUSE)
+					pause_state = !pause_state;
+				else if (select_number == SELL)
+					selling_state = !selling_state;
+				else if (select_number == UPGRADE)
+					upgrade_state = !upgrade_state;
+				else
 				{
-					// spawn an Enemy every at speed based on current wave
-					long spawnInterval;
-					time = System.currentTimeMillis();
-					if (wave_number < map.numWaves())
-						spawnInterval = time / (1000 - wave_number*100);
-					else
-						spawnInterval = time / 100;
-					time /= 1000;
-					if (timeKeeper)
+					current_tower = select_number;
+					current_range = create_tower(current_tower).getRange();
+				}
+			}
+			//		current_tower = (tower_number == -1) ? current_tower : tower_number;
+
+			if (health > 0)
+			{
+				if (wave_number < map.numWaves())
+				{
+					if (!wave.isEmpty())
 					{
-						prevTime = spawnInterval;
-						enemies.add(wave.poll());
-						timeKeeper = false;
-					}
-					else
-					{
-						if (spawnInterval > prevTime)
+						// spawn an Enemy every at speed based on current wave
+						long spawnInterval;
+						time = System.currentTimeMillis();
+						if (wave_number < map.numWaves())
+							spawnInterval = time / (1000 - wave_number*100);
+						else
+							spawnInterval = time / 100;
+						time /= 1000;
+						if (timeKeeper)
 						{
-							timeKeeper = true;
+							prevTime = spawnInterval;
+							enemies.add(wave.poll());
+							timeKeeper = false;
 						}
-					}
-					/*if (timeKeeper)
+						else
+						{
+							if (spawnInterval > prevTime)
+							{
+								timeKeeper = true;
+							}
+						}
+						/*if (timeKeeper)
 					{
 						prevTime = time;
 						enemies.add(new BasicEnemy(this));
@@ -271,209 +324,209 @@ public class World
 							timeKeeper = true;
 						}
 					}*/
-				}
-				else // go to next wave
-				{
-					long temp_time = System.currentTimeMillis();
-					if (((temp_time/1000) - time) > TIME_BETWEEN_WAVES)
+					}
+					else // go to next wave
 					{
-						if (++wave_number < map.numWaves())
-							wave = map.getWave(wave_number);
+						long temp_time = System.currentTimeMillis();
+						if (((temp_time/1000) - time) > TIME_BETWEEN_WAVES)
+						{
+							if (++wave_number < map.numWaves())
+								wave = map.getWave(wave_number);
+						}
+					}
+				}
+
+
+				// spawn a tower on the position that is clicked
+				// TODO change this back to input.isTouched() so that it will work for Android
+				// however, this will cause problems with the selling of Towers, since right click
+				// technically falls under the isTouched() method
+				// if (Gdx.input.isTouched())
+				if (Gdx.input.isTouched())
+				{
+					touch_pos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+					camera.unproject(touch_pos);
+					// int x = (int) (touch_pos.x/GRID_WIDTH);
+					// int x = xpos()/GRID_WIDTH;
+					// int x = Gdx.input.getX()*(MAP_WIDTH/SCREEN_WIDTH);
+					int x = (int)(touch_pos.x/GRID_WIDTH);
+					int y = tower_grid.length - (int)(touch_pos.y/GRID_HEIGHT) - 1;
+					//				int y = (int)(touch_pos.y/GRID_HEIGHT) - 1;
+
+					//				System.out.println(x + " " + y);
+
+					if (selling_state)
+					{// SELL TOWER
+						if (map.check_indices(x, y) && tower_grid[y][x] != null)
+						{
+							gold += tower_grid[y][x].getCost()/2;
+							tower_grid[y][x] = null;
+							map.set_placement(x, y, true);
+						}
+					}
+					else if (enable_tower_spawn)
+					{// PLACE TOWER
+						Tower t = create_tower(current_tower, x*GRID_WIDTH, camera.viewportHeight - (y+1)*GRID_HEIGHT);
+						if (map.placement_valid(x, y) && gold >= t.getCost())
+						{
+							//						towers.add(t);
+							tower_grid[y][x] = t;
+							map.set_placement(x, y, false);
+							gold -= t.getCost();
+						}
+						enable_tower_spawn = false;
+					}
+				}
+				else
+					enable_tower_spawn = true;
+			}// update end (health > 0) update(); 
+
+			/**
+			 * GAME OVER
+			 * game over occurs if health drains to 0 or you destroy the boss
+			 * TODO when boss is dead, go to next level instead of ending the game
+			 */
+			if (health <= 0 || (wave_number >= map.numWaves() && enemies.size() == 0))
+			{
+				long temp_time = System.currentTimeMillis();
+				if (((temp_time/1000) - time) > 3)
+				{
+					if (Gdx.input.isTouched())
+					{
+						gameover = true;
+						enable_tower_spawn = false;
 					}
 				}
 			}
-			
-			
-			// spawn a tower on the position that is clicked
-			// TODO change this back to input.isTouched() so that it will work for Android
-			// however, this will cause problems with the selling of Towers, since right click
-			// technically falls under the isTouched() method
-			// if (Gdx.input.isTouched())
-			if (Gdx.input.isTouched())
-			{
-				Vector3 touch_pos = new Vector3();
-				touch_pos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-				camera.unproject(touch_pos);
-				// int x = (int) (touch_pos.x/GRID_WIDTH);
-				// int x = xpos()/GRID_WIDTH;
-				// int x = Gdx.input.getX()*(MAP_WIDTH/SCREEN_WIDTH);
-				int x = (int)(touch_pos.x/GRID_WIDTH);
-				int y = tower_grid.length - (int)(touch_pos.y/GRID_HEIGHT) - 1;
-//				int y = (int)(touch_pos.y/GRID_HEIGHT) - 1;
 
-				System.out.println(x + " " + y);
-				
-				if (selling_state)
-				{// SELL TOWER
-					if (map.check_indices(x, y) && tower_grid[y][x] != null)
-					{
-						gold += tower_grid[y][x].getCost()/2;
-						tower_grid[y][x] = null;
-						map.set_placement(x, y, true);
-					}
-				}
-				else if (enable_tower_spawn)
-				{// PLACE TOWER
-					Tower t = create_tower(current_tower, x*GRID_WIDTH, camera.viewportHeight - (y+1)*GRID_HEIGHT);
-					if (map.placement_valid(x, y) && gold >= t.getCost())
-					{
-//						towers.add(t);
-						tower_grid[y][x] = t;
-						map.set_placement(x, y, false);
-						gold -= t.getCost();
-					}
-					enable_tower_spawn = false;
+			/**
+			 * KEYBOARD INPUT
+			 */
+			// if S is pressed, go into selling mode
+			if (Gdx.input.isKeyPressed(Keys.S))
+			{
+				if (enable_selling)
+				{
+					selling_state = !selling_state;	// toggle selling state, initially false
+					enable_selling = false;
 				}
 			}
 			else
-				enable_tower_spawn = true;
-		}// update end (health > 0) update(); 
+				enable_selling = true;
 
-		/**
-		 * GAME OVER
-		 * game over occurs if health drains to 0 or you destroy the boss
-		 * TODO when boss is dead, go to next level instead of ending the game
-		 */
-		if (health <= 0 || (wave_number >= map.numWaves() && enemies.size() == 0))
-		{
-			long temp_time = System.currentTimeMillis();
-			if (((temp_time/1000) - time) > 3)
+			// if space bar is pressed, spawn an Enemy
+			if (Gdx.input.isKeyPressed(Keys.SPACE))
 			{
-				if (Gdx.input.isTouched())
+				if (enable_enemy_spawn)
 				{
-					gameover = true;
-					enable_tower_spawn = false;
+					enemies.add(create_enemy(current_enemy));
+					enable_enemy_spawn = false;
 				}
 			}
-		}
+			else
+				enable_enemy_spawn = true;
 
-		/**
-		 * KEYBOARD INPUT
-		 */
-		// if S is pressed, go into selling mode
-		if (Gdx.input.isKeyPressed(Keys.S))
-		{
-			if (enable_selling)
+			// if E is pressed, change Enemy type
+			if (Gdx.input.isKeyPressed(Keys.E))
 			{
-				selling_state = !selling_state;	// toggle selling state, initially false
-				enable_selling = false;
+				if (enable_enemy_switch)
+				{
+					current_enemy = (current_enemy + 1) % ENEMY_COUNT;
+					enable_enemy_switch = false;
+				}
 			}
-		}
-		else
-			enable_selling = true;
+			else
+				enable_enemy_switch = true;
 
-		// if space bar is pressed, spawn an Enemy
-		if (Gdx.input.isKeyPressed(Keys.SPACE))
-		{
-			if (enable_enemy_spawn)
+			// if T is pressed, change Tower type
+			if (Gdx.input.isKeyPressed(Keys.T))
 			{
-				enemies.add(create_enemy(current_enemy));
-				enable_enemy_spawn = false;
+				if (enable_tower_switch)
+				{
+					current_tower = (current_tower + 1) % TOWER_COUNT;
+					enable_tower_switch = false;
+				}
 			}
-		}
-		else
-			enable_enemy_spawn = true;
+			else
+				enable_tower_switch = true;
 
-		// if E is pressed, change Enemy type
-		if (Gdx.input.isKeyPressed(Keys.E))
-		{
-			if (enable_enemy_switch)
+			// if G is pressed, obtain 100 gold
+			if (Gdx.input.isKeyPressed(Keys.G))
 			{
-				current_enemy = (current_enemy + 1) % ENEMY_COUNT;
-				enable_enemy_switch = false;
+				if (enable_gold)
+				{
+					gold += 10000;
+					enable_gold = false;
+				}
 			}
-		}
-		else
-			enable_enemy_switch = true;
+			else
+				enable_gold = true;
 
-		// if T is pressed, change Tower type
-		if (Gdx.input.isKeyPressed(Keys.T))
-		{
-			if (enable_tower_switch)
+			/**
+			 * UPDATE ARRAYLISTS
+			 */
+			// update the enemy array
+			for (int i = 0; i < enemies.size(); i++)
 			{
-				current_tower = (current_tower + 1) % TOWER_COUNT;
-				enable_tower_switch = false;
+				Enemy e = enemies.get(i);
+				e.update();
+				int damage = e.dealsDamage();
+				if (damage != -1)
+				{
+					health -= damage;
+				}
+				if (e.isDead())
+				{
+					enemies.remove(i--);
+					gold += e.getGold();
+				}
 			}
-		}
-		else
-			enable_tower_switch = true;
 
-		// if G is pressed, obtain 100 gold
-		if (Gdx.input.isKeyPressed(Keys.G))
-		{
-			if (enable_gold)
+			// update the tower array
+			for (int i = 0; i < tower_grid.length; i++)
 			{
-				gold += 10000;
-				enable_gold = false;
+				for (int j = 0; j < tower_grid[i].length; j++)
+				{
+					if (tower_grid[i][j] != null)
+						tower_grid[i][j].update();
+				}
 			}
+			//		for (int i = 0; i < towers.size(); i++)
+			//		{
+			//			towers.get(i).update();
+			//		}
 		}
-		else
-			enable_gold = true;
-
-		/**
-		 * UPDATE ARRAYLISTS
-		 */
-		// update the enemy array
-		for (int i = 0; i < enemies.size(); i++)
-		{
-			Enemy e = enemies.get(i);
-			e.update();
-			int damage = e.dealsDamage();
-			if (damage != -1)
-			{
-				health -= damage;
-			}
-			if (e.isDead())
-			{
-				enemies.remove(i--);
-				gold += e.getGold();
-			}
-		}
-
-		// update the tower array
-		for (int i = 0; i < tower_grid.length; i++)
-		{
-			for (int j = 0; j < tower_grid[i].length; j++)
-			{
-				if (tower_grid[i][j] != null)
-					tower_grid[i][j].update();
-			}
-		}
-		//		for (int i = 0; i < towers.size(); i++)
-		//		{
-		//			towers.get(i).update();
-		//		}
-
+		
 	}
 
-	/**
-	 * x and y pos with adjustment for tiles -JP
-	 * @return the position of where screen was pressed or hovered
-	 * adjusted for tile spacing
-	 */
-	private int xpos()
-	{
-		return (int)(Gdx.input.getX()/GRID_WIDTH)*GRID_WIDTH;
-	}
-
-	private int ypos()
-	{
-		return (int)(Gdx.input.getY()/GRID_HEIGHT)*GRID_HEIGHT + GRID_HEIGHT;
-	}
-
-	private int x_circle()
-	{
-		Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
-		camera.unproject(pos);
-		return (((int) pos.x)/GRID_WIDTH)*GRID_WIDTH + GRID_WIDTH/2;
-	}
-
-	private int y_circle()
-	{
-		Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
-		camera.unproject(pos);
-		return (((int) pos.y)/GRID_HEIGHT)*GRID_HEIGHT + GRID_HEIGHT/2;
-	}
+//	/**
+//	 * x and y pos with adjustment for tiles -JP
+//	 * @return the position of where screen was pressed or hovered
+//	 * adjusted for tile spacing
+//	 */
+//	private int xpos()
+//	{
+//		return (int)(Gdx.input.getX()/GRID_WIDTH)*GRID_WIDTH;
+//	}
+//
+//	private int ypos()
+//	{
+//		return (int)(Gdx.input.getY()/GRID_HEIGHT)*GRID_HEIGHT + GRID_HEIGHT;
+//	}
+//
+//	private int x_circle()
+//	{
+//		Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
+//		camera.unproject(pos);
+//		return (((int) pos.x)/GRID_WIDTH)*GRID_WIDTH + GRID_WIDTH/2;
+//	}
+//
+//	private int y_circle()
+//	{
+//		Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
+//		camera.unproject(pos);
+//		return (((int) pos.y)/GRID_HEIGHT)*GRID_HEIGHT + GRID_HEIGHT/2;
+//	}
 
 //	/**
 //	 * @param x position of the first heart
@@ -571,14 +624,14 @@ public class World
 		default: return "Error";
 		}
 	}
-
-	private void play_congrats()
+	
+	private void play_once(Sound sound, boolean has_been_played, float volume)
 	{
-		if (!congrats)
+		if (!has_been_played)
 		{
-			congratulations.play(CONGRATS_VOLUME);
-			congrats = true;
+			sound.play(volume);
+			has_been_played = true;
 		}
 	}
-
+	
 }

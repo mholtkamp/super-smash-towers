@@ -16,6 +16,8 @@ public abstract class Map
 {
 	protected final int WIDTH = 600, HEIGHT = 400, GRID_WIDTH = 40, GRID_HEIGHT = 40;
 	
+	protected int width, height;
+	
 	protected Point[] waypoints;
 	protected List<Queue<Enemy>> waves;
 	protected boolean[][] valid_placement;
