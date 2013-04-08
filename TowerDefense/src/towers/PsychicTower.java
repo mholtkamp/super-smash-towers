@@ -32,6 +32,10 @@ public class PsychicTower extends Tower
 		cost = 750;
 		firing_speed = 2.0f;	// shoot every x seconds
 		
+		upgradecost = 300;
+		damagemultiplier = 1;
+		level = 1;
+		
 		center_x = x + width/2;
 		center_y = y + height/2;
 		collider = new Rectangle(x, y, width, height);
@@ -39,8 +43,17 @@ public class PsychicTower extends Tower
 		tex = new Texture[2];
 		tex[0] = new Texture("data/towers/psychic_tower_1.png");
 		tex[1] = new Texture("data/towers/psychic_tower_2.png");
+		//tex[2] - tex[5] for lvls 2 and 3
 		current_tex = 0;
 		toggle_count = CALLS_BETWEEN_TOGGLE;
+	}
+	
+	public void levelUp()
+	{
+		level++;
+		damagemultiplier++;
+		firing_speed = firing_speed*0.75f;
+		range = range*1.25f;		
 	}
 	
 	public void update()
@@ -61,7 +74,7 @@ public class PsychicTower extends Tower
 				if (Math.sqrt(xE*xE + yE*yE) < range)
 				{
 					target = enemies.get(i);
-					bullets.add(new PsychicBall(target, center_x, center_y));
+					bullets.add(new PsychicBall(target, center_x, center_y, damagemultiplier));
 					time_since_last_shot = 0;
 					break;
 				}

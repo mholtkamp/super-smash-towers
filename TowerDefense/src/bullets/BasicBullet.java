@@ -13,7 +13,7 @@ public class BasicBullet extends Bullet
 	private final int WIDTH = 8, HEIGHT = 8;
 	private Texture tex;
 	
-	public BasicBullet(Enemy target, float center_x, float center_y)
+	public BasicBullet(Enemy target, float center_x, float center_y, int damagemultiplier)
 	{
 		this.center_x = center_x;
 		this.center_y = center_y;
@@ -24,7 +24,7 @@ public class BasicBullet extends Bullet
 		// attributes - change for each new Bullet
 		tex = new Texture("data/bullets/bullet.png");
 		
-		damage = 50;
+		damage = 50*damagemultiplier;
 		speed = 10;
 	}
 	

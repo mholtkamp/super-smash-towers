@@ -20,6 +20,8 @@ public abstract class Tower
 	protected ArrayList<Bullet> bullets;
 	protected Enemy target;
 	protected String name;
+	protected int damagemultiplier;
+	protected int level, upgradecost;
 	
 	public Tower(ArrayList<Enemy> enemies, float x, float y)
 	{
@@ -28,6 +30,10 @@ public abstract class Tower
 		time_since_last_shot = 0;
 		target = null;
 	}
+	
+	public int getLevel() {return level;}
+	
+	public int getUpgradeCost() {return upgradecost;}
 	
 	public float getX() {return collider.x;}
 	
@@ -47,6 +53,8 @@ public abstract class Tower
 		else
 			return false;
 	}
+	
+	public abstract void levelUp();
 	
 	public abstract void update();
 	

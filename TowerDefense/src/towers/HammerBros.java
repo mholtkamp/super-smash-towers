@@ -30,6 +30,10 @@ public class HammerBros extends Tower
 		cost = 500;
 		firing_speed = 1.0f;	// shoot every x seconds
 		
+		upgradecost = 500;
+		damagemultiplier = 1;
+		level = 1;
+		
 		center_x = x + width/2;
 		center_y = y + height/2;
 		collider = new Rectangle(x, y, width, height);
@@ -37,6 +41,16 @@ public class HammerBros extends Tower
 		tex_left = new Texture("data/towers/hammer_bros_left_idle.png");
 		tex_right = new Texture("data/towers/hammer_bros_right_idle.png");
 	}
+	
+	
+	public void levelUp()
+	{
+		level++;
+		damagemultiplier++;
+		firing_speed = firing_speed*0.75f;
+		range = range*1.25f;		
+	}
+	
 	
 	public void update()
 	{
@@ -56,7 +70,7 @@ public class HammerBros extends Tower
 				if (Math.sqrt(xE*xE + yE*yE) < range)
 				{
 					target = enemies.get(i);
-					bullets.add(new Hammer(target, center_x, center_y));
+					bullets.add(new Hammer(target, center_x, center_y, damagemultiplier));
 					time_since_last_shot = 0;
 					break;
 				}
