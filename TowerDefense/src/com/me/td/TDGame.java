@@ -1,5 +1,7 @@
 package com.me.td;
 
+import util.Database;
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -37,7 +39,7 @@ public class TDGame implements ApplicationListener
 	@Override
 	public void dispose()
 	{
-
+		Database.dispose();
 	}
 
 	@Override
@@ -62,6 +64,9 @@ public class TDGame implements ApplicationListener
 		}
 		else if (game_state == GAME_STATE)
 		{
+			world.update();
+			world.render(batch, shape_renderer);
+			
 			// PAUSE
 			if (Gdx.input.isKeyPressed(Keys.P))
 			{
@@ -76,20 +81,22 @@ public class TDGame implements ApplicationListener
 
 			if (world.gameover)
 			{
-				menu = new Menu(camera);
+//				menu = new Menu(camera);
 				if (OptionsMenu.restart)
 				{
 					OptionsMenu.restart = false;
-					game_state = GAME_STATE;
-					menu.menu_state = 2;
+					world = new World(camera, level);
+//					game_state = GAME_STATE;
+//					menu.menu_state = 2;
 				}
 				else
+				{
+					world = null;
+//					menu = new Menu(camera);
+					menu.restart();
 					game_state = MENU_STATE;
-				game_state = MENU_STATE;
+				}
 			}
-
-			world.update();
-			world.render(batch, shape_renderer);
 		}
 		else if (game_state == PAUSE_STATE)
 		{

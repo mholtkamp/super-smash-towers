@@ -18,7 +18,7 @@ public abstract class Enemy
 	protected Rectangle collider;
 	protected int width, height, health, cur_waypoint, damage, gold_given, cur_tex, tex_count, animation_speed;
 	protected float speed, speed_multiplier;
-	protected boolean dead, hit_tower, toggle;
+	protected boolean dead, hit_tower, toggle, left;
 	protected String name;
 	
 	public float getX() {return collider.x;}
@@ -55,6 +55,15 @@ public abstract class Enemy
 			dead = true;
 	}
 	
+	private boolean face_left()
+	{
+		if (Math.abs(collider.x - waypoints[cur_waypoint+1].getX()) < WAYPOINT_ACCURACY)
+			return left;
+		if (collider.x > waypoints[cur_waypoint+1].getX())
+			return true;
+		return false;
+	}
+	
 	public Enemy(Point[] waypoints)
 	{
 		this.waypoints = waypoints;
@@ -64,11 +73,14 @@ public abstract class Enemy
 		dead = false;
 		hit_tower = false;
 		toggle = false;
+		left = false;
 		speed_multiplier = 1.0f;
 	}
 	
 	public void update()
 	{
+		left = face_left();
+		
 		xE = (float) (waypoints[cur_waypoint+1].getX() - waypoints[cur_waypoint].getX());
 		yE = (float) (waypoints[cur_waypoint+1].getY() - waypoints[cur_waypoint].getY());
 		hE = (float) Math.sqrt(xE*xE + yE*yE);
@@ -101,7 +113,8 @@ public abstract class Enemy
 				toggle = true;
 				tex_count = 0;
 			}
-			batch.draw(tex[cur_tex], collider.x, collider.y, width, height);
+//			batch.draw(tex[cur_tex], collider.x, collider.y, width, height);
+			batch.draw(tex[cur_tex], collider.x, collider.y, (float)width, (float)height, 0, 0, width, height, left, false);
 		}
 	}
 	

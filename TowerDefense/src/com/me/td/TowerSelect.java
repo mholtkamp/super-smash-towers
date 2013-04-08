@@ -43,7 +43,7 @@ public class TowerSelect
 		
 		// buttons
 		buttons = new Rectangle[NUM_BUTTONS];
-		buttons[PAUSE] = new Rectangle(620, 80, 40, 40);
+		buttons[PAUSE] = new Rectangle(710, 370, 30, 30);
 		buttons[SELL] = new Rectangle(620, 20, 40, 40);
 		buttons[UPGRADE] = new Rectangle(680, 20, 40, 40);
     	buttons[CASTLE] = new Rectangle(620, 320, 40, 40);

@@ -1,18 +1,18 @@
 package maps;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-
-import enemies.BasicEnemy;
 import enemies.Bowser;
 import enemies.Enemy;
 import enemies.Goomba;
 import enemies.Koopa;
+import enemies.ShyGuy;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import com.badlogic.gdx.Gdx;
+
+import util.Database;
 import util.Point;
 
 
@@ -24,7 +24,7 @@ public class MarioMap extends Map
 	public MarioMap()
 	{
 		
-		bg_tex = new Texture("data/maps/mario_map_6.png");
+		bg_tex = Database.mario_map;
 		
 //		this.width = width;
 //		this.height = height;
@@ -100,12 +100,12 @@ public class MarioMap extends Map
 			if (wave / 3 < 1)
 			{// for first 3 waves, spawn BasicEnemy
 				for (int j = 0; j < wave*5 + 5; j++)
-					q.add(new BasicEnemy(waypoints));
+					q.add(new Goomba(waypoints));
 			}
 			else if (wave / 3 < 2)
 			{// for next 3 waves, spawn Goomba
 				for (int j = 0; j < wave*5 + 5; j++)
-					q.add(new Goomba(waypoints));
+					q.add(new ShyGuy(waypoints));
 			}
 			else if (wave / 3 < 3)
 			{// for next 3 waves, spawn Koopa
@@ -119,10 +119,10 @@ public class MarioMap extends Map
 				{
 					switch (current_enemy)
 					{
-						case 0: q.add(new BasicEnemy(waypoints)); break;
-						case 1: q.add(new Goomba(waypoints)); break;
+						case 0: q.add(new Goomba(waypoints)); break;
+						case 1: q.add(new ShyGuy(waypoints)); break;
 						case 2: q.add(new Koopa(waypoints)); break;
-						default: q.add(new BasicEnemy(waypoints)); break;
+						default: q.add(new Goomba(waypoints)); break;
 					}
 					current_enemy = (current_enemy + 1) % ENEMY_COUNT;
 				}

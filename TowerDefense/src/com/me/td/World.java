@@ -11,11 +11,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector3;
 
+import enemies.Arcanine;
 import enemies.BasicEnemy;
 import enemies.Bowser;
 import enemies.Enemy;
+import enemies.Geodude;
 import enemies.Goomba;
 import enemies.Koopa;
+import enemies.ShyGuy;
+import enemies.Tentacool;
+import enemies.Voltorb;
+import enemies.Weedle;
 
 import java.util.ArrayList;
 import java.util.Queue;
@@ -41,9 +47,9 @@ public class World
 	
 	// constants
 	final int MARIO_MAP = 0, POKEMON_MAP = 1;
-	final int BASIC_ENEMY = 0, GOOMBA = 1, KOOPA = 2, BOWSER = 3;
+	final int MUSHROOM = 0, GOOMBA = 1, KOOPA = 2, BOWSER = 3, SHYGUY = 4, ARCANINE = 5, GEODUDE = 6, WEEDLE = 7, VOLTORB = 8, TENTACOOL = 9;
 	final int PAUSE = 0, SELL = 1, UPGRADE = 2, CASTLE = 3, HAMMER = 4, PSYCHIC = 5, FIRE = 6, GRASS = 7;
-	final int ENEMY_COUNT = 4, TOWER_COUNT = 4, TIME_BETWEEN_WAVES = 10;
+	final int ENEMY_COUNT = 10, TOWER_COUNT = 4, TIME_BETWEEN_WAVES = 10;
 	final int GRID_WIDTH = 40, GRID_HEIGHT = 40;
 	final int BAR_WIDTH = 300, BAR_HEIGHT = 16, BAR_X = 5, BAR_Y = 375;
 	final int SAFE_HEALTH = 30;
@@ -91,7 +97,7 @@ public class World
 //		current_tower = BASIC_TOWER;	// we are placing this type of Tower
 		current_tower = CASTLE;
 		current_range = create_tower(CASTLE).getRange();
-		current_enemy = BASIC_ENEMY;	// we are spawning this type of Enemy
+		current_enemy = MUSHROOM;	// we are spawning this type of Enemy
 		gameover = false;
 		timeKeeper = true;
 		enable_enemy_spawn = true;
@@ -575,10 +581,16 @@ public class World
 		// enables us to quickly switch which enemy we want to spawn
 		switch (current_enemy)
 		{
-		case BASIC_ENEMY: return new BasicEnemy(map.getWayPoints());
+		case MUSHROOM: return new BasicEnemy(map.getWayPoints());
 		case GOOMBA: return new Goomba(map.getWayPoints());
+		case SHYGUY: return new ShyGuy(map.getWayPoints());
 		case KOOPA: return new Koopa(map.getWayPoints());
 		case BOWSER: return new Bowser(map.getWayPoints());
+		case ARCANINE: return new Arcanine(map.getWayPoints());
+		case GEODUDE: return new Geodude(map.getWayPoints());
+		case WEEDLE: return new Weedle(map.getWayPoints());
+		case VOLTORB: return new Voltorb(map.getWayPoints());
+		case TENTACOOL: return new Tentacool(map.getWayPoints());
 		default: return new BasicEnemy(map.getWayPoints());
 		}
 	}

@@ -1,6 +1,7 @@
 package com.me.td;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -65,6 +66,8 @@ public class Menu
 	private Vector3 touch_pos;
 	
 	private int level;
+	
+	private Music ssb_theme;
 	
 //	public enum level
 //	{
@@ -142,8 +145,18 @@ public class Menu
 		level = -1;
 
 		menu_state = MAIN_STATE;
+		
+		ssb_theme = Gdx.audio.newMusic(Gdx.files.internal("sounds/super_smash_bros_theme.mp3"));
+		ssb_theme.setLooping(true);
+		ssb_theme.play();
 	}
 
+	public void restart()
+	{
+		level = -1;
+		menu_state = MAIN_STATE;
+	}
+	
 	public void render(SpriteBatch batch)
 	{
 		batch.begin();
@@ -233,22 +246,35 @@ public class Menu
 			if (easyButton.contains(touch_pos.x, touch_pos.y))
 			{
 				if (!is_pressed)
+				{
+					ssb_theme.stop();
 					return level;
+				}
 			}
 			if (mediumButton.contains(touch_pos.x, touch_pos.y))
 			{
 				if (!is_pressed)
+				{
+					ssb_theme.stop();
 					return level;
+				}
+					
 			}
 			if (hardButton.contains(touch_pos.x, touch_pos.y))
 			{
 				if (!is_pressed)
+				{
+					ssb_theme.stop();
 					return level;
+				}
 			}
 			if (backButton.contains(touch_pos.x, touch_pos.y))
 			{
 				if (!is_pressed)
-					menu_state = LEVEL_STATE;
+				{
+					ssb_theme.stop();
+					return level;
+				}
 			}
 		}
 

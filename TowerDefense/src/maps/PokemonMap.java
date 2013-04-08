@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import util.Database;
 import util.Point;
 
 
@@ -27,7 +28,7 @@ public class PokemonMap extends Map
 	public PokemonMap()
 	{
 		
-		bg_tex = new Texture("data/maps/pokemon_map.png");
+		bg_tex = Database.pokemon_map;
 		
 		song = Gdx.audio.newMusic(Gdx.files.internal("sounds/pokemon.mp3"));
 		song.setLooping(true);

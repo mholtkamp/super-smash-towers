@@ -23,7 +23,7 @@ public class BasicEnemy extends Enemy
 		animation_speed = Integer.MAX_VALUE / 2;
 		
 		tex = new Texture[1];
-		tex[0] = new Texture("data/enemies/BasicEnemy.png");
+		tex[0] = new Texture("data/enemies/mushroom.png");
 		collider = new Rectangle((float)waypoints[0].getX(), (float)waypoints[0].getY(), width, height);
 	}
 	
