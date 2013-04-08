@@ -15,7 +15,7 @@ public class PsychicBall extends Bullet
 	private Texture[] tex;
 	private int current_tex, tex_count;
 	
-	public PsychicBall(Enemy target, float center_x, float center_y)
+	public PsychicBall(Enemy target, float center_x, float center_y, int damagemultiplier)
 	{
 		this.center_x = center_x;
 		this.center_y = center_y;
@@ -30,7 +30,7 @@ public class PsychicBall extends Bullet
 		current_tex = 0;
 		tex_count = CALLS_BETWEEN_TOGGLE;
 		
-		damage = 0;
+		damage = 0*damagemultiplier;
 		speed = 10;
 	}
 	

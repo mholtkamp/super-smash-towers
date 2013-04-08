@@ -15,7 +15,7 @@ public class Hammer extends Bullet
 	private Texture[] tex;
 	private int current_tex, tex_count;
 	
-	public Hammer(Enemy target, float center_x, float center_y)
+	public Hammer(Enemy target, float center_x, float center_y, int damagemultiplier)
 	{
 		this.center_x = center_x;
 		this.center_y = center_y;
@@ -32,7 +32,7 @@ public class Hammer extends Bullet
 		current_tex = 0;
 		tex_count = CALLS_BETWEEN_TOGGLE;
 		
-		damage = 100;
+		damage = 100*damagemultiplier;
 		speed = 5;
 	}
 	

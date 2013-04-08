@@ -15,7 +15,7 @@ public class FireBall extends Bullet
 	private Texture[] tex;
 	private int current_tex, tex_count;
 	
-	public FireBall(Enemy target, float center_x, float center_y)
+	public FireBall(Enemy target, float center_x, float center_y, int damagemultiplier)
 	{
 		this.center_x = center_x;
 		this.center_y = center_y;
@@ -30,7 +30,7 @@ public class FireBall extends Bullet
 		current_tex = 0;
 		tex_count = CALLS_BETWEEN_TOGGLE;
 		
-		damage = 200;
+		damage = 200*damagemultiplier;
 		speed = 10;
 	}
 	

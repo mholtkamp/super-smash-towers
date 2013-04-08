@@ -158,6 +158,11 @@ public class World
 			{
 				if (tower_grid[i][j] != null)
 					tower_grid[i][j].render(batch);
+					/*font.setScale((float)0.6);
+					font.setColor(1.0f, 0.0f, 1.0f, 1.0f);
+					font.draw(batch, "lvl "+tower_grid[i][j].getLevel(), tower_grid[i][j].getX(), tower_grid[i][j].getY() + 10);
+					*/
+					
 			}
 		}
 		
@@ -369,6 +374,18 @@ public class World
 							tower_grid[y][x] = null;
 							map.set_placement(x, y, true);
 						}
+					}
+					else if (upgrade_state && enable_tower_spawn)
+					{ // UPGRADE TOWER
+						if (map.check_indices(x, y) && tower_grid[y][x] != null)
+						{
+							if (gold >= tower_grid[y][x].getUpgradeCost() && tower_grid[y][x].getLevel() < 3)
+							{
+								tower_grid[y][x].levelUp();
+								gold -= tower_grid[y][x].getUpgradeCost();
+							}
+						}
+						enable_tower_spawn = false;
 					}
 					else if (enable_tower_spawn)
 					{// PLACE TOWER

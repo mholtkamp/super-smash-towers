@@ -12,7 +12,8 @@ import java.util.ArrayList;
 public class GrassTower extends Tower
 {
 	
-	private final int DAMAGE = 10;
+	private int DAMAGE;
+
 	
 	private final int CALLS_BETWEEN_TOGGLE = 15;
 	private int current_tex, toggle_count;
@@ -44,6 +45,10 @@ public class GrassTower extends Tower
 		range = 100;
 		cost = 500;
 		firing_speed = 2.0f;
+		level = 1;
+		DAMAGE = 10;
+		damagemultiplier = 1;
+		upgradecost = 400;
 		
 		center_x = x + width/2;
 		center_y = y + height/2;
@@ -52,6 +57,7 @@ public class GrassTower extends Tower
 		tex = new Texture[2];
 		tex[0] = new Texture(Gdx.files.internal("data/towers/grass_tower_1.png"));
 		tex[1] = new Texture(Gdx.files.internal("data/towers/grass_tower_2.png"));
+		//add tex 2-5 for lvls 2 and 3
 		current_tex = 0;
 		toggle_count = CALLS_BETWEEN_TOGGLE;
 		
@@ -68,6 +74,13 @@ public class GrassTower extends Tower
 		
 		expanding = true;
 
+	}
+	
+	public void levelUp()
+	{
+		level++;
+		damagemultiplier++;
+		firing_speed = firing_speed*0.75f;
 	}
 	
 	public void update()
@@ -102,13 +115,13 @@ public class GrassTower extends Tower
 		for(int i = 0; i < enemies.size();i++)
 		{
 			if(leaf1.overlaps(enemies.get(i).getCollider()))
-				enemies.get(i).subHealth(DAMAGE);
+				enemies.get(i).subHealth(DAMAGE*damagemultiplier);
 			else if (leaf2.overlaps(enemies.get(i).getCollider()))
-				enemies.get(i).subHealth(DAMAGE);
+				enemies.get(i).subHealth(DAMAGE*damagemultiplier);
 			else if (leaf3.overlaps(enemies.get(i).getCollider()))
-				enemies.get(i).subHealth(DAMAGE);
+				enemies.get(i).subHealth(DAMAGE*damagemultiplier);
 			else if (leaf4.overlaps(enemies.get(i).getCollider()))
-				enemies.get(i).subHealth(DAMAGE);
+				enemies.get(i).subHealth(DAMAGE*damagemultiplier);
 		}
 		
 		leafRotationAngle += leafRotationAngularVelocity*Gdx.graphics.getDeltaTime();
@@ -119,6 +132,16 @@ public class GrassTower extends Tower
 	public void render(SpriteBatch batch)
 	{
 		// render Tower
+		/* 2 different textures for each level of tower
+		 * if (level = 1)
+		 * { batch.draw(tex[current_tex], collider.x, collider.y; }
+		 * else
+		 * { if (level = 2)
+		 * { batch.draw(tex[current_tex+2], collider.x, collider.y; }}
+		 * else 
+		 * {if (level = 3)
+		 * { batch.draw(tex[current_tex+4], collider.x, collider.y; }}
+		 */
 		batch.draw(tex[current_tex], collider.x, collider.y);
 		
 		// toggle textures

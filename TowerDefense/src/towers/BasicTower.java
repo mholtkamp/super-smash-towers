@@ -33,12 +33,29 @@ public class BasicTower extends Tower
 		cost = 250;
 		firing_speed = 1.5f;	// shoot every x seconds
 		
+		upgradecost = 250;
+		damagemultiplier = 1;
+		level = 1;
+		
 		center_x = x + width/2;
 		center_y = y + height/2;
 		collider = new Rectangle(x, y, width, height);
 		
 		tex = new Texture("data/towers/tower.png");
+		/*tex = new Texture[3];
+		 * tex[0] = new Texture("data/towers/tower.png");
+		 * tex[1] = new Texture("data/towers/tower_lvl2.png");
+		 * tex[2] = new Texture("data/towers/tower_lvl3.png");
+		 */
 		shoot = Gdx.audio.newSound(Gdx.files.internal("sounds/firework.mp3"));
+	}
+	
+	public void levelUp()
+	{
+		level++;
+		damagemultiplier++;
+		firing_speed = firing_speed*0.75f;
+		range = range*1.25f;		
 	}
 	
 	public void update()
@@ -59,7 +76,7 @@ public class BasicTower extends Tower
 				if (Math.sqrt(xE*xE + yE*yE) < range)
 				{
 					shoot.play(SOUND_VOLUME);
-					bullets.add(new BasicBullet(enemies.get(i), center_x, center_y));
+					bullets.add(new BasicBullet(enemies.get(i), center_x, center_y, damagemultiplier));
 					time_since_last_shot = 0;
 					break;
 				}
@@ -69,6 +86,14 @@ public class BasicTower extends Tower
 	
 	public void render(SpriteBatch batch)
 	{
+		/* different textures for each level of tower
+		 * if (level = 1)
+		 * { batch.draw(tex[0], collider.x, collider.y; }
+		 * if (level = 2)
+		 * { batch.draw(tex[1], collider.x, collider.y; }
+		 * if (level = 3)
+		 * { batch.draw(tex[2], collider.x, collider.y; }
+		 */
 		batch.draw(tex, collider.x, collider.y);
 		for (Bullet bullet : bullets)
 			bullet.render(batch);
