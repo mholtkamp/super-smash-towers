@@ -594,7 +594,7 @@ public class World
 //	}
 
 	
-	//Derek Rose is bosss
+	//Your boy D.Rose got nothing on Bron
 	private Enemy create_enemy(int current_enemy)
 	{// returns an instance of Enemy class based on value of current_enemy
 		// enables us to quickly switch which enemy we want to spawn
