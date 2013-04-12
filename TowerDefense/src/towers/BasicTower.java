@@ -8,6 +8,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.me.td.World;
 
 import enemies.Enemy;
 
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 public class BasicTower extends Tower
 {
 
-	private final float SOUND_VOLUME = 0.5f;
+//	private final float SOUND_VOLUME = 0.5f;
 	private Texture tex;
 	private Sound shoot;
 	
@@ -75,7 +76,7 @@ public class BasicTower extends Tower
 				float yE = (center_y - enemies.get(i).getY());
 				if (Math.sqrt(xE*xE + yE*yE) < range)
 				{
-					shoot.play(SOUND_VOLUME);
+					shoot.play(World.SOUND_VOLUME);
 					bullets.add(new BasicBullet(enemies.get(i), center_x, center_y, damagemultiplier));
 					time_since_last_shot = 0;
 					break;

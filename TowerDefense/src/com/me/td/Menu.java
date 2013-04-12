@@ -45,11 +45,15 @@ public class Menu
 	private Texture backButtonTex;
 	private Texture startButtonTex;
 	private Texture instrButtonTex;
-
+	private Texture mute_on;
+	private Texture mute_off;
+	
 	private Rectangle startButton;
 	private Rectangle instrButton;
 	private Rectangle backButton;
-
+	private Rectangle mute_onButton;
+	private Rectangle mute_offButton;
+	
 	private Rectangle[] stars_dimensions;
 	private Texture[] stars;
 
@@ -67,7 +71,7 @@ public class Menu
 	
 	private int level;
 	
-	private Music ssb_theme;
+	public Music ssb_theme;
 	
 //	public enum level
 //	{
@@ -140,6 +144,13 @@ public class Menu
 		stars[2] = new Texture("data/2_stars.png");
 		stars[3] = new Texture("data/3_stars.png");
 		
+		//mute texture and button
+		mute_off = new Texture("data/speaker_on.png");
+		mute_on = new Texture("data/speaker_off.png");
+				
+		mute_onButton = new Rectangle(0,0,40,40);
+		mute_offButton = new Rectangle(0,0,40,40);
+				
 		touch_pos = new Vector3();
 		
 		level = -1;
@@ -160,12 +171,17 @@ public class Menu
 	public void render(SpriteBatch batch)
 	{
 		batch.begin();
+		if(World.mute)
+			ssb_theme.setVolume(0.0f);
+		else
+			ssb_theme.setVolume(1.0f);
 		
 		if (menu_state == MAIN_STATE)
 		{
 			batch.draw(menubg, 0, 0, WIDTH, HEIGHT);
 			batch.draw(startButtonTex, startButton.x, startButton.y, startButton.width, startButton.height);
 			batch.draw(instrButtonTex, instrButton.x, instrButton.y, instrButton.width, instrButton.height);
+
 		}
 		else if (menu_state == INSTR_STATE)
 		{
@@ -178,6 +194,8 @@ public class Menu
 			font.draw(batch, "INSTRUCTIONS", camera.viewportWidth/2 - 100, 350);
 			font.draw(batch, "Place towers to stop enemies from", camera.viewportWidth/2 - 230, 275);
 			font.draw(batch, "reaching your castle!", camera.viewportWidth/2 - 150, 255);
+
+
 		}
 		else if (menu_state == DIFF_STATE)
 		{
@@ -186,6 +204,7 @@ public class Menu
 			batch.draw(mediumButtonTex,mediumButton.x,mediumButton.y,mediumButton.width,mediumButton.height);
 			batch.draw(hardButtonTex,hardButton.x,hardButton.y,hardButton.width,hardButton.height);
 			batch.draw(backButtonTex,backButton.x,backButton.y,backButton.width,backButton.height);
+
 		}
 		else if (menu_state == LEVEL_STATE)
 		{
@@ -195,7 +214,14 @@ public class Menu
 				batch.draw(level_buttons_tex[i], level_buttons[i].x, level_buttons[i].y, level_buttons[i].width, level_buttons[i].height);
 			for (int i = 0; i < stars_dimensions.length; i++)
 				batch.draw(stars[0], stars_dimensions[i].x, stars_dimensions[i].y, stars_dimensions[i].width, stars_dimensions[i].height);
+			
+
 		}
+		//draw mute button
+		if(World.mute)
+			batch.draw(mute_on, mute_onButton.x, mute_onButton.y, mute_onButton.width, mute_onButton.height);
+		else
+			batch.draw(mute_off, mute_offButton.x, mute_offButton.y, mute_offButton.width, mute_offButton.height);
 		
 		batch.end();
 	}
@@ -231,14 +257,25 @@ public class Menu
 				if(!is_pressed)
 					menu_state = INSTR_STATE;
 			}
-
+			if (mute_onButton.contains(touch_pos.x, touch_pos.y))
+			{
+				if(!is_pressed)
+					World.mute = !World.mute;
+			}
 
 		}
 		else if (menu_state == INSTR_STATE)
 		{
 			if (backButton.contains(touch_pos.x, touch_pos.y))
+			{	
 				if (!is_pressed)
-					menu_state = MAIN_STATE;
+				menu_state = MAIN_STATE;
+			}
+			if (mute_onButton.contains(touch_pos.x, touch_pos.y))
+			{
+				if(!is_pressed)
+					World.mute = !World.mute;
+			}
 		}
 		else if (menu_state == DIFF_STATE)
 		{
@@ -271,15 +308,22 @@ public class Menu
 			if (backButton.contains(touch_pos.x, touch_pos.y))
 			{
 				if (!is_pressed)
-				{
-					ssb_theme.stop();
-					return level;
-				}
+					menu_state = LEVEL_STATE;
+			}
+			if (mute_onButton.contains(touch_pos.x, touch_pos.y))
+			{
+				if(!is_pressed)
+					World.mute = !World.mute;
 			}
 		}
 
 		else if (menu_state == LEVEL_STATE)
 		{
+			if (mute_onButton.contains(touch_pos.x, touch_pos.y))
+			{
+				if(!is_pressed)
+					World.mute = !World.mute;
+			}
 			if (backButton.contains(touch_pos.x, touch_pos.y))
 			{
 				if (!is_pressed)

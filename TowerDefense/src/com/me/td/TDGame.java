@@ -85,6 +85,7 @@ public class TDGame implements ApplicationListener
 				if (OptionsMenu.restart)
 				{
 					OptionsMenu.restart = false;
+					world = null;
 					world = new World(camera, level);
 //					game_state = GAME_STATE;
 //					menu.menu_state = 2;
@@ -95,6 +96,7 @@ public class TDGame implements ApplicationListener
 //					menu = new Menu(camera);
 					menu.restart();
 					game_state = MENU_STATE;
+					menu.ssb_theme.play();
 				}
 			}
 		}

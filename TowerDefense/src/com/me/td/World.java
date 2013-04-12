@@ -53,7 +53,7 @@ public class World
 	final int GRID_WIDTH = 40, GRID_HEIGHT = 40;
 	final int BAR_WIDTH = 300, BAR_HEIGHT = 16, BAR_X = 5, BAR_Y = 375;
 	final int SAFE_HEALTH = 30;
-	final float CONGRATS_VOLUME = 0.5f;
+	//final float CONGRATS_VOLUME = 0.5f;
 
 	// variables
 	int health, gold, wave_number, current_tower, current_enemy;
@@ -239,7 +239,7 @@ public class World
 			else
 			{
 				font.draw(batch, "CONGRATULATIONS!", 10, 200);
-				play_once(congratulations, congrats_played, CONGRATS_VOLUME);
+				play_once(congratulations, congrats_played, SOUND_VOLUME);
 			}
 		}
 		
@@ -248,6 +248,12 @@ public class World
 
 	public void update()
 	{
+		if (mute)
+			SOUND_VOLUME = 0.0f;
+		else
+			SOUND_VOLUME = 1.0f;
+		
+		map.song.setVolume(SOUND_VOLUME);
 		// update options menu
 		// if in pause state, we want to halt operations
 		if (pause_state)
@@ -255,16 +261,6 @@ public class World
 //			System.out.println("paused pressed");
 			drawOptionMenu = true;
 			pause_state = options_menu.pause();
-			if (mute)
-			{
-				SOUND_VOLUME = 0.0f;
-				map.song.setVolume(SOUND_VOLUME);
-			}
-			else
-			{
-				SOUND_VOLUME = 1.0f;
-				map.song.setVolume(SOUND_VOLUME);
-			}
 
 			if (options_menu.gameover)
 			{
@@ -594,7 +590,6 @@ public class World
 //	}
 
 	
-	//Your boy D.Rose got nothing on Bron
 	private Enemy create_enemy(int current_enemy)
 	{// returns an instance of Enemy class based on value of current_enemy
 		// enables us to quickly switch which enemy we want to spawn
