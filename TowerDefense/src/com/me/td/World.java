@@ -593,6 +593,8 @@ public class World
 //		batch.draw(corazon, x, y);
 //	}
 
+	
+	//Derek Rose is bosss
 	private Enemy create_enemy(int current_enemy)
 	{// returns an instance of Enemy class based on value of current_enemy
 		// enables us to quickly switch which enemy we want to spawn
