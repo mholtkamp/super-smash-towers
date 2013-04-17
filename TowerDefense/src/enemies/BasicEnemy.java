@@ -16,9 +16,9 @@ public class BasicEnemy extends Enemy
 		name = "Mushroom";
 		width = 32;
 		height = 32;
-		health = (int)(50*difficulty);
-		speed = 2.5f;
-		speed_multiplier = difficulty;
+		float hp = 50*difficulty;
+		health = (int)hp;
+		speed = 2.5f*difficulty;
 		damage = 5;
 		gold_given = 10;
 		animation_speed = Integer.MAX_VALUE / 2;

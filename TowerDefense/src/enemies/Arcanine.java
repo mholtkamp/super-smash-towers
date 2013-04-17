@@ -16,9 +16,9 @@ public class Arcanine extends Enemy
 		name = "Arcanine";
 		width = 35;
 		height = 34;
-		health = (int)(200*difficulty);
-		speed = 1.5f;
-		speed_multiplier = difficulty;
+		float hp = 200*difficulty;
+		health = (int)hp;
+		speed = 1.5f*difficulty;
 		damage = 20;
 		gold_given = 50;
 		animation_speed = 10;

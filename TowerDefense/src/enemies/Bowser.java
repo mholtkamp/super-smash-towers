@@ -16,9 +16,9 @@ public class Bowser extends Enemy
 		name = "Bowser";
 		width = 64;
 		height = 64;
-		health = (int)(9500*difficulty);
-		speed = 1.0f;
-		speed_multiplier = difficulty;
+		float hp = 9500*difficulty;
+		health = (int)hp;
+		speed = 1.0f*difficulty;
 		damage = 100;
 		gold_given = 2500;
 		animation_speed = 10;

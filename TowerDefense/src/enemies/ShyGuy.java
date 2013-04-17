@@ -16,9 +16,9 @@ public class ShyGuy extends Enemy
 		name = "ShyGuy";
 		width = 32;
 		height = 32;
-		health = (int)(100*difficulty);
-		speed = 2.0f;
-		speed_multiplier = difficulty;
+		float hp = 100*difficulty;
+		health = (int)hp;
+		speed = 2.0f*difficulty;
 		damage = 10;
 		gold_given = 25;
 		animation_speed = 6;
