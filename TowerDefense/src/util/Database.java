@@ -40,8 +40,8 @@ public final class Database
 
 	// Enemy Textures
 	public static final Texture basicEnemy = new Texture(Gdx.files.internal("data/enemies/mushroom.png"));
-	public static final Texture bowser1 = new Texture(Gdx.files.internal("data/enemies/BowserR1.png"));
-	public static final Texture bowser2 = new Texture(Gdx.files.internal("data/enemies/BowserR2.png"));
+	public static final Texture bowser1 = new Texture(Gdx.files.internal("data/enemies/bowserR1.png"));
+	public static final Texture bowser2 = new Texture(Gdx.files.internal("data/enemies/bowserR2.png"));
 	public static final Texture goomba1 = new Texture(Gdx.files.internal("data/enemies/goomba1.png"));
 	public static final Texture goomba2 = new Texture(Gdx.files.internal("data/enemies/goomba2.png"));
 	public static final Texture koopa1 = new Texture(Gdx.files.internal("data/enemies/koopa_right_down.png"));
