@@ -71,6 +71,8 @@ public class Menu
 	
 	private int level;
 	
+	private float difficulty;
+	
 	public Music ssb_theme;
 	
 //	public enum level
@@ -81,6 +83,7 @@ public class Menu
 	public Menu(OrthographicCamera camera)
 	{
 		this.camera = camera;
+		difficulty = 1.0f;
 		
 		font = new BitmapFont(Gdx.files.internal("data/nint.fnt"), Gdx.files.internal("data/nint_0.png"), false);
 		
@@ -226,6 +229,11 @@ public class Menu
 		batch.end();
 	}
 
+	public float getDiff()
+	{
+		return difficulty;
+	}
+	
 	public int update()
 	{// returns -1 if we want to stay in the menu state
 	 // else, it returns an index 'level' that tells World.java which Map to use
@@ -285,6 +293,7 @@ public class Menu
 				if (!is_pressed)
 				{
 					ssb_theme.stop();
+					difficulty = 0.75f;
 					return level;
 				}
 			}
@@ -293,6 +302,7 @@ public class Menu
 				if (!is_pressed)
 				{
 					ssb_theme.stop();
+					difficulty = 1.0f;
 					return level;
 				}
 					
@@ -302,6 +312,7 @@ public class Menu
 				if (!is_pressed)
 				{
 					ssb_theme.stop();
+					difficulty = 1.25f;
 					return level;
 				}
 			}

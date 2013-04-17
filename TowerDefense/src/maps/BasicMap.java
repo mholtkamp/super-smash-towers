@@ -22,7 +22,7 @@ public class BasicMap extends Map
 	private final int WAYPOINT_COUNT = 4, WAVE_COUNT = 10, ENEMY_COUNT = 3; 
 	private Texture bg_tex;
 	
-	public BasicMap()
+	public BasicMap(float difficulty)
 	{
 		
 		bg_tex = new Texture("data/maps/basic_map.png");
@@ -43,17 +43,17 @@ public class BasicMap extends Map
 			if (wave / 3 < 1)
 			{// for first 3 waves, spawn BasicEnemy
 				for (int j = 0; j < wave*5 + 5; j++)
-					q.add(new BasicEnemy(waypoints));
+					q.add(new BasicEnemy(waypoints, difficulty));
 			}
 			else if (wave / 3 < 2)
 			{// for next 3 waves, spawn Goomba
 				for (int j = 0; j < wave*5 + 5; j++)
-					q.add(new Goomba(waypoints));
+					q.add(new Goomba(waypoints, difficulty));
 			}
 			else if (wave / 3 < 3)
 			{// for next 3 waves, spawn Koopa
 				for (int j = 0; j < wave*5 + 5; j++)
-					q.add(new Koopa(waypoints));
+					q.add(new Koopa(waypoints, difficulty));
 			}
 			else
 			{// boss wave
@@ -62,14 +62,14 @@ public class BasicMap extends Map
 				{
 					switch (current_enemy)
 					{
-						case 0: q.add(new BasicEnemy(waypoints)); break;
-						case 1: q.add(new Goomba(waypoints)); break;
-						case 2: q.add(new Koopa(waypoints)); break;
-						default: q.add(new BasicEnemy(waypoints)); break;
+						case 0: q.add(new BasicEnemy(waypoints, difficulty)); break;
+						case 1: q.add(new Goomba(waypoints, difficulty)); break;
+						case 2: q.add(new Koopa(waypoints, difficulty)); break;
+						default: q.add(new BasicEnemy(waypoints, difficulty)); break;
 					}
 					current_enemy = (current_enemy + 1) % ENEMY_COUNT;
 				}
-				q.add(new Bowser(waypoints));
+				q.add(new Bowser(waypoints, difficulty));
 			}
 			waves.add(q);
 		}

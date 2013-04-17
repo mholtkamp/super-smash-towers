@@ -37,9 +37,12 @@ public class TowerSelect
 		tex[UPGRADE] = new Texture("data/upgrade.png");
 		tex[CASTLE] = new Texture("data/towers/tower.png");
 		tex[HAMMER] = new Texture("data/towers/hammer_bros_left_idle.png");
-		tex[PSYCHIC] = new Texture("data/towers/psychic_tower_1.png");
-		tex[FIRE] = new Texture("data/towers/fire_tower_1.png");
-		tex[GRASS] = new Texture("data/towers/grass_tower_1.png");
+		//tex[PSYCHIC] = new Texture("data/towers/psychic_tower_1.png");
+		tex[PSYCHIC] = new Texture("data/towers/Abra.png");
+		//tex[FIRE] = new Texture("data/towers/fire_tower_1.png");
+		tex[FIRE] = new Texture("data/towers/charm.png");
+		//tex[GRASS] = new Texture("data/towers/grass_tower_1.png");
+		tex[GRASS] = new Texture("data/towers/bulba.png");
 		
 		// buttons
 		buttons = new Rectangle[NUM_BUTTONS];

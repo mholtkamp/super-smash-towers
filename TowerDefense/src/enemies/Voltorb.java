@@ -9,15 +9,16 @@ import util.Point;
 public class Voltorb extends Enemy
 {
 	
-	public Voltorb(Point[] waypoints)
+	public Voltorb(Point[] waypoints, float difficulty)
 	{
 		super(waypoints);
 		
 		name = "Voltorb";
 		width = 29;
 		height = 29;
-		health = 200;
+		health = (int)(200*difficulty);
 		speed = 1.5f;
+		speed_multiplier = difficulty;
 		damage = 20;
 		gold_given = 50;
 		animation_speed = 20;

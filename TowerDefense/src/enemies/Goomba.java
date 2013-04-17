@@ -9,15 +9,16 @@ import util.Point;
 public class Goomba extends Enemy
 {
 	
-	public Goomba(Point[] waypoints)
+	public Goomba(Point[] waypoints, float difficulty)
 	{
 		super(waypoints);
 		
 		name = "Goomba";
 		width = 32;
 		height = 32;
-		health = 50;
+		health = (int)(50*difficulty);
 		speed = 2.5f;
+		speed_multiplier = difficulty;
 		damage = 5;
 		gold_given = 10;
 		animation_speed = 6;

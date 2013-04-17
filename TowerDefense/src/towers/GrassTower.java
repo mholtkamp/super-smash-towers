@@ -54,9 +54,12 @@ public class GrassTower extends Tower
 		center_y = y + height/2;
 		collider = new Rectangle(x, y, width, height);
 		
-		tex = new Texture[2];
-		tex[0] = new Texture(Gdx.files.internal("data/towers/grass_tower_1.png"));
-		tex[1] = new Texture(Gdx.files.internal("data/towers/grass_tower_2.png"));
+		tex = new Texture[3];
+		tex[0] = new Texture("data/towers/bulba.png");
+		tex[1] = new Texture("data/towers/ivy.png");
+		tex[2] = new Texture("data/towers/venus.png");
+		//tex[0] = new Texture(Gdx.files.internal("data/towers/grass_tower_1.png"));
+		//tex[1] = new Texture(Gdx.files.internal("data/towers/grass_tower_2.png"));
 		//add tex 2-5 for lvls 2 and 3
 		current_tex = 0;
 		toggle_count = CALLS_BETWEEN_TOGGLE;
@@ -81,6 +84,7 @@ public class GrassTower extends Tower
 		level++;
 		damagemultiplier++;
 		firing_speed = firing_speed*0.75f;
+		current_tex++;
 	}
 	
 	public void update()
@@ -145,11 +149,11 @@ public class GrassTower extends Tower
 		batch.draw(tex[current_tex], collider.x, collider.y);
 		
 		// toggle textures
-		if (--toggle_count < 0)
-		{
-			current_tex = (current_tex + 1) % tex.length;
-			toggle_count = CALLS_BETWEEN_TOGGLE;
-		}
+		//if (--toggle_count < 0)
+		//{
+			//current_tex = (current_tex + 1) % tex.length;
+			//toggle_count = CALLS_BETWEEN_TOGGLE;
+		//}
 		
 		// render Bullets
 		batch.draw(leafTex, leaf1.x, leaf1.y, 0, 0, leafTex.getWidth(), leafTex.getHeight(), 1, 1, leafRotationAngle, 0, 0, leafTex.getWidth(), leafTex.getHeight(), false, false);

@@ -40,9 +40,12 @@ public class PsychicTower extends Tower
 		center_y = y + height/2;
 		collider = new Rectangle(x, y, width, height);
 		
-		tex = new Texture[2];
-		tex[0] = new Texture("data/towers/psychic_tower_1.png");
-		tex[1] = new Texture("data/towers/psychic_tower_2.png");
+		tex = new Texture[3];
+		//tex[0] = new Texture("data/towers/psychic_tower_1.png");
+		//tex[1] = new Texture("data/towers/psychic_tower_2.png");
+		tex[0] = new Texture("data/towers/Abra.png");
+		tex[1] = new Texture("data/towers/kadabra.png");
+		tex[2] = new Texture("data/towers/alakazam.png");
 		//tex[2] - tex[5] for lvls 2 and 3
 		current_tex = 0;
 		toggle_count = CALLS_BETWEEN_TOGGLE;
@@ -53,7 +56,8 @@ public class PsychicTower extends Tower
 		level++;
 		damagemultiplier++;
 		firing_speed = firing_speed*0.75f;
-		range = range*1.25f;		
+		range = range*1.25f;
+		current_tex++;
 	}
 	
 	public void update()
@@ -88,11 +92,11 @@ public class PsychicTower extends Tower
 		batch.draw(tex[current_tex], collider.x, collider.y);
 		
 		// toggle textures
-		if (--toggle_count < 0)
-		{
-			current_tex = (current_tex + 1) % tex.length;
-			toggle_count = CALLS_BETWEEN_TOGGLE;
-		}
+		//if (--toggle_count < 0)
+		//{
+		//	current_tex = (current_tex + 1) % tex.length;
+		//	toggle_count = CALLS_BETWEEN_TOGGLE;
+		//}
 		
 		// render Bullets
 		for (Bullet bullet : bullets)

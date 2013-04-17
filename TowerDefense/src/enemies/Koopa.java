@@ -9,15 +9,16 @@ import util.Point;
 public class Koopa extends Enemy
 {
 	
-	public Koopa(Point[] waypoints)
+	public Koopa(Point[] waypoints, float difficulty)
 	{
 		super(waypoints);
 		
 		name = "Koopa";
 		width = 32;
 		height = 46;
-		health = 200;
+		health = (int)(200*difficulty);
 		speed = 1.5f;
+		speed_multiplier = difficulty;
 		damage = 20;
 		gold_given = 50;
 		animation_speed = 7;

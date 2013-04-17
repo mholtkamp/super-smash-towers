@@ -9,15 +9,16 @@ import util.Point;
 public class Tentacool extends Enemy
 {
 	
-	public Tentacool(Point[] waypoints)
+	public Tentacool(Point[] waypoints, float difficulty)
 	{
 		super(waypoints);
 		
 		name = "Tentacool";
 		width = 37;
 		height = 45;
-		health = 200;
+		health = (int)(200*difficulty);
 		speed = 1.5f;
+		speed_multiplier = difficulty;
 		damage = 20;
 		gold_given = 50;
 		animation_speed = 20;

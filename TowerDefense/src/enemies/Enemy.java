@@ -10,7 +10,7 @@ import util.Point;
 public abstract class Enemy
 {
 	
-	private final float WAYPOINT_ACCURACY = 1.0f;
+	private final float WAYPOINT_ACCURACY = 1.5f;
 	private float xE, yE, hE;
 	
 	protected Point[] waypoints;

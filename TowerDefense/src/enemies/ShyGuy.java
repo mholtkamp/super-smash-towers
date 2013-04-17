@@ -9,15 +9,16 @@ import util.Point;
 public class ShyGuy extends Enemy
 {
 	
-	public ShyGuy(Point[] waypoints)
+	public ShyGuy(Point[] waypoints, float difficulty)
 	{
 		super(waypoints);
 		
 		name = "ShyGuy";
 		width = 32;
 		height = 32;
-		health = 100;
+		health = (int)(100*difficulty);
 		speed = 2.0f;
+		speed_multiplier = difficulty;
 		damage = 10;
 		gold_given = 25;
 		animation_speed = 6;

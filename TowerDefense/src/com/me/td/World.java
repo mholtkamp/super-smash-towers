@@ -57,6 +57,7 @@ public class World
 
 	// variables
 	int health, gold, wave_number, current_tower, current_enemy;
+	float difficulty;
 	float current_range;
 	Map map;
 	TowerSelect tower_select;
@@ -74,17 +75,17 @@ public class World
 		enable_tower_switch, enable_gold, congrats_played, enable_selling, selling_state, upgrade_state, pause_state, drawOptionMenu;
 	long prevTime, time;
 
-	public World(OrthographicCamera camera, int level)
+	public World(OrthographicCamera camera, int level, float difficulty)
 	{
 //		Vector3 map_dimensions = new Vector3(camera.viewportWidth, camera.viewportWidth, 0);
 //		camera.unproject(map_dimensions);
 		// SELECT MAP
 		if (level == MARIO_MAP)
-			map = new MarioMap();
+			map = new MarioMap(difficulty);
 		else if (level == POKEMON_MAP)
-			map = new PokemonMap();
+			map = new PokemonMap(difficulty);
 		
-		
+		difficulty = this.difficulty;
 		health = 100;
 		gold = 10000;
 		wave_number = 0;
@@ -595,17 +596,17 @@ public class World
 		// enables us to quickly switch which enemy we want to spawn
 		switch (current_enemy)
 		{
-		case MUSHROOM: return new BasicEnemy(map.getWayPoints());
-		case GOOMBA: return new Goomba(map.getWayPoints());
-		case SHYGUY: return new ShyGuy(map.getWayPoints());
-		case KOOPA: return new Koopa(map.getWayPoints());
-		case BOWSER: return new Bowser(map.getWayPoints());
-		case ARCANINE: return new Arcanine(map.getWayPoints());
-		case GEODUDE: return new Geodude(map.getWayPoints());
-		case WEEDLE: return new Weedle(map.getWayPoints());
-		case VOLTORB: return new Voltorb(map.getWayPoints());
-		case TENTACOOL: return new Tentacool(map.getWayPoints());
-		default: return new BasicEnemy(map.getWayPoints());
+		case MUSHROOM: return new BasicEnemy(map.getWayPoints(), difficulty);
+		case GOOMBA: return new Goomba(map.getWayPoints(), difficulty);
+		case SHYGUY: return new ShyGuy(map.getWayPoints(), difficulty);
+		case KOOPA: return new Koopa(map.getWayPoints(), difficulty);
+		case BOWSER: return new Bowser(map.getWayPoints(), difficulty);
+		case ARCANINE: return new Arcanine(map.getWayPoints(), difficulty);
+		case GEODUDE: return new Geodude(map.getWayPoints(), difficulty);
+		case WEEDLE: return new Weedle(map.getWayPoints(), difficulty);
+		case VOLTORB: return new Voltorb(map.getWayPoints(), difficulty);
+		case TENTACOOL: return new Tentacool(map.getWayPoints(), difficulty);
+		default: return new BasicEnemy(map.getWayPoints(), difficulty);
 		}
 	}
 

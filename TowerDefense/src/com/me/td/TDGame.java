@@ -56,7 +56,7 @@ public class TDGame implements ApplicationListener
 			level = menu.update();
 			if (level != -1)
 			{
-				world = new World(camera, level);
+				world = new World(camera, level, menu.getDiff());
 				game_state = GAME_STATE;
 			}
 
@@ -86,7 +86,7 @@ public class TDGame implements ApplicationListener
 				{
 					OptionsMenu.restart = false;
 					world = null;
-					world = new World(camera, level);
+					world = new World(camera, level, menu.getDiff());
 //					game_state = GAME_STATE;
 //					menu.menu_state = 2;
 				}
