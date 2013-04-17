@@ -13,7 +13,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class TDGame implements ApplicationListener
 {
-	private final int MENU_STATE = 0, GAME_STATE = 1, PAUSE_STATE = 2;
+	private final int MENU_STATE = 0, GAME_STATE = 1;
 	private final int WIDTH = 740, HEIGHT = 400;
 	
 	private SpriteBatch batch;
@@ -22,7 +22,7 @@ public class TDGame implements ApplicationListener
 	private World world;
 	private Menu menu;
 	private int game_state, level;
-	private boolean enable_pause;
+//	private boolean enable_pause;
 
 	@Override
 	public void create()
@@ -33,7 +33,7 @@ public class TDGame implements ApplicationListener
 		shape_renderer = new ShapeRenderer();
 		menu = new Menu(camera);
 		game_state = MENU_STATE;
-		enable_pause = true;
+//		enable_pause = true;
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class TDGame implements ApplicationListener
 			world.update();
 			world.render(batch, shape_renderer);
 			
-			// PAUSE
+/*			// PAUSE
 			if (Gdx.input.isKeyPressed(Keys.P))
 			{
 				if (enable_pause)
@@ -78,7 +78,7 @@ public class TDGame implements ApplicationListener
 			}
 			else
 				enable_pause = true;
-
+*/
 			if (world.gameover)
 			{
 //				menu = new Menu(camera);
@@ -100,7 +100,8 @@ public class TDGame implements ApplicationListener
 				}
 			}
 		}
-		else if (game_state == PAUSE_STATE)
+
+/*		else if (game_state == PAUSE_STATE)
 		{
 			if (Gdx.input.isKeyPressed(Keys.P))
 			{
@@ -113,6 +114,7 @@ public class TDGame implements ApplicationListener
 			else
 				enable_pause = true;
 		}
+*/		
 	}
 
 	@Override
