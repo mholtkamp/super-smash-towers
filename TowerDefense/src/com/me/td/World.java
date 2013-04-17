@@ -85,7 +85,7 @@ public class World
 		else if (level == POKEMON_MAP)
 			map = new PokemonMap(difficulty);
 		
-		difficulty = this.difficulty;
+		this.difficulty = difficulty;
 		health = 100;
 		gold = 10000;
 		wave_number = 0;
