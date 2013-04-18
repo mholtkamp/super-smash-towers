@@ -15,13 +15,15 @@ public class OptionsMenu
 	final float SOUND_VOLUME = 0.5f;
 	final int NUM_BUTTONS = 5;
 	final int  MainMenu = 0, Restart = 1, Continue = 2, Mute = 3, Unmute = 4;
-	int o_menu_width = 300;
-	int o_menu_height = 322;
+	final int mario = 0, pokemon = 1;
+	int o_menu_width;
+	int o_menu_height;
 	int o_menu_x, o_menu_y;
 	
-	int cont_x,cont_y;
+	int buttons_x, buttons_width;
 	int speaker_x, speaker_y;
 	int speaker_width = 40, speaker_height = 40;
+	int MM_Y, reset_y, continue_y;
 	boolean drawOptionMenu, menuOpen, enable_menu, go_opt,  gameover;
 	public static boolean restart;
 	
@@ -54,32 +56,46 @@ public class OptionsMenu
 	
 	// private final int MAIN_STATE = 0;
 	
-	public OptionsMenu(OrthographicCamera camera)
+	public OptionsMenu(OrthographicCamera camera, int level)
 	{
 		this.camera = camera;
 		
-		o_menu_x = ((int)camera.viewportWidth/2)-(o_menu_width/2);
-	    o_menu_y = ((int)camera.viewportHeight/2)-(o_menu_height/2);
-	    speaker_x = o_menu_x + o_menu_width-50;
-	    speaker_y = o_menu_y;
-	    cont_x = o_menu_x;
-	    cont_y = o_menu_y-10;
-		
 		OptionBG = new Texture("data/bgoverlay.png");
-		OptionM = new Texture("data/pausemenu.png");
-    	
+		if(level == mario)
+		{
+			o_menu_width = 300; o_menu_height = 322;
+			buttons_width = o_menu_width-40;
+			o_menu_x = ((int)camera.viewportWidth/2)-(o_menu_width/2);
+		    o_menu_y = ((int)camera.viewportHeight/2)-(o_menu_height/2);
+		    speaker_x = o_menu_x + o_menu_width-40; speaker_y = o_menu_y;
+		    buttons_x = o_menu_x;
+		    MM_Y = o_menu_y+150 ; reset_y = o_menu_y+70; continue_y = o_menu_y-10;
+		    
+			OptionM = new Texture("data/pausemenu.png");
+		}
+		if(level == pokemon)
+		{
+			o_menu_x = 0; o_menu_y = 0; 
+			buttons_width = 130;
+			o_menu_width = (int)camera.viewportWidth;  o_menu_height = (int)camera.viewportHeight;
+		    buttons_x = 560;
+		    MM_Y = o_menu_y+300 ; reset_y = o_menu_y+220; continue_y = o_menu_y+140;
+		    speaker_x = buttons_x-45; speaker_y = continue_y-57;
+			
+			OptionM = new Texture("data/pokeMenu.png");
+			
+		}
+		
 		texMute = new Texture("data/speaker_off.png");
 		texUnmute = new Texture("data/speaker_on.png");
 		
 		buttons = new Rectangle[NUM_BUTTONS-1];
-		buttons[MainMenu] = new Rectangle(cont_x,cont_y+160, o_menu_width-40, 40);
-		buttons[Restart] = new Rectangle(cont_x,cont_y+80,o_menu_width-40,40);
-    	buttons[Continue] = new Rectangle(cont_x,cont_y,o_menu_width-40,40);
-		buttons[Mute] = new Rectangle(cont_x+o_menu_width-40, speaker_y, speaker_width, speaker_height);
-		//buttons[Unmute] = new Rectangle(cont_x+o_menu_width-80, speaker_y-40, speaker_width, 2*speaker_height);
+		buttons[MainMenu] = new Rectangle(buttons_x,MM_Y, buttons_width, 40);
+		buttons[Restart] = new Rectangle(buttons_x,reset_y,buttons_width,40);
+    	buttons[Continue] = new Rectangle(buttons_x,continue_y,buttons_width,40);
+		buttons[Mute] = new Rectangle(speaker_x, speaker_y, speaker_width, speaker_height);
 		
 		is_pressed = true;
-		//mute = false;
 		go_opt = false;
 		gameover = false;
 		restart = false;
@@ -89,8 +105,7 @@ public class OptionsMenu
 	public void render(SpriteBatch batch)
 	{	
 		batch.draw(OptionBG, 0, 0, 740, 400);
-		batch.draw(OptionM, o_menu_x, o_menu_y, o_menu_width, o_menu_height);
-		
+		batch.draw(OptionM,o_menu_x,o_menu_y, o_menu_width, o_menu_height);
 		if(World.mute)
 			batch.draw(texMute,buttons[3].x,buttons[3].y,buttons[3].width,buttons[3].height);
 		else

@@ -234,6 +234,11 @@ public class Menu
 		return difficulty;
 	}
 	
+	public float getLevel()
+	{
+		return level;
+	}
+	
 	public int update()
 	{// returns -1 if we want to stay in the menu state
 	 // else, it returns an index 'level' that tells World.java which Map to use

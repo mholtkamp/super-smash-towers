@@ -93,7 +93,7 @@ public class World
 		prevTime = 0;
 //		map = new PokemonMap();
 		tower_select = new TowerSelect(camera);
-		options_menu = new OptionsMenu(camera);
+		options_menu = new OptionsMenu(camera, level);
 		wave = map.getWave(0);
 //		current_tower = BASIC_TOWER;	// we are placing this type of Tower
 		current_tower = CASTLE;
