@@ -4,16 +4,19 @@ import util.Database;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
+//import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import enums.Level;
+import enums.State;
+
 
 public class TDGame implements ApplicationListener
 {
-	private final int MENU_STATE = 0, GAME_STATE = 1;
+//	private final int MENU_STATE = 0, GAME_STATE = 1, PAUSE_STATE = 2;
 	private final int WIDTH = 740, HEIGHT = 400;
 	
 	private SpriteBatch batch;
@@ -21,7 +24,8 @@ public class TDGame implements ApplicationListener
 	private OrthographicCamera camera;
 	private World world;
 	private Menu menu;
-	private int game_state, level;
+	private State state;
+	private Level level;
 //	private boolean enable_pause;
 
 	@Override
@@ -32,7 +36,7 @@ public class TDGame implements ApplicationListener
 		batch = new SpriteBatch();
 		shape_renderer = new ShapeRenderer();
 		menu = new Menu(camera);
-		game_state = MENU_STATE;
+		state = State.MENU;
 //		enable_pause = true;
 	}
 
@@ -51,18 +55,18 @@ public class TDGame implements ApplicationListener
 		batch.setProjectionMatrix(camera.combined);
 		shape_renderer.setProjectionMatrix(camera.combined);
 
-		if (game_state == MENU_STATE)
+		if (state == State.MENU)
 		{
 			level = menu.update();
-			if (level != -1)
+			if (level != Level.NONE)
 			{
 				world = new World(camera, level, menu.getDiff());
-				game_state = GAME_STATE;
+				state = State.GAME;
 			}
 
 			menu.render(batch);
 		}
-		else if (game_state == GAME_STATE)
+		else if (state == State.GAME)
 		{
 			world.update();
 			world.render(batch, shape_renderer);
@@ -72,49 +76,48 @@ public class TDGame implements ApplicationListener
 			{
 				if (enable_pause)
 				{
-					game_state = PAUSE_STATE;
+					state = State.PAUSE;
 					enable_pause = false;
 				}
 			}
 			else
 				enable_pause = true;
 */
+
 			if (world.gameover)
 			{
 //				menu = new Menu(camera);
+				world = null;
 				if (OptionsMenu.restart)
 				{
 					OptionsMenu.restart = false;
-					world = null;
 					world = new World(camera, level, menu.getDiff());
 //					game_state = GAME_STATE;
 //					menu.menu_state = 2;
 				}
 				else
 				{
-					world = null;
 //					menu = new Menu(camera);
 					menu.restart();
-					game_state = MENU_STATE;
+					state = State.MENU;
 					menu.ssb_theme.play();
 				}
 			}
 		}
-
-/*		else if (game_state == PAUSE_STATE)
+/*		else if (state == State.PAUSE)
 		{
 			if (Gdx.input.isKeyPressed(Keys.P))
 			{
 				if (enable_pause)
 				{
-					game_state = GAME_STATE;
+					state = State.GAME;
 					enable_pause = false;
 				}
 			}
 			else
 				enable_pause = true;
 		}
-*/		
+*/
 	}
 
 	@Override

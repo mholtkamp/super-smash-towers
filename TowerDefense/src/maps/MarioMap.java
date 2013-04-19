@@ -21,7 +21,7 @@ public class MarioMap extends Map
 	
 	private final int WAVE_COUNT = 10, ENEMY_COUNT = 3;
 	
-	public MarioMap(float difficulty)
+	public MarioMap()
 	{
 		
 		bg_tex = Database.mario_map;
@@ -63,7 +63,6 @@ public class MarioMap extends Map
 		}
 		
 		// WAYPOINTS
-		// waypoints for mario_map_3.png
 		waypoints = new Point[12];
 		waypoints[0] = new Point(-1*GRID_WIDTH, 6*GRID_HEIGHT);	// use grid values, just multiply by grid dimensions
 		waypoints[1] = new Point(3*GRID_WIDTH, 6*GRID_HEIGHT);
@@ -78,19 +77,6 @@ public class MarioMap extends Map
 		waypoints[10] = new Point(7*GRID_WIDTH, 2*GRID_HEIGHT);
 		waypoints[11] = new Point(12*GRID_WIDTH, 2*GRID_HEIGHT);
 		
-//		// waypoints for mario_map.png
-//		waypoints = new Point[10];
-//		waypoints[0] = new Point.Float(0*40, 1*40);	
-//		waypoints[1] = new Point.Float(3*40, 1*40);
-//		waypoints[2] = new Point.Float(120, 280);
-//		waypoints[3] = new Point.Float(320, 280);
-//		waypoints[4] = new Point.Float(320, 120);
-//		waypoints[5] = new Point.Float(440, 120);
-//		waypoints[6] = new Point.Float(440, 280);
-//		waypoints[7] = new Point.Float(640, 280);
-//		waypoints[8] = new Point.Float(640, 40);
-//		waypoints[9] = new Point.Float(800, 40);
-		
 		// WAVES
 		waves = new LinkedList<Queue<Enemy>>();
 		Queue<Enemy> q;
@@ -100,17 +86,17 @@ public class MarioMap extends Map
 			if (wave / 3 < 1)
 			{// for first 3 waves, spawn BasicEnemy
 				for (int j = 0; j < wave*5 + 5; j++)
-					q.add(new Goomba(waypoints, difficulty));
+					q.add(new Goomba(waypoints));
 			}
 			else if (wave / 3 < 2)
 			{// for next 3 waves, spawn Goomba
 				for (int j = 0; j < wave*5 + 5; j++)
-					q.add(new ShyGuy(waypoints, difficulty));
+					q.add(new ShyGuy(waypoints));
 			}
 			else if (wave / 3 < 3)
 			{// for next 3 waves, spawn Koopa
 				for (int j = 0; j < wave*5 + 5; j++)
-					q.add(new Koopa(waypoints, difficulty));
+					q.add(new Koopa(waypoints));
 			}
 			else
 			{// boss wave
@@ -119,14 +105,14 @@ public class MarioMap extends Map
 				{
 					switch (current_enemy)
 					{
-						case 0: q.add(new Goomba(waypoints, difficulty)); break;
-						case 1: q.add(new ShyGuy(waypoints, difficulty)); break;
-						case 2: q.add(new Koopa(waypoints, difficulty)); break;
-						default: q.add(new Goomba(waypoints, difficulty)); break;
+						case 0: q.add(new Goomba(waypoints)); break;
+						case 1: q.add(new ShyGuy(waypoints)); break;
+						case 2: q.add(new Koopa(waypoints)); break;
+						default: q.add(new Goomba(waypoints)); break;
 					}
 					current_enemy = (current_enemy + 1) % ENEMY_COUNT;
 				}
-				q.add(new Bowser(waypoints, difficulty));
+				q.add(new Bowser(waypoints));
 			}
 			waves.add(q);
 		}

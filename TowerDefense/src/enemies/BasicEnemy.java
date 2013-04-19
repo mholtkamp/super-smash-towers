@@ -9,16 +9,15 @@ import util.Point;
 public class BasicEnemy extends Enemy
 {
 	
-	public BasicEnemy(Point[] waypoints, float difficulty)
+	public BasicEnemy(Point[] waypoints)
 	{
 		super(waypoints);
 		
 		name = "Mushroom";
 		width = 32;
 		height = 32;
-		float hp = 50*difficulty;
-		health = (int)hp;
-		speed = 2.5f*difficulty;
+		health = 50;
+		speed = 2.5f;
 		damage = 5;
 		gold_given = 10;
 		animation_speed = Integer.MAX_VALUE / 2;

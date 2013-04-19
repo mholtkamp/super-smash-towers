@@ -9,16 +9,15 @@ import util.Point;
 public class Geodude extends Enemy
 {
 	
-	public Geodude(Point[] waypoints, float difficulty)
+	public Geodude(Point[] waypoints)
 	{
 		super(waypoints);
 		
 		name = "Geodude";
 		width = 49;
 		height = 27;
-		float hp = 200*difficulty;
-		health = (int)hp;
-		speed = 1.5f*difficulty;
+		health = 200;
+		speed = 1.5f;
 		damage = 20;
 		gold_given = 50;
 		animation_speed = 7;

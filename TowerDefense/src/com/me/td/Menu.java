@@ -9,16 +9,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
+import enums.Level;
+import enums.MenuState;
+
 
 public class Menu
 {
 
 	private final int WIDTH = 740, HEIGHT = 400;
 	private final int BUTTON_WIDTH = 145, BUTTON_HEIGHT = 55;
-	private final int MARIO = 0, POKEMON = 1;
-	private final int NUM_LEVELS = 2;
 
-	OrthographicCamera camera;
+	private OrthographicCamera camera;
 
 	private Texture menubg;
 	private Texture instrbg;
@@ -35,50 +36,34 @@ public class Menu
 
 	private Rectangle[] level_buttons;
 	private Texture[] level_buttons_tex;
-	
-//	private Rectangle marioWorldButton;
-//	private Texture marioWorldButtonTex;
-//	
-//	private Rectangle pokemon_level_button;
-//	private Texture pokemon_level_button_tex;
 
 	private Texture backButtonTex;
 	private Texture startButtonTex;
 	private Texture instrButtonTex;
 	private Texture mute_on;
 	private Texture mute_off;
-	
+
 	private Rectangle startButton;
 	private Rectangle instrButton;
 	private Rectangle backButton;
 	private Rectangle mute_onButton;
 	private Rectangle mute_offButton;
-	
+
 	private Rectangle[] stars_dimensions;
 	private Texture[] stars;
 
-	public int menu_state;
+	private MenuState state;
 	private boolean is_pressed = true;
 	
 	private BitmapFont font;
-
-	private final int MAIN_STATE = 0;
-	private final int INSTR_STATE = 1;
-	private final int DIFF_STATE = 2;
-	private final int LEVEL_STATE = 3;
 	
 	private Vector3 touch_pos;
 	
-	private int level;
+	private Level level;
 	
 	private float difficulty;
 	
 	public Music ssb_theme;
-	
-//	public enum level
-//	{
-//		MARIO, POKEMON;
-//	}
 	
 	public Menu(OrthographicCamera camera)
 	{
@@ -121,26 +106,20 @@ public class Menu
 //		pokemon_level_button = new Rectangle(260,200,150,100);
 //		pokemon_level_button_tex = new Texture("data/maps/mario_map_3.png");
 		
-		level_buttons = new Rectangle[NUM_LEVELS];
-		level_buttons[MARIO] = new Rectangle(50, 200, 150, 100);
-		level_buttons[POKEMON] = new Rectangle(260, 200, 150, 100);
+		level_buttons = new Rectangle[Level.values().length - 1];
+		level_buttons[Level.MARIO.index] = new Rectangle(50, 200, 150, 100);
+		level_buttons[Level.POKEMON.index] = new Rectangle(260, 200, 150, 100);
 		
-		level_buttons_tex = new Texture[NUM_LEVELS];
-		level_buttons_tex[MARIO] = new Texture("data/maps/mario_map_3.png");
-		level_buttons_tex[POKEMON] = new Texture("data/maps/pokemon_map.png");
+		level_buttons_tex = new Texture[Level.values().length - 1];
+		level_buttons_tex[Level.MARIO.index] = new Texture("data/maps/mario_map_3.png");
+		level_buttons_tex[Level.POKEMON.index] = new Texture("data/maps/pokemon_map.png");
 
 		
 		// STARS
-		// starsInfo = new Rectangle(10,150,160,50);
-		stars_dimensions = new Rectangle[NUM_LEVELS];
+		stars_dimensions = new Rectangle[Level.values().length - 1];
 		stars_dimensions[0] = new Rectangle(75, 170, 100, 30);
 		stars_dimensions[1] = new Rectangle(285, 170, 100, 30);
-		//depending on the success on the level, you load which ever one, for now
-		//i will default to no stars, if anyone wants to implement it
-		// starsTex = new Texture("data/no stars.png");
-		// starsTex = new Texture("data/1 stars.png");
-		// starsTex = new Texture("data/2 stars.png");
-		// starsTex = new Texture("data/3 stars.png");
+		
 		stars = new Texture[4];
 		stars[0] = new Texture("data/0_stars.png");
 		stars[1] = new Texture("data/1_star.png");
@@ -153,12 +132,11 @@ public class Menu
 				
 		mute_onButton = new Rectangle(0,0,40,40);
 		mute_offButton = new Rectangle(0,0,40,40);
-				
 		touch_pos = new Vector3();
 		
-		level = -1;
+		level = Level.NONE;
 
-		menu_state = MAIN_STATE;
+		state = MenuState.MAIN;
 		
 		ssb_theme = Gdx.audio.newMusic(Gdx.files.internal("sounds/super_smash_bros_theme.mp3"));
 		ssb_theme.setLooping(true);
@@ -167,8 +145,9 @@ public class Menu
 
 	public void restart()
 	{
-		level = -1;
-		menu_state = MAIN_STATE;
+		level = Level.NONE;
+		state = MenuState.MAIN;
+		ssb_theme.play();
 	}
 	
 	public void render(SpriteBatch batch)
@@ -179,14 +158,13 @@ public class Menu
 		else
 			ssb_theme.setVolume(1.0f);
 		
-		if (menu_state == MAIN_STATE)
+		if (state == MenuState.MAIN)
 		{
 			batch.draw(menubg, 0, 0, WIDTH, HEIGHT);
 			batch.draw(startButtonTex, startButton.x, startButton.y, startButton.width, startButton.height);
 			batch.draw(instrButtonTex, instrButton.x, instrButton.y, instrButton.width, instrButton.height);
-
 		}
-		else if (menu_state == INSTR_STATE)
+		else if (state == MenuState.INSTRUCTION)
 		{
 			batch.draw(instrbg, 0, 0, WIDTH, HEIGHT);
 			batch.draw(backButtonTex, backButton.x, backButton.y, backButton.width, backButton.height);
@@ -197,19 +175,16 @@ public class Menu
 			font.draw(batch, "INSTRUCTIONS", camera.viewportWidth/2 - 100, 350);
 			font.draw(batch, "Place towers to stop enemies from", camera.viewportWidth/2 - 230, 275);
 			font.draw(batch, "reaching your castle!", camera.viewportWidth/2 - 150, 255);
-
-
 		}
-		else if (menu_state == DIFF_STATE)
+		else if (state == MenuState.DIFFICULTY)
 		{
 			batch.draw(diffbg, 0, 0, WIDTH, HEIGHT);
 			batch.draw(easyButtonTex,easyButton.x,easyButton.y,easyButton.width,easyButton.height);
 			batch.draw(mediumButtonTex,mediumButton.x,mediumButton.y,mediumButton.width,mediumButton.height);
 			batch.draw(hardButtonTex,hardButton.x,hardButton.y,hardButton.width,hardButton.height);
 			batch.draw(backButtonTex,backButton.x,backButton.y,backButton.width,backButton.height);
-
 		}
-		else if (menu_state == LEVEL_STATE)
+		else if (state == MenuState.LEVEL)
 		{
 			batch.draw(levelbg, 0, 0, WIDTH, HEIGHT);
 			batch.draw(backButtonTex,backButton.x,backButton.y,backButton.width,backButton.height);
@@ -217,8 +192,6 @@ public class Menu
 				batch.draw(level_buttons_tex[i], level_buttons[i].x, level_buttons[i].y, level_buttons[i].width, level_buttons[i].height);
 			for (int i = 0; i < stars_dimensions.length; i++)
 				batch.draw(stars[0], stars_dimensions[i].x, stars_dimensions[i].y, stars_dimensions[i].width, stars_dimensions[i].height);
-			
-
 		}
 		//draw mute button
 		if(World.mute)
@@ -234,7 +207,7 @@ public class Menu
 		return difficulty;
 	}
 	
-	public int update()
+	public Level update()
 	{// returns -1 if we want to stay in the menu state
 	 // else, it returns an index 'level' that tells World.java which Map to use
 		touch_pos.set(0, 0, 0);
@@ -252,32 +225,32 @@ public class Menu
 
 
 
-		if (menu_state == MAIN_STATE)
+		if (state == MenuState.MAIN)
 		{
-
 			if (startButton.contains(touch_pos.x, touch_pos.y))
 			{
 				if (!is_pressed)
-					menu_state = LEVEL_STATE;
+					state = MenuState.LEVEL;
 			}
 			if (instrButton.contains(touch_pos.x, touch_pos.y))
 			{
 				if(!is_pressed)
-					menu_state = INSTR_STATE;
+					state = MenuState.INSTRUCTION;
 			}
 			if (mute_onButton.contains(touch_pos.x, touch_pos.y))
 			{
 				if(!is_pressed)
 					World.mute = !World.mute;
-			}
 
+			}
+			
 		}
-		else if (menu_state == INSTR_STATE)
+		else if (state == MenuState.INSTRUCTION)
 		{
 			if (backButton.contains(touch_pos.x, touch_pos.y))
-			{	
+			{
 				if (!is_pressed)
-				menu_state = MAIN_STATE;
+					state = MenuState.MAIN;
 			}
 			if (mute_onButton.contains(touch_pos.x, touch_pos.y))
 			{
@@ -285,7 +258,7 @@ public class Menu
 					World.mute = !World.mute;
 			}
 		}
-		else if (menu_state == DIFF_STATE)
+		else if (state == MenuState.DIFFICULTY)
 		{
 			// isTouched = false;
 			if (easyButton.contains(touch_pos.x, touch_pos.y))
@@ -319,7 +292,7 @@ public class Menu
 			if (backButton.contains(touch_pos.x, touch_pos.y))
 			{
 				if (!is_pressed)
-					menu_state = LEVEL_STATE;
+					state = MenuState.LEVEL;
 			}
 			if (mute_onButton.contains(touch_pos.x, touch_pos.y))
 			{
@@ -328,7 +301,7 @@ public class Menu
 			}
 		}
 
-		else if (menu_state == LEVEL_STATE)
+		else if (state == MenuState.LEVEL)
 		{
 			if (mute_onButton.contains(touch_pos.x, touch_pos.y))
 			{
@@ -338,7 +311,7 @@ public class Menu
 			if (backButton.contains(touch_pos.x, touch_pos.y))
 			{
 				if (!is_pressed)
-					menu_state = MAIN_STATE;
+					state = MenuState.MAIN;
 			}
 			
 			for (int i = 0; i < level_buttons.length; i++)
@@ -347,12 +320,12 @@ public class Menu
 				{
 					if (!is_pressed)
 					{
-						level = i;
-						menu_state = DIFF_STATE;
+						level = Level.values()[i + 1];
+						state = MenuState.DIFFICULTY;
 					}
 				}
 			}
 		}
-		return -1;
+		return Level.NONE;
 	}
 }

@@ -9,16 +9,15 @@ import util.Point;
 public class Weedle extends Enemy
 {
 	
-	public Weedle(Point[] waypoints, float difficulty)
+	public Weedle(Point[] waypoints)
 	{
 		super(waypoints);
 		
 		name = "Weedle";
 		width = 40;
 		height = 28;
-		float hp = 200*difficulty;
-		health = (int)hp;
-		speed = 1.5f*difficulty;
+		health = 200;
+		speed = 1.5f;
 		damage = 20;
 		gold_given = 50;
 		animation_speed = 7;

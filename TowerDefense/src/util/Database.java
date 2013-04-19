@@ -40,23 +40,24 @@ public final class Database
 
 	// Enemy Textures
 	public static final Texture basicEnemy = new Texture(Gdx.files.internal("data/enemies/mushroom.png"));
-	public static final Texture bowser1 = new Texture(Gdx.files.internal("data/enemies/bowserR1.png"));
-	public static final Texture bowser2 = new Texture(Gdx.files.internal("data/enemies/bowserR2.png"));
+	public static final Texture bowser1 = new Texture(Gdx.files.internal("data/enemies/BowserR1.png"));
+	public static final Texture bowser2 = new Texture(Gdx.files.internal("data/enemies/BowserR2.png"));
 	public static final Texture goomba1 = new Texture(Gdx.files.internal("data/enemies/goomba1.png"));
 	public static final Texture goomba2 = new Texture(Gdx.files.internal("data/enemies/goomba2.png"));
 	public static final Texture koopa1 = new Texture(Gdx.files.internal("data/enemies/koopa_right_down.png"));
 	public static final Texture koopa2 = new Texture(Gdx.files.internal("data/enemies/koopa_right_up.png"));
 
 	// UI Textures
-	public static final Texture healthBarMax = new Texture(Gdx.files.internal("data/healthBarMax.png"));
-	public static final Texture healthBarSafe = new Texture(Gdx.files.internal("data/healthBarSafe.png"));
-	public static final Texture healthBar = new Texture(Gdx.files.internal("data/healthBar.png"));
+	public static final Texture health_bar_max = new Texture(Gdx.files.internal("data/health_bar_max.png"));
+	public static final Texture health_bar_safe = new Texture(Gdx.files.internal("data/health_bar_safe.png"));
+	public static final Texture health_bar_unsafe = new Texture(Gdx.files.internal("data/health_bar_unsafe.png"));
 	public static final Texture hover = new Texture(Gdx.files.internal("data/hover.png"));
 	public static final Texture heart0 = new Texture(Gdx.files.internal("data/textures/heart0.png"));
 	public static final Texture heart25 = new Texture(Gdx.files.internal("data/textures/heart25.png"));
 	public static final Texture heart50 = new Texture(Gdx.files.internal("data/textures/heart50.png"));
 	public static final Texture heart75 = new Texture(Gdx.files.internal("data/textures/heart75.png"));
 	public static final Texture heart100 = new Texture(Gdx.files.internal("data/textures/heart100.png"));
+	public static final Texture coin = new Texture(Gdx.files.internal("data/coin.png"));
 
 	
 	// Menu Textures

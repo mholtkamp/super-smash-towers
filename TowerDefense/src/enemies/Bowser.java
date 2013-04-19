@@ -9,16 +9,15 @@ import util.Point;
 public class Bowser extends Enemy
 {
 	
-	public Bowser(Point[] waypoints, float difficulty)
+	public Bowser(Point[] waypoints)
 	{
 		super(waypoints);
 		
 		name = "Bowser";
 		width = 64;
 		height = 64;
-		float hp = 9500*difficulty;
-		health = (int)hp;
-		speed = 1.0f*difficulty;
+		health = 9500;
+		speed = 1.0f;
 		damage = 100;
 		gold_given = 2500;
 		animation_speed = 10;

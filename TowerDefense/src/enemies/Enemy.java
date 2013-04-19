@@ -10,7 +10,7 @@ import util.Point;
 public abstract class Enemy
 {
 	
-	private final float WAYPOINT_ACCURACY = 1.5f;
+	private final float WAYPOINT_ACCURACY = 1.0f;
 	private float xE, yE, hE;
 	
 	protected Point[] waypoints;
@@ -34,6 +34,8 @@ public abstract class Enemy
 	public String getName() {return name;}
 	
 	public boolean isDead() {return dead;}
+	
+	public void kill() {this.dead = true;}
 	
 	public void changeSpeedMultiplier(float new_speed_multiplier)
 	{

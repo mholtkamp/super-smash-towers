@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 
 import enemies.Arcanine;
 import enemies.BasicEnemy;
@@ -22,6 +24,8 @@ import enemies.ShyGuy;
 import enemies.Tentacool;
 import enemies.Voltorb;
 import enemies.Weedle;
+import enums.EnemyEnum;
+import enums.Level;
 
 import java.util.ArrayList;
 import java.util.Queue;
@@ -36,28 +40,29 @@ import towers.GrassTower;
 import towers.HammerBros;
 import towers.PsychicTower;
 import towers.Tower;
+import util.Database;
 
 
 public class World
 {
 	
-	public static float SOUND_VOLUME = 1.0f;
+	public static float volume = 1.0f;
 	public static boolean mute;
-	float volume = 0.0f;
 	
 	// constants
-	final int MARIO_MAP = 0, POKEMON_MAP = 1;
-	final int MUSHROOM = 0, GOOMBA = 1, KOOPA = 2, BOWSER = 3, SHYGUY = 4, ARCANINE = 5, GEODUDE = 6, WEEDLE = 7, VOLTORB = 8, TENTACOOL = 9;
+//	final int MARIO_MAP = 0, POKEMON_MAP = 1;
+//	final int MUSHROOM = 0, GOOMBA = 1, KOOPA = 2, BOWSER = 3, SHYGUY = 4, ARCANINE = 5, GEODUDE = 6, WEEDLE = 7, VOLTORB = 8, TENTACOOL = 9;
 	final int PAUSE = 0, SELL = 1, UPGRADE = 2, CASTLE = 3, HAMMER = 4, PSYCHIC = 5, FIRE = 6, GRASS = 7;
-	final int ENEMY_COUNT = 10, TOWER_COUNT = 4, TIME_BETWEEN_WAVES = 10;
+	final int TOWER_COUNT = 4;
 	final int GRID_WIDTH = 40, GRID_HEIGHT = 40;
 	final int BAR_WIDTH = 300, BAR_HEIGHT = 16, BAR_X = 5, BAR_Y = 375;
 	final int SAFE_HEALTH = 30;
-	//final float CONGRATS_VOLUME = 0.5f;
 
 	// variables
-	int health, gold, wave_number, current_tower, current_enemy;
+	int health, gold, wave_number, current_tower, time_between_waves;
 	float difficulty;
+	
+	EnemyEnum current_enemy;
 	float current_range;
 	Map map;
 	TowerSelect tower_select;
@@ -67,46 +72,54 @@ public class World
 	Tower[][] tower_grid;
 	OrthographicCamera camera;
 	BitmapFont font, katana_font;
-	Texture healthBarMax, healthBar, healthBarSafe, hover;
+	Texture health_bar_max, health_bar_unsafe, health_bar_safe, hover, coin;
 //	Texture heart0, heart25, heart50, heart75, heart100;
 	Sound congratulations;
 	Vector3 touch_pos, circle_pos;
 	boolean enable_enemy_spawn, enable_tower_spawn, gameover, timeKeeper, enable_enemy_switch,
-		enable_tower_switch, enable_gold, congrats_played, enable_selling, selling_state, upgrade_state, pause_state, drawOptionMenu;
+		enable_tower_switch, enable_gold, congrats_played, enable_selling, selling_state, upgrade_state,
+		pause_state, drawOptionMenu, enable_killing, DEBUG, spawn;
 	long prevTime, time;
+	Timer timer;
+	EnableSpawn enable_spawn;
 
-	public World(OrthographicCamera camera, int level, float difficulty)
+	public World(OrthographicCamera camera, Level level, float difficulty)
 	{
+		
+		DEBUG = true;
+		
 //		Vector3 map_dimensions = new Vector3(camera.viewportWidth, camera.viewportWidth, 0);
 //		camera.unproject(map_dimensions);
+		
 		// SELECT MAP
-		if (level == MARIO_MAP)
-			map = new MarioMap(difficulty);
-		else if (level == POKEMON_MAP)
-			map = new PokemonMap(difficulty);
+		if (level == Level.MARIO)
+			map = new MarioMap();
+		else if (level == Level.POKEMON)
+			map = new PokemonMap();
 		
 		this.difficulty = difficulty;
 		health = 100;
-		gold = 10000;
+		gold = 1000;
 		wave_number = 0;
 		time = 0;
 		prevTime = 0;
-//		map = new PokemonMap();
+		time_between_waves = 10000;
 		tower_select = new TowerSelect(camera);
-		options_menu = new OptionsMenu(camera, level);
+		options_menu = new OptionsMenu(camera, level.index);
 		wave = map.getWave(0);
-//		current_tower = BASIC_TOWER;	// we are placing this type of Tower
 		current_tower = CASTLE;
 		current_range = create_tower(CASTLE).getRange();
-		current_enemy = MUSHROOM;	// we are spawning this type of Enemy
+		current_enemy = EnemyEnum.MUSHROOM;	// we are spawning this type of Enemy
 		gameover = false;
 		timeKeeper = true;
+		spawn = false;
 		enable_enemy_spawn = true;
 		enable_tower_spawn = false;
 		enable_enemy_switch = true;
 		enable_tower_switch = true;
 		enable_gold = true;
 		enable_selling = true;
+		enable_killing = true;
 		selling_state = false;
 		upgrade_state = false;
 		pause_state = false;
@@ -117,10 +130,11 @@ public class World
 				Gdx.files.internal("data/nint_0.png"), false);
 		katana_font = new BitmapFont(Gdx.files.internal("data/snes.fnt"),
 				Gdx.files.internal("data/snes_0.png"), false);
-		healthBarMax = new Texture("data/healthBarMax.png");
-		healthBar = new Texture("data/healthBar.png");
-		healthBarSafe = new Texture("data/healthBarSafe.png");
-		hover = new Texture("data/hover.png");
+		health_bar_max = Database.health_bar_max;
+		health_bar_unsafe = Database.health_bar_unsafe;
+		health_bar_safe = Database.health_bar_safe;
+		hover = Database.hover;
+		coin = Database.coin;
 //		heart0 = new Texture("data/textures/heart0.png");
 //		heart25 = new Texture("data/textures/heart25.png");
 //		heart50 = new Texture("data/textures/heart50.png");
@@ -130,6 +144,10 @@ public class World
 		congrats_played = false;
 		touch_pos = new Vector3();
 		circle_pos = new Vector3();
+		timer = new Timer();
+		enable_spawn = new EnableSpawn();
+		timer.scheduleTask(enable_spawn, 2.5f);
+//		timer.schedule(spawn_enemy(), 3, )
 
 		tower_grid = new Tower[map.getHeight()/GRID_HEIGHT][map.getWidth()/GRID_WIDTH];
 //		System.out.println("tower_grid: " + tower_grid.length + " " + tower_grid[0].length);
@@ -163,7 +181,6 @@ public class World
 					font.setColor(1.0f, 0.0f, 1.0f, 1.0f);
 					font.draw(batch, "lvl "+tower_grid[i][j].getLevel(), tower_grid[i][j].getX(), tower_grid[i][j].getY() + 10);
 					*/
-					
 			}
 		}
 		
@@ -178,30 +195,33 @@ public class World
 			int bar_width = health*BAR_WIDTH/100;
 
 			// back black bar
-			batch.draw(healthBarMax, BAR_X+7, BAR_Y, BAR_WIDTH, BAR_HEIGHT);
+			batch.draw(health_bar_max, BAR_X+7, BAR_Y, BAR_WIDTH, BAR_HEIGHT);
 
 			// choose between green bar and red health bar
 			if (health > SAFE_HEALTH)
-				batch.draw(healthBarSafe, BAR_X, BAR_Y, bar_width, BAR_HEIGHT);
+				batch.draw(health_bar_safe, BAR_X, BAR_Y, bar_width, BAR_HEIGHT);
 			else
-				batch.draw(healthBar, BAR_X, BAR_Y, bar_width, BAR_HEIGHT);
-
+				batch.draw(health_bar_unsafe, BAR_X, BAR_Y, bar_width, BAR_HEIGHT);
+			
 			font.setScale(1);
-			// white letters for health
-			font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+			
+			font.setColor(1.0f, 1.0f, 1.0f, 1.0f); // white letters for health
 			font.draw(batch, " Castle Health: "+health, BAR_X+30, BAR_Y+13);
-			// blue letters for everything else
-//			font.setColor(0.0f, 0.0f, 0.5f, 1.0f);
-			// font.draw(batch, "Tower Count: "+towers.size(), 1, 465);
-			font.draw(batch, "Wave Number: "+(wave_number+1)+" / "+map.numWaves(), 350, 388);
-			// font.draw(batch, "Enemy Count: "+enemies.size(), 450, 465);
-			font.draw(batch, "Tower: "+tower_name(current_tower), 5, 370);
-			// font.draw(batch, "Enemy Health: "+(enemies.size()!=0 ? enemies.get(0).getHealth() : "-"), 1, 439);
-			// font.draw(batch, "Incoming Enemy: "+(wave.isEmpty() ? "" : wave.peek().getName()), 1, 439);
-			// font.draw(batch, "FPS: "+Gdx.graphics.getFramesPerSecond(), 650, 465);
+			
+			font.setColor(0.16f, 0.14f, 0.13f, 1.0f); // ivoryblack
+			font.draw(batch, "Wave: "+(wave_number+1)+"/"+map.numWaves(), 350, 388);
+			
+//			font.draw(batch, "Enemy Count: "+enemies.size(), 450, 465);
+//			font.draw(batch, "Tower: "+tower_name(current_tower), 5, 370);
+//			font.draw(batch, "Enemy Health: "+(enemies.size()!=0 ? enemies.get(0).getHealth() : "-"), 1, 439);
+//			font.draw(batch, "Incoming Enemy: "+(wave.isEmpty() ? "" : wave.peek().getName()), 1, 439);
+//			font.draw(batch, "FPS: "+Gdx.graphics.getFramesPerSecond(), 650, 465);
+			
 			// gold letters for gold
-//			font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-			font.draw(batch, "Gold: "+gold, 350, 370);
+			font.setColor(0.16f, 0.14f, 0.13f, 1.0f); // ivoryblack
+			batch.draw(coin, 530, 330);
+//			System.out.println(font.getBounds("" + gold).width);
+			font.draw(batch, ""+gold, 560 - font.getBounds("" + gold).width / 2, 365);
 			
 			if (drawOptionMenu)
 				options_menu.render(batch);
@@ -236,11 +256,11 @@ public class World
 			font.setScale(4);
 			font.setColor(1.0f, 0.0f, 0.0f, 0.8f);
 			if (health <= 0)
-				font.draw(batch, "GAME OVER", 50, 200);
+				font.draw(batch, "GAME OVER", (600 - font.getBounds("GAME OVER").width) / 2, (400 + font.getBounds("GAME OVER").height) / 2);
 			else
 			{
-				font.draw(batch, "CONGRATULATIONS!", 10, 200);
-				play_once(congratulations, congrats_played, SOUND_VOLUME);
+				font.draw(batch, "CONGRATULATIONS!", (600 - font.getBounds("CONGRATULATIONS!").width) / 2, (400 + font.getBounds("CONGRATULATIONS!").height) / 2);
+				congrats_played = play_once(congratulations, congrats_played, 0.5f);
 			}
 		}
 		
@@ -250,11 +270,11 @@ public class World
 	public void update()
 	{
 		if (mute)
-			SOUND_VOLUME = 0.0f;
+			volume = 0.0f;
 		else
-			SOUND_VOLUME = 1.0f;
+			volume = 1.0f;
 		
-		map.song.setVolume(SOUND_VOLUME);
+		map.song.setVolume(volume);
 		// update options menu
 		// if in pause state, we want to halt operations
 		if (pause_state)
@@ -289,57 +309,48 @@ public class World
 					current_range = create_tower(current_tower).getRange();
 				}
 			}
-			//		current_tower = (tower_number == -1) ? current_tower : tower_number;
+//			current_tower = (tower_number == -1) ? current_tower : tower_number;
 
 			if (health > 0)
 			{
-				if (wave_number < map.numWaves())
+				if (spawn)
 				{
-					if (!wave.isEmpty())
+					if (wave_number < map.numWaves())
 					{
-						// spawn an Enemy every at speed based on current wave
-						long spawnInterval;
-						time = System.currentTimeMillis();
-						if (wave_number < map.numWaves())
-							spawnInterval = time / (1000 - wave_number*100);
-						else
-							spawnInterval = time / 100;
-						time /= 1000;
-						if (timeKeeper)
+						if (!wave.isEmpty())
 						{
-							prevTime = spawnInterval;
-							enemies.add(wave.poll());
-							timeKeeper = false;
-						}
-						else
-						{
-							if (spawnInterval > prevTime)
+							// spawn an Enemy every at speed based on current wave
+							long spawnInterval;
+							time = System.currentTimeMillis();
+							if (wave_number < 10)
+								spawnInterval = time / (1000 - wave_number*100);
+							else
+								spawnInterval = time / 100;
+							if (timeKeeper)
 							{
-								timeKeeper = true;
+								prevTime = spawnInterval;
+								enemies.add(wave.poll());
+								timeKeeper = false;
+							}
+							else
+							{
+								if (spawnInterval > prevTime)
+								{
+									timeKeeper = true;
+								}
 							}
 						}
-						/*if (timeKeeper)
-					{
-						prevTime = time;
-						enemies.add(new BasicEnemy(this));
-						enemiesSpawned++;
-						timeKeeper = false;
-					}
-					else
-					{
-						if(time > prevTime)
+						else // go to next wave
 						{
-							timeKeeper = true;
-						}
-					}*/
-					}
-					else // go to next wave
-					{
-						long temp_time = System.currentTimeMillis();
-						if (((temp_time/1000) - time) > TIME_BETWEEN_WAVES)
-						{
-							if (++wave_number < map.numWaves())
-								wave = map.getWave(wave_number);
+							long temp_time = System.currentTimeMillis();
+							if ((temp_time - time) > time_between_waves)
+							{
+								if (++wave_number < map.numWaves())
+								{
+									wave = map.getWave(wave_number);
+									//								time_between_waves -= 500;
+								}
+							}
 						}
 					}
 				}
@@ -408,79 +419,91 @@ public class World
 			 */
 			if (health <= 0 || (wave_number >= map.numWaves() && enemies.size() == 0))
 			{
-				long temp_time = System.currentTimeMillis();
-				if (((temp_time/1000) - time) > 3)
+				if (Gdx.input.isTouched())
 				{
-					if (Gdx.input.isTouched())
-					{
-						gameover = true;
-						enable_tower_spawn = false;
-					}
+					gameover = true;
+					enable_tower_spawn = false;
 				}
 			}
 
 			/**
 			 * KEYBOARD INPUT
 			 */
-			// if S is pressed, go into selling mode
-			if (Gdx.input.isKeyPressed(Keys.S))
+			if (DEBUG)
 			{
-				if (enable_selling)
+				// if S is pressed, go into selling mode
+				if (Gdx.input.isKeyPressed(Keys.S))
 				{
-					selling_state = !selling_state;	// toggle selling state, initially false
-					enable_selling = false;
+					if (enable_selling)
+					{
+						selling_state = !selling_state;	// toggle selling state, initially false
+						enable_selling = false;
+					}
 				}
-			}
-			else
-				enable_selling = true;
+				else
+					enable_selling = true;
 
-			// if space bar is pressed, spawn an Enemy
-			if (Gdx.input.isKeyPressed(Keys.SPACE))
-			{
-				if (enable_enemy_spawn)
+				// if space bar is pressed, spawn an Enemy
+				if (Gdx.input.isKeyPressed(Keys.SPACE))
 				{
-					enemies.add(create_enemy(current_enemy));
-					enable_enemy_spawn = false;
+					if (enable_enemy_spawn)
+					{
+						enemies.add(create_enemy(current_enemy));
+						enable_enemy_spawn = false;
+					}
 				}
-			}
-			else
-				enable_enemy_spawn = true;
+				else
+					enable_enemy_spawn = true;
 
-			// if E is pressed, change Enemy type
-			if (Gdx.input.isKeyPressed(Keys.E))
-			{
-				if (enable_enemy_switch)
+				// if E is pressed, change Enemy type
+				if (Gdx.input.isKeyPressed(Keys.E))
 				{
-					current_enemy = (current_enemy + 1) % ENEMY_COUNT;
-					enable_enemy_switch = false;
+					if (enable_enemy_switch)
+					{
+						current_enemy = EnemyEnum.values()[(current_enemy.index + 1) % (EnemyEnum.values().length)];
+						enable_enemy_switch = false;
+					}
 				}
-			}
-			else
-				enable_enemy_switch = true;
+				else
+					enable_enemy_switch = true;
 
-			// if T is pressed, change Tower type
-			if (Gdx.input.isKeyPressed(Keys.T))
-			{
-				if (enable_tower_switch)
+				// if T is pressed, change Tower type
+				if (Gdx.input.isKeyPressed(Keys.T))
 				{
-					current_tower = (current_tower + 1) % TOWER_COUNT;
-					enable_tower_switch = false;
+					if (enable_tower_switch)
+					{
+						current_tower = (current_tower + 1) % TOWER_COUNT;
+						enable_tower_switch = false;
+					}
 				}
-			}
-			else
-				enable_tower_switch = true;
+				else
+					enable_tower_switch = true;
 
-			// if G is pressed, obtain 100 gold
-			if (Gdx.input.isKeyPressed(Keys.G))
-			{
-				if (enable_gold)
+				// if G is pressed, obtain 10000 gold
+				if (Gdx.input.isKeyPressed(Keys.G))
 				{
-					gold += 10000;
-					enable_gold = false;
+					if (enable_gold)
+					{
+						gold += 10000;
+						enable_gold = false;
+					}
 				}
+				else
+					enable_gold = true;
+
+				// if K is pressed, kill all active enemies
+				if (Gdx.input.isKeyPressed(Keys.K))
+				{
+					if (enable_killing)
+					{
+						for (Enemy e : enemies)
+							e.kill();
+						enable_killing = false;
+					}
+				}
+				else
+					enable_killing = true;
 			}
-			else
-				enable_gold = true;
 
 			/**
 			 * UPDATE ARRAYLISTS
@@ -511,42 +534,9 @@ public class World
 						tower_grid[i][j].update();
 				}
 			}
-			//		for (int i = 0; i < towers.size(); i++)
-			//		{
-			//			towers.get(i).update();
-			//		}
 		}
 		
 	}
-
-//	/**
-//	 * x and y pos with adjustment for tiles -JP
-//	 * @return the position of where screen was pressed or hovered
-//	 * adjusted for tile spacing
-//	 */
-//	private int xpos()
-//	{
-//		return (int)(Gdx.input.getX()/GRID_WIDTH)*GRID_WIDTH;
-//	}
-//
-//	private int ypos()
-//	{
-//		return (int)(Gdx.input.getY()/GRID_HEIGHT)*GRID_HEIGHT + GRID_HEIGHT;
-//	}
-//
-//	private int x_circle()
-//	{
-//		Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
-//		camera.unproject(pos);
-//		return (((int) pos.x)/GRID_WIDTH)*GRID_WIDTH + GRID_WIDTH/2;
-//	}
-//
-//	private int y_circle()
-//	{
-//		Vector3 pos = new Vector3(Gdx.input.getX(),Gdx.input.getY(),0);
-//		camera.unproject(pos);
-//		return (((int) pos.y)/GRID_HEIGHT)*GRID_HEIGHT + GRID_HEIGHT/2;
-//	}
 
 //	/**
 //	 * @param x position of the first heart
@@ -590,23 +580,22 @@ public class World
 //		batch.draw(corazon, x, y);
 //	}
 
-	
-	private Enemy create_enemy(int current_enemy)
+	private Enemy create_enemy(EnemyEnum current_enemy)
 	{// returns an instance of Enemy class based on value of current_enemy
 		// enables us to quickly switch which enemy we want to spawn
 		switch (current_enemy)
 		{
-		case MUSHROOM: return new BasicEnemy(map.getWayPoints(), difficulty);
-		case GOOMBA: return new Goomba(map.getWayPoints(), difficulty);
-		case SHYGUY: return new ShyGuy(map.getWayPoints(), difficulty);
-		case KOOPA: return new Koopa(map.getWayPoints(), difficulty);
-		case BOWSER: return new Bowser(map.getWayPoints(), difficulty);
-		case ARCANINE: return new Arcanine(map.getWayPoints(), difficulty);
-		case GEODUDE: return new Geodude(map.getWayPoints(), difficulty);
-		case WEEDLE: return new Weedle(map.getWayPoints(), difficulty);
-		case VOLTORB: return new Voltorb(map.getWayPoints(), difficulty);
-		case TENTACOOL: return new Tentacool(map.getWayPoints(), difficulty);
-		default: return new BasicEnemy(map.getWayPoints(), difficulty);
+		case MUSHROOM: return new BasicEnemy(map.getWayPoints());
+		case GOOMBA: return new Goomba(map.getWayPoints());
+		case SHYGUY: return new ShyGuy(map.getWayPoints());
+		case KOOPA: return new Koopa(map.getWayPoints());
+		case BOWSER: return new Bowser(map.getWayPoints());
+		case ARCANINE: return new Arcanine(map.getWayPoints());
+		case GEODUDE: return new Geodude(map.getWayPoints());
+		case WEEDLE: return new Weedle(map.getWayPoints());
+		case VOLTORB: return new Voltorb(map.getWayPoints());
+		case TENTACOOL: return new Tentacool(map.getWayPoints());
+		default: return new BasicEnemy(map.getWayPoints());
 		}
 	}
 
@@ -639,26 +628,61 @@ public class World
 		}
 	}
 
-	private String tower_name(int current_tower)
-	{// returns the name of the current Tower
-		switch(current_tower)
-		{
-		case CASTLE: return "Castle";
-		case HAMMER: return "HammerBros";
-		case PSYCHIC: return "PsychicTower";
-		case FIRE: return "FireTower";
-		case GRASS: return "GrassTower";
-		default: return "Error";
-		}
-	}
+//	private String tower_name(int current_tower)
+//	{// returns the name of the current Tower
+//		switch(current_tower)
+//		{
+//		case CASTLE: return "Castle";
+//		case HAMMER: return "HammerBros";
+//		case PSYCHIC: return "PsychicTower";
+//		case FIRE: return "FireTower";
+//		case GRASS: return "GrassTower";
+//		default: return "Error";
+//		}
+//	}
 	
-	private void play_once(Sound sound, boolean has_been_played, float volume)
+	private boolean play_once(Sound sound, boolean has_been_played, float volume)
 	{
 		if (!has_been_played)
-		{
 			sound.play(volume);
-			has_been_played = true;
+		return true;
+	}
+	
+//	private void spawn_enemy()
+//	{
+//		if (wave_number < map.numWaves())
+//		{
+//			if (!wave.isEmpty())
+//				enemies.add(wave.poll());
+//			else
+//			{// go to next wave
+//				
+//				if (++wave_number < map.numWaves())
+//					wave = map.getWave(wave_number);
+//			}
+//		}
+//	}
+	
+//	private void next_wave()
+//	{
+//		if (++wave_number < map.numWaves())
+//		{
+//			wave = map.getWave(wave_number);
+//			timer.clear();
+////			timer.schedule(spawn_enemy(), 5, wave_number * )
+//		}
+//	}
+	
+	private class EnableSpawn extends Task
+	{
+		
+		public EnableSpawn() {}
+		
+		public void run()
+		{
+			spawn = true;
 		}
+		
 	}
 	
 }

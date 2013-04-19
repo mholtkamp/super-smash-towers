@@ -9,16 +9,15 @@ import util.Point;
 public class Arcanine extends Enemy
 {
 	
-	public Arcanine(Point[] waypoints, float difficulty)
+	public Arcanine(Point[] waypoints)
 	{
 		super(waypoints);
 		
 		name = "Arcanine";
 		width = 35;
 		height = 34;
-		float hp = 200*difficulty;
-		health = (int)hp;
-		speed = 1.5f*difficulty;
+		health = 200;
+		speed = 1.5f;
 		damage = 20;
 		gold_given = 50;
 		animation_speed = 10;
