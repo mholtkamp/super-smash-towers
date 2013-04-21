@@ -12,6 +12,3 @@ Jose Pena
 Michael Rawson
 Juan Urtecho
 Nora Leroy
-
-WOOOOOO!
-Yay
