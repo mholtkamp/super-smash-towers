@@ -47,9 +47,9 @@ public class TowerSelect
 		else if(level == Level.POKEMON)
 			TowerMenu = manager.get("data/pokemon_tower_select.png");
 		else if(level == Level.ZELDA)
-			TowerMenu = manager.get("data/pokemon_tower_select.png");
+			TowerMenu = manager.get("data/zeldaTowerSelect.png");
 		else if(level == Level.GALAGA)
-			TowerMenu = manager.get("data/pokemon_tower_select.png");
+			TowerMenu = manager.get("data/galagaTowerSelect.png");
 		// textures
 		selected = manager.get("data/selected.png");
 		

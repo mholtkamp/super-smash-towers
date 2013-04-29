@@ -291,6 +291,8 @@ public class TDGame implements ApplicationListener
 		manager.load("data/pausemenu.png",Texture.class);
 		manager.load("data/mario_tower_select.png",Texture.class);
 		manager.load("data/pokemon_tower_select.png",Texture.class);
+		manager.load("data/galagaTowerSelect.png",Texture.class);
+		manager.load("data/zeldaTowerSelect.png",Texture.class);
 		manager.load("data/pokeMenu.png",Texture.class);
 		manager.load("data/selected.png",Texture.class);
 		manager.load("data/delete.png",Texture.class);
