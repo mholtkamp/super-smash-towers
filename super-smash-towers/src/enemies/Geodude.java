@@ -4,6 +4,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
+import enums.Type;
+
 import util.Point;
 
 
@@ -22,6 +24,7 @@ public class Geodude extends Enemy
 		damage = 20;
 		gold_given = 50;
 		animation_speed = 7;
+		type = Type.ROCK;
 		
 		tex = new Texture[2];
 		tex[0] = manager.get("data/enemies/geodude_right_1.png");

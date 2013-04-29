@@ -4,6 +4,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
+import enums.Type;
+
 import util.Point;
 
 
@@ -16,13 +18,14 @@ public class Victree extends Enemy
 		super(waypoints,maxHealth);
 		
 		name = "Victree";
-		width = 64;
-		height = 64;
+		width = 57;
+		height = 45;
 		health = 9500;
 		speed = 1.5f;
 		damage = 100;
 		gold_given = 50;
 		animation_speed = 10;
+		type = Type.GRASS;
 		
 		tex = new Texture[2];
 		tex[0] = manager.get("data/enemies/Victree1.png");

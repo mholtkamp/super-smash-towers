@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
 import enemies.Enemy;
+import enums.Type;
 
 public class FireBall extends Bullet
 {
@@ -63,7 +64,12 @@ public class FireBall extends Bullet
 				collider.y += (yE/hE)*speed;
 				if (collider.overlaps(target.getCollider()))
 				{// hit target
-					target.subHealth(damage);
+					if (target.getType() == Type.FIRE || target.getType() == Type.WATER)
+						target.subHealth((int)(damage/2));
+					else if (target.getType() == Type.GRASS)
+						target.subHealth(damage*2);
+					else 
+						target.subHealth(damage);
 					active = false;
 				}
 			}

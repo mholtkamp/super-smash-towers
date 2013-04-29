@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
 import enemies.Enemy;
+import enums.Type;
 
 public class WaterBall extends Bullet{
 	
@@ -66,16 +67,12 @@ public class WaterBall extends Bullet{
 				collider.y += (yE/hE)*speed;
 				if (collider.overlaps(target.getCollider()))
 				{// hit target
-/*					if((target.getType() == WATER) || (target.getType() == GRASS))
-					{
-						target.subHealth((int)(damage*0.5));
-					}
-					else if((target.getType() == FIRE) ||(target.getType() == ROCK))
-					{
+					if (target.getType() == Type.WATER || target.getType() == Type.GRASS)
+						target.subHealth((int)(damage/2));
+					else if (target.getType() == Type.FIRE || target.getType() == Type.ROCK)
 						target.subHealth(damage*2);
-					}
 					else 
-*/					target.subHealth(damage);
+						target.subHealth(damage);
 					
 					exploding = true;
 					explosionCollider.x = collider.x - (explosionCollider.width/2);

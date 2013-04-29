@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 import enemies.Enemy;
 
+
 public abstract class Bullet
 {
 	

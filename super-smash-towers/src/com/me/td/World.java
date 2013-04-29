@@ -15,16 +15,17 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
 import enemies.*;
+
 import enums.EnemyEnum;
 import enums.Level;
+import enums.TowerEnum;
 
 import java.util.ArrayList;
 import java.util.Queue;
 
 import maps.*;
-import towers.*;
-import enums.TowerEnum;
 
+import towers.*;
 
 
 public class World
@@ -34,9 +35,6 @@ public class World
 	public static boolean mute;
 	
 	// constants
-	//final int MUSHROOM = 0, GOOMBA = 1, KOOPA = 2, BOWSER = 3, SHYGUY = 4, ARCANINE = 5, GEODUDE = 6, WEEDLE = 7, VOLTORB = 8, TENTACOOL = 9, LAPRAS = 10, ONIX = 11;
-	final int CASTLE = 3, HAMMER = 4, FLOWER = 5, FIRE = 6, WATER = 7, GRASS = 8, PSYCHIC = 9, BOMB = 10, BOOMERANG = 11, SLINGSHOT = 12, SWORD = 13,
-			   G1 = 14, G2 = 15, G3 = 16, G4 = 17;
 	final int NONE = -4, PAUSE = -3, SELL = -2, UPGRADE = -1;
 	final int ENEMY_COUNT = 22, TOWER_COUNT = 15, TIME_BETWEEN_WAVES = 10;
 
@@ -98,12 +96,9 @@ public class World
 		prevTime = 0;
 		time_between_waves = 10000;
 		wave = map.getWave(0);
-		current_tower = CASTLE;
-//		map = new PokemonMap();
 		tower_select = new TowerSelect(camera,level,manager);
 		options_menu = new OptionsMenu(camera, level.index,manager);
 		wave = map.getWave(0);
-//		current_tower = BASIC_TOWER;	// we are placing this type of Tower
 		if(level == Level.MARIO)
 			current_tower = TowerEnum.CASTLE.index;
 		else if(level == Level.POKEMON)
@@ -744,21 +739,6 @@ public class World
 		else
 			return new CastleTower(enemies, x, y, manager);
 		
-	}
-
-
-	private String tower_name(int current_tower)
-	{// returns the name of the current Tower
-		switch(current_tower)
-		{
-		case CASTLE: return "Castle";
-		case HAMMER: return "HammerBros";
-		case PSYCHIC: return "PsychicTower";
-		case FIRE: return "FireTower";
-		case GRASS: return "GrassTower";
-		case WATER: return "WaterTower";
-		default: return "Error";
-		}
 	}
 	
 	private boolean play_once(Sound sound, boolean has_been_played, float volume)

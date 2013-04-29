@@ -4,6 +4,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
+import enums.Type;
+
 import util.Point;
 
 
@@ -23,6 +25,7 @@ public class Lapras extends Enemy
 		damage = 50;
 		gold_given = 80;
 		animation_speed = 20;
+		type = Type.WATER;
 		
 		tex = new Texture[2];
 		tex[0] = manager.get("data/enemies/Lapras1.png");

@@ -1,13 +1,14 @@
 package enemies;
 
-import com.me.td.*;
-
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+
 import com.me.td.Options;
-import com.sun.jndi.ldap.ManageReferralControl;
+import com.me.td.TDGame;
+
+import enums.Type;
 
 import util.Point;
 
@@ -25,10 +26,10 @@ public abstract class Enemy
 	protected float speed, speed_multiplier;
 	protected boolean dead, hit_tower, toggle, left;
 	protected String name;
-	//enemy dmg bar
-	private int	maxHealth;
+	private int	maxHealth;	// enemy dmg bar
 	private AssetManager manager = TDGame.manager;
 	protected Texture red,green;
+	protected Type type;
 	
 	public float getX() {return collider.x;}
 	
@@ -37,6 +38,8 @@ public abstract class Enemy
 	public int getHealth() {return health;}
 	
 	public int getGold() {return gold_given;}
+	
+	public Type getType() {return type;}
 	
 	public Rectangle getCollider() {return collider;}
 	
@@ -89,7 +92,7 @@ public abstract class Enemy
 		this.maxHealth = maxHealth;
 		red = manager.get("data/redfade.png");
 		green = manager.get("data/greenfade.png");
-		
+		type = Type.NEUTRAL;
 	}
 	
 	public void update()

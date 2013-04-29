@@ -4,6 +4,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
+import enums.Type;
+
 import util.Point;
 
 
@@ -17,13 +19,14 @@ public class Arcanine extends Enemy
 		
  		
  		name = "Arcanine";
- 		width = 35;
+ 		width = 36;
  		height = 34;
 		health = maxHealth;
 		speed = 1.5f;
 		damage = 20;
 		gold_given = 50;
 		animation_speed = 10;
+		type = Type.FIRE;
 		
 		tex = new Texture[2];
 		tex[0] = manager.get("data/enemies/arcanine_right_1.png");

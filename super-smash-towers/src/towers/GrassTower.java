@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
 import enemies.Enemy;
+import enums.Type;
 
 import java.util.ArrayList;
 
@@ -45,7 +46,7 @@ public class GrassTower extends Tower
 		cost = 1000;
 		firing_speed = 2.0f;
 		upgradecost = cost * 3 / 4;
-		LEAF_DAMAGE = 1;
+		LEAF_DAMAGE = 2;
 	}
 	
 	public GrassTower(ArrayList<Enemy> enemies, float x, float y, AssetManager manager)
@@ -131,16 +132,24 @@ public class GrassTower extends Tower
 		leaf4.x = ((float) Math.cos(leafAngle + 3*Math.PI/2))*range + center_x;
 		leaf4.y = ((float) Math.sin(leafAngle + 3*Math.PI/2))*range + center_y;
 		
-		for(int i = 0; i < enemies.size();i++)
+		for(int i = 0; i < enemies.size(); i++)
 		{
-			if(leaf1.overlaps(enemies.get(i).getCollider()))
-				enemies.get(i).subHealth(LEAF_DAMAGE*damagemultiplier);
+			float type_multiplier;
+			if (enemies.get(i).getType() == Type.GRASS || enemies.get(i).getType() == Type.FIRE)
+				type_multiplier = 0.5f;
+			else if (enemies.get(i).getType() == Type.WATER || enemies.get(i).getType() == Type.ROCK)
+				type_multiplier = 2.0f;
+			else 
+				type_multiplier = 1.0f;
+			
+			if (leaf1.overlaps(enemies.get(i).getCollider()))
+				enemies.get(i).subHealth((int)(LEAF_DAMAGE*damagemultiplier*type_multiplier));
 			else if (leaf2.overlaps(enemies.get(i).getCollider()))
-				enemies.get(i).subHealth(LEAF_DAMAGE*damagemultiplier);
+				enemies.get(i).subHealth((int)(LEAF_DAMAGE*damagemultiplier*type_multiplier));
 			else if (leaf3.overlaps(enemies.get(i).getCollider()))
-				enemies.get(i).subHealth(LEAF_DAMAGE*damagemultiplier);
+				enemies.get(i).subHealth((int)(LEAF_DAMAGE*damagemultiplier*type_multiplier));
 			else if (leaf4.overlaps(enemies.get(i).getCollider()))
-				enemies.get(i).subHealth(LEAF_DAMAGE*damagemultiplier);
+				enemies.get(i).subHealth((int)(LEAF_DAMAGE*damagemultiplier*type_multiplier));
 		}
 		
 		leafRotationAngle += leafRotationAngularVelocity*Gdx.graphics.getDeltaTime();
