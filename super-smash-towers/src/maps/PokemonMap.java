@@ -147,6 +147,18 @@ public class PokemonMap extends Map
 
 				}
 			}
+			else if(wave == 9)
+			{
+				for(int j = 0; j<wave*5; j++)
+				{
+					if(j==0)
+						q.add(new Lapras(waypoints, difficulty,manager));
+					if(j==24)
+						q.add(new Onix(waypoints, difficulty,manager));
+					if(j==49)
+						q.add(new Victree(waypoints, difficulty,manager));
+				}
+			}
 			else
 			{	
 				for (int j = 0; j < wave*5 + 5; j++)

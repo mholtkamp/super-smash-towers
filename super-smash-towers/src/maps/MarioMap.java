@@ -98,6 +98,10 @@ public class MarioMap extends Map
 				for (int j = 0; j < wave*5 + 5; j++)
 					q.add(new Koopa(waypoints,difficulty,manager));
 			}
+			else if(wave == 9)
+			{
+				q.add(new Bowser(waypoints,difficulty,manager));
+			}
 			else
 			{// boss wave
 				int current_enemy = 0;

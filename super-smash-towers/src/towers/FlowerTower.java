@@ -43,7 +43,7 @@ public class FlowerTower extends Tower
 		width = 40;
 		height = 50;
 		range = 200;
-		cost = 250;
+		cost = 200;
 		firing_speed = 1.5f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
 		
@@ -110,14 +110,6 @@ public class FlowerTower extends Tower
 	public void render(SpriteBatch batch)
 	{
 		// render Tower
-		/* 2 different textures for each level of tower
-		 * if (level = 1)
-		 * { batch.draw(tex[current_tex], collider.x, collider.y; }
-		 * if (level = 2)
-		 * { batch.draw(tex[current_tex+2], collider.x, collider.y; }
-		 * if (level = 3)
-		 * { batch.draw(tex[current_tex+4], collider.x, collider.y; }
-		 */
 			tex_count++;
 		
 			if (tex_count == CALLS_BETWEEN_TOGGLE)
@@ -134,12 +126,6 @@ public class FlowerTower extends Tower
 				batch.draw(texDown[current_tex], collider.x, collider.y);
 			else
 				batch.draw(texUp[current_tex], collider.x, collider.y);
-		// toggle textures
-		//if (--toggle_count < 0)
-		//{
-		//	current_tex = (current_tex + 1) % tex.length;
-		//	toggle_count = CALLS_BETWEEN_TOGGLE;
-		//}
 		
 		// render Bullets
 		for (Bullet bullet : bullets)

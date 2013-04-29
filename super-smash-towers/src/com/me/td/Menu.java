@@ -80,7 +80,7 @@ public class Menu
 		
 		font = manager.get("data/nint.fnt");
 		
-		menubg = manager.get("data/menubg.png");
+		menubg = manager.get("data/menuStart.png");
 //		instrbg = new Texture("data/instrbg.png");
 		instrbg = manager.get("data/black_bg.png");
 		diffbg = manager.get("data/diffbg.png");
@@ -193,8 +193,7 @@ public class Menu
 		{
 			batch.draw(instrbg, 0, 0, WIDTH, HEIGHT);
 			drawBackButton(batch);
-			
-			// write instructions
+						// write instructions
 			font.setScale(1);
 			font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 			font.draw(batch, "INSTRUCTIONS", camera.viewportWidth/2 - 100, 350);
@@ -390,14 +389,10 @@ public class Menu
 		}
 		return Level.NONE;
 	}
-	
-	//draw buttons
+
+	//draw Buttons
 	void drawBackButton(SpriteBatch batch)
 	{
 		batch.draw(backButtonTex, backButton.x, backButton.y, backButton.width, backButton.height);
-		
 	}
 }
-
-
-

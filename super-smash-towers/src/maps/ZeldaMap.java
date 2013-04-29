@@ -75,9 +75,9 @@ public class ZeldaMap extends Map
 					   path = leftRight(j);
 					
 						if(j % 5 == 0)
-							q.add(new Arcanine(path, difficulty,manager));
+							q.add(new Cactus(path, difficulty,manager));
 						else
-							q.add(new Weedle(path, difficulty,manager));
+							q.add(new Eye(path, difficulty,manager));
 					
 				}
 			}
@@ -87,9 +87,9 @@ public class ZeldaMap extends Map
 				{
 					path = leftRight(j);
 					if(j % 3 == 0)
-						q.add(new Geodude(path, difficulty,manager));
+						q.add(new Jellyfish(path, difficulty,manager));
 					else
-						q.add(new Arcanine(path, difficulty,manager));
+						q.add(new Cactus(path, difficulty,manager));
 				}
 			}
 			else if (wave < 3)
@@ -97,7 +97,7 @@ public class ZeldaMap extends Map
 				for (int j = 0; j < wave*5 + 5; j++)
 				{
 					path = leftRight(j);
-					q.add(new Tentacool(path, difficulty,manager));
+					q.add(new Knight(path, difficulty,manager));
 				}
 			}
 			else if (wave < 5)
@@ -108,7 +108,7 @@ public class ZeldaMap extends Map
 					if(j % 2 == 0)
 						q.add(new Voltorb(path, difficulty,manager));
 					else
-						q.add(new Weedle(path, difficulty,manager));
+						q.add(new Eye(path, difficulty,manager));
 				}
 			}
 			else if (wave < 7)
@@ -117,11 +117,11 @@ public class ZeldaMap extends Map
 				{
 					path = leftRight(j);
 					if(j % 8 == 0)
-						q.add(new Tentacool(path, difficulty,manager));
+						q.add(new KnightB(path, difficulty,manager));
 					else if(j % 3 == 0)
-						q.add(new Geodude(path, difficulty,manager));
+						q.add(new Jellyfish(path, difficulty,manager));
 					else
-						q.add(new Weedle(path, difficulty,manager));
+						q.add(new Eye(path, difficulty,manager));
 
 				}
 			}
@@ -131,25 +131,27 @@ public class ZeldaMap extends Map
 				{
 					path = leftRight(j);
 					if(j % 8 == 0)
-						q.add(new Arcanine(path, difficulty,manager));
+						q.add(new Cactus(path, difficulty,manager));
 					else if(j % 3 == 0)
-						q.add(new Tentacool(path, difficulty,manager));
+						q.add(new Knight(path, difficulty,manager));
 					else
-						q.add(new Geodude(path, difficulty,manager));
+						q.add(new Jellyfish(path, difficulty,manager));
 
 				}
 			}
+			else if(wave == 9)
+			{q.add(new Gannon(waypoints, difficulty,manager));}
 			else
 			{	
 				for (int j = 0; j < wave*5 + 5; j++)
 				{
 					path = leftRight(j);
 					if(j % 8 == 0)
-						q.add(new Tentacool(path, difficulty,manager));
+						q.add(new KnightB(path, difficulty,manager));
 					else if(j % 3 == 0)
-						q.add(new Geodude(path, difficulty,manager));
+						q.add(new Jellyfish(path, difficulty,manager));
 					else
-						q.add(new Weedle(path, difficulty,manager));
+						q.add(new Eye(path, difficulty,manager));
 
 				}
 			}

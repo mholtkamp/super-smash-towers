@@ -33,7 +33,7 @@ public class Hammer extends Bullet
 		current_tex = 0;
 		tex_count = CALLS_BETWEEN_TOGGLE;
 		
-		damage = 100*damagemultiplier;
+		damage = 200*damagemultiplier;
 		speed = 5;
 	}
 	

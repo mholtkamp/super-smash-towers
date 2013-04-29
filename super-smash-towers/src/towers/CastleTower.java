@@ -42,7 +42,7 @@ public class CastleTower extends Tower
 		width = 40;
 		height = 50;
 		range = 200;
-		cost = 250;
+		cost = 200;
 		firing_speed = 1.5f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
 		
@@ -54,8 +54,8 @@ public class CastleTower extends Tower
 		collider = new Rectangle(x, y, width, height);
 		
 		tex = new Texture[3];
-		tex[0] = this.manager.get("data/towers/castle1.png");
-		tex[1] = this.manager.get("data/towers/towerUpgraded.png");
+		tex[0] = this.manager.get("data/towers/tower.png");
+		tex[1] = this.manager.get("data/towers/castle1.png");
 		tex[2] = this.manager.get("data/towers/towerUpgraded.png");
 		//tex[2] = this.manager.get("data/towers/charz.png");
 		//add textures 2-5 for lvls 2 and 3

@@ -45,7 +45,7 @@ public class GrassTower extends Tower
 		cost = 1000;
 		firing_speed = 2.0f;
 		upgradecost = cost * 3 / 4;
-		LEAF_DAMAGE = 2;
+		LEAF_DAMAGE = 1;
 	}
 	
 	public GrassTower(ArrayList<Enemy> enemies, float x, float y, AssetManager manager)

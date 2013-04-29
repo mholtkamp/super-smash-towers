@@ -42,7 +42,7 @@ public class SwordTower extends Tower
 		width = 40;
 		height = 50;
 		range = 200;
-		cost = 250;
+		cost = 1600;
 		firing_speed = 1.5f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
 		

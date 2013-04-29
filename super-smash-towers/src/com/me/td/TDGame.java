@@ -20,7 +20,6 @@ import enums.State;
 
 public class TDGame implements ApplicationListener
 {
-	//	private final int MENU_STATE = 0, GAME_STATE = 1, PAUSE_STATE = 2;
 	private final int WIDTH = 740, HEIGHT = 400;
 
 	private SpriteBatch batch;
@@ -33,7 +32,6 @@ public class TDGame implements ApplicationListener
 	private AssetManager manager;
 	private LoadBar load;
 	private boolean enable_pause;
-	private Texture tex34;
 	public Options options;
 
 	@Override
@@ -46,7 +44,6 @@ public class TDGame implements ApplicationListener
 		manager = new AssetManager();
 		load();
 		state = State.MENU;	
-		tex34 = new Texture(Gdx.files.internal("data/triangle.png"));
 		load = new LoadBar(manager);
 		enable_pause = true;
 		options = new Options();
@@ -159,8 +156,6 @@ public class TDGame implements ApplicationListener
 
 		// Tower Textures
 		manager.load("data/towers/tower.png",Texture.class);
-//		public static final Texture fireTower1 = new Texture(Gdx.files.internal("data/towers/fire_tower_1.png"));
-//		public static final Texture fireTower2 = new Texture(Gdx.files.internal("data/towers/fire_tower_2.png"));
 		manager.load("data/towers/charm.png",Texture.class);
 		manager.load("data/towers/charmealon.png",Texture.class);
 		manager.load("data/towers/charz.png",Texture.class);
@@ -187,6 +182,7 @@ public class TDGame implements ApplicationListener
 		manager.load("data/towers/GalagaTower3Upgrade.png", Texture.class);
 		manager.load("data/towers/GalagaTower4.png", Texture.class);
 		manager.load("data/towers/GalagaTower4Upgrade.png", Texture.class);
+		manager.load("data/towers/tower.png", Texture.class);
 		manager.load("data/towers/castle1.png", Texture.class);
 		manager.load("data/towers/towerUpgraded.png", Texture.class);
 		manager.load("data/towers/firetower.png", Texture.class);
@@ -195,6 +191,8 @@ public class TDGame implements ApplicationListener
 		manager.load("data/towers/fireUpgrade2.png", Texture.class);
 		manager.load("data/towers/upgradedBroleft.png", Texture.class);
 		manager.load("data/towers/upgradedBroright.png", Texture.class);
+		manager.load("data/towers/big_hammer_bros.png", Texture.class);
+		manager.load("data/towers/big_hammer_bros_right.png", Texture.class);
 		manager.load("data/towers/BombTower.png", Texture.class);
 		manager.load("data/towers/BombTowerUpgrade.png", Texture.class);
 		manager.load("data/towers/BoomerangTower.png", Texture.class);
@@ -216,6 +214,16 @@ public class TDGame implements ApplicationListener
 		manager.load("data/bullets/pball2.png",Texture.class);
 		manager.load("data/bullets/water_ball.png",Texture.class);
 		manager.load("data/bullets/waterExp.png",Texture.class);
+		manager.load("data/bullets/zeldaBomb.png",Texture.class);
+		manager.load("data/bullets/bombExplosion.png",Texture.class);
+		manager.load("data/bullets/pebble.png",Texture.class);
+		manager.load("data/bullets/Boomerang_left.png",Texture.class);
+		manager.load("data/bullets/Boomerang_up.png",Texture.class);
+		manager.load("data/bullets/Boomerang_right.png",Texture.class);
+		manager.load("data/bullets/Boomerang_down.png",Texture.class);
+		manager.load("data/bullets/purple-bullet.png",Texture.class);
+		manager.load("data/bullets/thermoBullet.png",Texture.class);
+		manager.load("data/bullets/GalagaExplosion.png",Texture.class);
 
 		// Enemy Textures
 		manager.load("data/enemies/mushroom.png",Texture.class);
@@ -237,16 +245,38 @@ public class TDGame implements ApplicationListener
 		manager.load("data/enemies/voltorb_right_2.png",Texture.class);
 		manager.load("data/enemies/weedle_right_1.png",Texture.class);
 		manager.load("data/enemies/weedle_right_2.png",Texture.class);
+		manager.load("data/enemies/Lapras1.png",Texture.class);
+		manager.load("data/enemies/Lapras2.png",Texture.class);
+		manager.load("data/enemies/Onix1.png",Texture.class);
+		manager.load("data/enemies/Onix2.png",Texture.class);
+		manager.load("data/enemies/Victree1.png",Texture.class);
+		manager.load("data/enemies/Victree2.png",Texture.class);
+		manager.load("data/enemies/zcatus1.png",Texture.class);
+		manager.load("data/enemies/zcatus2.png",Texture.class);
+		manager.load("data/enemies/zeye1.png",Texture.class);
+		manager.load("data/enemies/zeye2.png",Texture.class);
+		manager.load("data/enemies/zjellyfish1.png",Texture.class);
+		manager.load("data/enemies/zjellyfish2.png",Texture.class);
+		manager.load("data/enemies/zknight1.png",Texture.class);
+		manager.load("data/enemies/zknight2.png",Texture.class);
+		manager.load("data/enemies/zknightb1.png",Texture.class);
+		manager.load("data/enemies/zknightb2.png",Texture.class);
+		manager.load("data/enemies/gannon1.png",Texture.class);
+		manager.load("data/enemies/gannon2.png",Texture.class);
+		manager.load("data/enemies/galagaEnemy1.png",Texture.class);
+		manager.load("data/enemies/galagaEnemy2.png",Texture.class);
+		manager.load("data/enemies/galagaEnemy3.png",Texture.class);
+		manager.load("data/enemies/galagaEnemy4.png",Texture.class);
 
 
 
 
 		// UI Textures
-		manager.load("data/health_bar_max.png",Texture.class);
 		manager.load("data/greenfade.png",Texture.class);
 		manager.load("data/redfade.png",Texture.class);
 //		manager.load("data/health_bar_safe.png",Texture.class);
 //		manager.load("data/health_bar_unsafe.png",Texture.class);
+		manager.load("data/health_bar_max.png",Texture.class);
 		manager.load("data/hover.png",Texture.class);
 		manager.load("data/textures/heart0.png",Texture.class);
 		manager.load("data/textures/heart25.png",Texture.class);
@@ -269,7 +299,8 @@ public class TDGame implements ApplicationListener
 
 
 		// Menu Textures
-		manager.load("data/menubg.png",Texture.class);
+		manager.load("data/menuStart.png",Texture.class);
+		//manager.load("data/menubegin.png",Texture.class);
 		manager.load("data/black_bg.png",Texture.class);
 		manager.load("data/diffbg.png",Texture.class);
 		manager.load("data/levelbg.png",Texture.class);

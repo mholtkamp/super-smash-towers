@@ -59,8 +59,8 @@ public class HammerBros extends Tower
 		tex_right[0] = this.manager.get("data/towers/hammer_bros_right_idle.png");
 		tex_left[1] = this.manager.get("data/towers/upgradedBroleft.png");
 		tex_right[1] = this.manager.get("data/towers/upgradedBroright.png");
-		tex_left[2] = this.manager.get("data/towers/upgradedBroleft.png");
-		tex_right[2] = this.manager.get("data/towers/upgradedBroright.png");
+		tex_left[2] = this.manager.get("data/towers/big_hammer_bros.png");
+		tex_right[2] = this.manager.get("data/towers/big_hammer_bros.png");
 		
 		current_tex = 0;
 	}
@@ -108,7 +108,14 @@ public class HammerBros extends Tower
 		if (face_left())
 			batch.draw(tex_left[current_tex], collider.x, collider.y);
 		else
-			batch.draw(tex_right[current_tex], collider.x, collider.y);
+		{
+			if(level == 3)
+			{
+				batch.draw(tex_right[current_tex], collider.x, collider.y, width, height, 0, 0, width, height, true, false);
+			}
+			else
+				batch.draw(tex_right[current_tex], collider.x, collider.y);
+		}
 		
 		// render Bullets
 		for (Bullet bullet : bullets)

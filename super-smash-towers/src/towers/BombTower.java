@@ -2,6 +2,7 @@ package towers;
 
 import bullets.Bullet;
 import bullets.BasicBullet;
+import bullets.Bomb;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -28,7 +29,7 @@ public class BombTower extends Tower
 		width = 40;
 		height = 48;
 		range = 130;
-		cost = 200;
+		cost = 250;
 		firing_speed = 2.0f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
 	}
@@ -38,7 +39,7 @@ public class BombTower extends Tower
 		super(enemies, x, y, manager);
 		
 		// attributes
-		name = "CastleTower";
+		name = "BombTower";
 		width = 40;
 		height = 50;
 		range = 200;
@@ -92,7 +93,7 @@ public class BombTower extends Tower
 				if (Math.sqrt(xE*xE + yE*yE) < range)
 				{
 					target = enemies.get(i);
-					bullets.add(new BasicBullet(target, center_x, center_y, damagemultiplier, manager));
+					bullets.add(new Bomb(target, center_x, center_y, damagemultiplier, enemies, manager));
 					time_since_last_shot = 0;
 					break;
 				}

@@ -1,7 +1,7 @@
 package towers;
 
 import bullets.Bullet;
-import bullets.BasicBullet;
+import bullets.Boomerang;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -42,7 +42,7 @@ public class BoomerangTower extends Tower
 		width = 40;
 		height = 50;
 		range = 200;
-		cost = 250;
+		cost = 400;
 		firing_speed = 1.5f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
 		
@@ -92,7 +92,7 @@ public class BoomerangTower extends Tower
 				if (Math.sqrt(xE*xE + yE*yE) < range)
 				{
 					target = enemies.get(i);
-					bullets.add(new BasicBullet(target, center_x, center_y, damagemultiplier, manager));
+					bullets.add(new Boomerang(target, center_x, center_y, damagemultiplier, manager));
 					time_since_last_shot = 0;
 					break;
 				}

@@ -14,47 +14,16 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 
-import enemies.Arcanine;
-import enemies.BasicEnemy;
-import enemies.Bowser;
-import enemies.Enemy;
-import enemies.Geodude;
-import enemies.Goomba;
-import enemies.Koopa;
-import enemies.ShyGuy;
-import enemies.Tentacool;
-import enemies.Voltorb;
-import enemies.Weedle;
+import enemies.*;
 import enums.EnemyEnum;
 import enums.Level;
 
 import java.util.ArrayList;
 import java.util.Queue;
 
-import maps.Map;
-import maps.MarioMap;
-import maps.PokemonMap;
-import maps.ZeldaMap;
-import maps.GalagaMap;
-
-import towers.BasicTower;
-import towers.CastleTower;
-import towers.FlowerTower;
-import towers.FireTower;
-import towers.GrassTower;
-import towers.HammerBros;
-import towers.PsychicTower;
-import towers.Tower;
-import towers.WaterTower;
-import towers.BombTower;
-import towers.BoomerangTower;
-import towers.SlingshotTower;
-import towers.SwordTower;
-import towers.G1Tower;
-import towers.G2Tower;
-import towers.G3Tower;
-import towers.G4Tower;
-
+import maps.*;
+import towers.*;
+import enums.TowerEnum;
 
 
 
@@ -65,23 +34,21 @@ public class World
 	public static boolean mute;
 	
 	// constants
-
-	final int MARIO_MAP = 0, POKEMON_MAP = 1, ZELDA_MAP = 2, GALAGA_MAP = 3;
-	final int MUSHROOM = 0, GOOMBA = 1, KOOPA = 2, BOWSER = 3, SHYGUY = 4, ARCANINE = 5, GEODUDE = 6, WEEDLE = 7, VOLTORB = 8, TENTACOOL = 9;
-	// final int PAUSE = 0, SELL = 1, UPGRADE = 2, CASTLE = 3, HAMMER = 4, PSYCHIC = 5, FIRE = 6, GRASS = 7, WATER = 8;
-	final int PAUSE = 0, SELL = 1, UPGRADE = 2, CASTLE = 3, HAMMER = 4, FLOWER = 5, FIRE = 6, WATER = 7, GRASS = 8, PSYCHIC = 9, BOMB = 10, BOOMERANG = 11, SLINGSHOT = 12, SWORD = 13,
+	//final int MUSHROOM = 0, GOOMBA = 1, KOOPA = 2, BOWSER = 3, SHYGUY = 4, ARCANINE = 5, GEODUDE = 6, WEEDLE = 7, VOLTORB = 8, TENTACOOL = 9, LAPRAS = 10, ONIX = 11;
+	final int CASTLE = 3, HAMMER = 4, FLOWER = 5, FIRE = 6, WATER = 7, GRASS = 8, PSYCHIC = 9, BOMB = 10, BOOMERANG = 11, SLINGSHOT = 12, SWORD = 13,
 			   G1 = 14, G2 = 15, G3 = 16, G4 = 17;
-	final int ENEMY_COUNT = 10, TOWER_COUNT = 15, TIME_BETWEEN_WAVES = 10;
+	final int NONE = -4, PAUSE = -3, SELL = -2, UPGRADE = -1;
+	final int ENEMY_COUNT = 22, TOWER_COUNT = 15, TIME_BETWEEN_WAVES = 10;
 
 	final int GRID_WIDTH = 40, GRID_HEIGHT = 40;
 	final int BAR_WIDTH = 300, BAR_HEIGHT = 16, BAR_X = 5, BAR_Y = 375;
 	final int SAFE_HEALTH = 30;
 
 	// variables
-	int health, gold, wave_number, current_tower, time_between_waves;
+	int health, gold, wave_number, current_tower, current_enemy, time_between_waves;
 	float difficulty;
 	
-	EnemyEnum current_enemy;
+	//EnemyEnum current_enemy;
 	float current_range;
 	Map map;
 	TowerSelect tower_select;
@@ -91,7 +58,7 @@ public class World
 	Tower[][] tower_grid;
 	OrthographicCamera camera;
 	BitmapFont font, katana_font;
-	Texture health_bar_max, health_bar_unsafe, health_bar_safe, hover, coin;
+	Texture health_bar_max, health_bar_unsafe, health_bar_safe, hover, coin, heart0, heart25, heart50, heart75, heart100;
 //	Texture heart0, heart25, heart50, heart75, heart100;
 	Sound congratulations;
 	Vector3 touch_pos, circle_pos;
@@ -109,9 +76,6 @@ public class World
 	{
 				
 		DEBUG = true;
-		
-//		Vector3 map_dimensions = new Vector3(camera.viewportWidth, camera.viewportWidth, 0);
-//		camera.unproject(map_dimensions);
 		
 		// SELECT MAP
 		this.manager = manager;
@@ -136,22 +100,22 @@ public class World
 		wave = map.getWave(0);
 		current_tower = CASTLE;
 //		map = new PokemonMap();
-		tower_select = new TowerSelect(camera,level.index,manager);
+		tower_select = new TowerSelect(camera,level,manager);
 		options_menu = new OptionsMenu(camera, level.index,manager);
 		wave = map.getWave(0);
 //		current_tower = BASIC_TOWER;	// we are placing this type of Tower
 		if(level == Level.MARIO)
-			current_tower = CASTLE;
+			current_tower = TowerEnum.CASTLE.index;
 		else if(level == Level.POKEMON)
-			current_tower = FIRE;
+			current_tower = TowerEnum.FIRE.index;
 		else if(level == Level.ZELDA)
-			current_tower = BOMB;
+			current_tower = TowerEnum.BOMB.index;
 		else if(level == Level.GALAGA)
-			current_tower = G1;
+			current_tower = TowerEnum.G1.index;
 		else
-			current_tower = CASTLE;
-		current_range = create_tower(current_tower).getRange();
-		current_enemy = EnemyEnum.MUSHROOM;	// we are spawning this type of Enemy
+			current_tower = TowerEnum.CASTLE.index;
+		current_range = create_tower(current_tower, 0, 0).getRange();
+		current_enemy = 0;//EnemyEnum.MUSHROOM;	// we are spawning this type of Enemy
 		gameover = false;
 		timeKeeper = true;
 		spawn = false;
@@ -171,19 +135,17 @@ public class World
 		this.camera = camera;
 		font = manager.get("data/nint.fnt");
 		katana_font = manager.get("data/snes.fnt");
-		//Health BAR
+		// HEALTH BAR
+		health_bar_max = manager.get("data/health_bar_max.png");
 		health_bar_unsafe = manager.get("data/redfade.png");
 		health_bar_safe = manager.get("data/greenfade.png");
-		health_bar_max = manager.get("data/health_bar_max.png");
-//		health_bar_unsafe = manager.get("data/health_bar_unsafe.png");
-//		health_bar_safe = manager.get("data/health_bar_safe.png");
 		hover = manager.get("data/hover.png");
 		coin = manager.get("data/coin.png");
-//		heart0 = new Texture("data/textures/heart0.png");
-//		heart25 = new Texture("data/textures/heart25.png");
-//		heart50 = new Texture("data/textures/heart50.png");
-//		heart75 = new Texture("data/textures/heart75.png");
-//		heart100 = new Texture("data/textures/heart100.png");
+		heart0 = new Texture("data/textures/heart0.png");
+		heart25 = new Texture("data/textures/heart25.png");
+		heart50 = new Texture("data/textures/heart50.png");
+		heart75 = new Texture("data/textures/heart75.png");
+		heart100 = new Texture("data/textures/heart100.png");
 		congratulations = Gdx.audio.newSound(Gdx.files.internal("sounds/congratulations.mp3"));
 		congrats_played = false;
 		touch_pos = new Vector3();
@@ -237,23 +199,35 @@ public class World
 			
 			// dimensions for health bars
 			int bar_width = health*BAR_WIDTH/100;
-
-			// back black bar
-			batch.draw(health_bar_max, BAR_X+7, BAR_Y, BAR_WIDTH, BAR_HEIGHT);
-
-			// choose between green bar and red health bar
-			if (health > SAFE_HEALTH)
-				batch.draw(health_bar_safe, BAR_X, BAR_Y, bar_width, BAR_HEIGHT);
+			if(level == Level.ZELDA)
+			{
+				life(batch, BAR_X-30, BAR_Y);
+				font.setColor(1.0f, 1.0f, 1.0f, 1.0f); // white
+				font.draw(batch, "Wave: "+(wave_number+1)+"/"+map.numWaves(), 390, 388);
+			}
 			else
-				batch.draw(health_bar_unsafe, BAR_X, BAR_Y, bar_width, BAR_HEIGHT);
+			{
+				// back black bar
+				batch.draw(health_bar_max, BAR_X+7, BAR_Y, BAR_WIDTH, BAR_HEIGHT);
+	
+				// choose between green bar and red health bar
+				if (health > SAFE_HEALTH)
+					batch.draw(health_bar_safe, BAR_X, BAR_Y, bar_width, BAR_HEIGHT);
+				else
+					batch.draw(health_bar_unsafe, BAR_X, BAR_Y, bar_width, BAR_HEIGHT);
+				
+				font.setScale(1);
+				
+				font.setColor(1.0f, 1.0f, 1.0f, 1.0f); // white letters for health
+				font.draw(batch, " Castle Health: "+health, BAR_X+30, BAR_Y+13);
+				
+				font.setColor(0.16f, 0.14f, 0.13f, 1.0f); // ivoryblack
+				if(level == Level.GALAGA)
+					font.setColor(1.0f, 1.0f, 1.0f, 1.0f); // white
+				
+				font.draw(batch, "Wave: "+(wave_number+1)+"/"+map.numWaves(), 350, 388);
+			}
 			
-			font.setScale(1);
-			
-			font.setColor(1.0f, 1.0f, 1.0f, 1.0f); // white letters for health
-			font.draw(batch, " Castle Health: "+health, BAR_X+30, BAR_Y+13);
-			
-			font.setColor(0.16f, 0.14f, 0.13f, 1.0f); // ivoryblack
-			font.draw(batch, "Wave: "+(wave_number+1)+"/"+map.numWaves(), 350, 388);
 			
 //			font.draw(batch, "Enemy Count: "+enemies.size(), 450, 465);
 //			font.draw(batch, "Tower: "+tower_name(current_tower), 5, 370);
@@ -338,8 +312,8 @@ public class World
 			drawOptionMenu = false;
 
 
-			int select_number = tower_select.update();
-			if (select_number != -1)
+			int select_number = tower_select.update(selling_state, upgrade_state);
+			if (select_number != NONE)
 			{
 				if (select_number == PAUSE)
 				{
@@ -365,7 +339,7 @@ public class World
 					upgrade_state = false;
 					selling_state = false;
 					current_tower = select_number;
-					current_range = create_tower(current_tower).getRange();
+					current_range = create_tower(current_tower,0,0).getRange();
 				}
 			}
 //			current_tower = (tower_number == -1) ? current_tower : tower_number;
@@ -525,7 +499,19 @@ public class World
 				{
 					if (enable_enemy_switch)
 					{
-						current_enemy = EnemyEnum.values()[(current_enemy.index + 1) % (EnemyEnum.values().length)];
+						int enemies;
+						if(level == Level.MARIO)
+							enemies = EnemyEnum.NUM_MARIO_ENEMY;
+						else if(level == Level.POKEMON)
+							enemies = EnemyEnum.NUM_POKEMON_ENEMY;
+						else if(level == Level.ZELDA)
+							enemies = EnemyEnum.NUM_ZELDA_ENEMY;
+						else if(level == Level.GALAGA)
+							enemies = EnemyEnum.NUM_GALAGA_ENEMY;
+						else
+							enemies = 1;
+						
+						current_enemy = (current_enemy + 1) % enemies;
 						enable_enemy_switch = false;
 					}
 				}
@@ -603,117 +589,163 @@ public class World
 		
 	}
 
-//	/**
-//	 * @param x position of the first heart
-//	 * @param y height of hearts
-//	 */
-//	private void life(SpriteBatch batch, int x, int y) 
-//	{
-//
-//		int x2 = x;
-//
-//		//draw 5 hearts with no health
-//		for (int i = 0; i < 5; i++)
-//		{
-//			heart(batch, heart0, x2+=26, y);
-//		}
-//		x2 = x;
-//		for (int i = 0; i < Math.floor(health/20); i++)
-//		{
-//			heart(batch, heart100, x2+=26, y);
-//		}
-//
-//		Texture currentHealth = null;
-//		if (health < 100) // execute the following only when not in full health
-//		{
-//			if (health%20 > 15)	
-//				currentHealth = heart100;
-//			else if (health%20 > 10)	
-//				currentHealth = heart75;
-//			else if (health%20 > 5)	
-//				currentHealth = heart50;
-//			else
-//				currentHealth = heart25;
-//			// displays the partial heart
-//			heart(batch, currentHealth, x2+26, y);
-//		}
-//
-//	}
-//
-//	private void heart(SpriteBatch batch, Texture corazon, int x, int y)
-//	{
-//		batch.draw(corazon, x, y);
-//	}
+	/**
+	 * @param x position of the first heart
+	 * @param y height of hearts
+	 */
+	private void life(SpriteBatch batch, int x, int y) 
+	{
 
-	private Enemy create_enemy(EnemyEnum current_enemy)
+		int x2 = x;
+
+		//draw 5 hearts with no health
+		for (int i = 0; i < 5; i++)
+		{
+			heart(batch, heart0, x2+=26, y);
+		}
+		x2 = x;
+		for (int i = 0; i < Math.floor(health/20); i++)
+		{
+			heart(batch, heart100, x2+=26, y);
+		}
+
+		Texture currentHealth = null;
+		if (health < 100) // execute the following only when not in full health
+		{
+			if (health%20 > 15)	
+				currentHealth = heart100;
+			else if (health%20 > 10)	
+				currentHealth = heart75;
+			else if (health%20 > 5)	
+				currentHealth = heart50;
+			else
+				currentHealth = heart25;
+			// displays the partial heart
+			heart(batch, currentHealth, x2+26, y);
+		}
+
+	}
+
+	private void heart(SpriteBatch batch, Texture corazon, int x, int y)
+	{
+		batch.draw(corazon, x, y);
+	}
+
+
+	private Enemy create_enemy(int current_enemy)
 	{// returns an instance of Enemy class based on value of current_enemy
 		// enables us to quickly switch which enemy we want to spawn
-		switch (current_enemy)
+		if(level == Level.MARIO)
 		{
-		case MUSHROOM: return new BasicEnemy(map.getWayPoints(),difficulty,manager);
-		case GOOMBA: return new Goomba(map.getWayPoints(),difficulty,manager);
-		case SHYGUY: return new ShyGuy(map.getWayPoints(),difficulty,manager);
-		case KOOPA: return new Koopa(map.getWayPoints(),difficulty,manager);
-		case BOWSER: return new Bowser(map.getWayPoints(),difficulty,manager);
-		case ARCANINE: return new Arcanine(map.getWayPoints(),difficulty,manager);
-		case GEODUDE: return new Geodude(map.getWayPoints(),difficulty,manager);
-		case WEEDLE: return new Weedle(map.getWayPoints(),difficulty,manager);
-		case VOLTORB: return new Voltorb(map.getWayPoints(),difficulty,manager);
-		case TENTACOOL: return new Tentacool(map.getWayPoints(),difficulty,manager);
-		default: return new BasicEnemy(map.getWayPoints(),difficulty,manager);
+			switch (current_enemy)
+			{
+			case 0: return new BasicEnemy(map.getWayPoints(),difficulty,manager);
+			case 1: return new Goomba(map.getWayPoints(),difficulty,manager);
+			case 2: return new ShyGuy(map.getWayPoints(),difficulty,manager);
+			case 3: return new Koopa(map.getWayPoints(),difficulty,manager);
+			case 4: return new Bowser(map.getWayPoints(),difficulty,manager);
+			
+			default: return new BasicEnemy(map.getWayPoints(),difficulty,manager);
+			}
 		}
+		else if(level == Level.POKEMON)
+		{
+			switch(current_enemy)
+			{
+			case 0: return new Arcanine(map.getWayPoints(),difficulty,manager);
+			case 1: return new Geodude(map.getWayPoints(),difficulty,manager);
+			case 2: return new Weedle(map.getWayPoints(),difficulty,manager);
+			case 3: return new Voltorb(map.getWayPoints(),difficulty,manager);
+			case 4: return new Tentacool(map.getWayPoints(),difficulty,manager);
+			case 5: return new Lapras(map.getWayPoints(),difficulty,manager);
+			case 6: return new Onix(map.getWayPoints(),difficulty,manager);
+			case 7: return new Victree(map.getWayPoints(),difficulty,manager);
+			
+			default: return new Arcanine(map.getWayPoints(),difficulty,manager);
+			}
+		}
+		else if(level == Level.ZELDA)
+		{
+			switch(current_enemy)
+			{
+			case 0: return new Cactus(map.getWayPoints(),difficulty,manager);
+			case 1: return new Eye(map.getWayPoints(),difficulty,manager);
+			case 2: return new Jellyfish(map.getWayPoints(),difficulty,manager);
+			case 3: return new Knight(map.getWayPoints(),difficulty,manager);
+			case 4: return new KnightB(map.getWayPoints(),difficulty,manager);
+			case 5: return new Gannon(map.getWayPoints(),difficulty,manager);
+			
+			default: return new Cactus(map.getWayPoints(),difficulty,manager);
+			}
+			
+		}
+		else if(level == Level.GALAGA)
+		{
+			switch(current_enemy)
+			{
+			case 0: return new galagaEnemy1(map.getWayPoints(),difficulty,manager);
+			case 1: return new galagaEnemy2(map.getWayPoints(),difficulty,manager);
+			case 2: return new galagaEnemy3(map.getWayPoints(),difficulty,manager);
+			case 3: return new galagaEnemy4(map.getWayPoints(),difficulty,manager);
+			
+			default: return new galagaEnemy1(map.getWayPoints(),difficulty,manager);
+			}
+		}
+		else
+			return new BasicEnemy(map.getWayPoints(),difficulty,manager);
 	}
 
 	private Tower create_tower(int current_tower, float x, float y)
-	{// returns an instance of Tower class based on value of current_tower
-		// enables us to quickly switch which tower we want to place down
-		switch (current_tower)
-		{
-		case CASTLE: return new CastleTower(enemies, x, y,manager);
-		case HAMMER: return new HammerBros(enemies, x, y,manager);
-		case FLOWER: return new FlowerTower(enemies, x, y,manager);
-		case PSYCHIC: return new PsychicTower(enemies, x, y,manager);
-		case FIRE: return new FireTower(enemies, x, y,manager);
-		case GRASS: return new GrassTower(enemies, x, y,manager);
-		case WATER: return new WaterTower(enemies, x, y,manager);
-		case BOMB: return new BombTower(enemies, x, y,manager);
-		case BOOMERANG: return new BoomerangTower(enemies, x, y,manager);
-		case SLINGSHOT: return new SlingshotTower(enemies, x, y,manager);
-		case SWORD: return new SwordTower(enemies, x, y,manager);
-		case G1: return new G1Tower(enemies, x, y,manager);
-		case G2: return new G2Tower(enemies, x, y,manager);
-		case G3: return new G3Tower(enemies, x, y,manager);
-		case G4: return new G4Tower(enemies, x, y,manager);
+	{
 		
-		default: return new CastleTower(enemies, x, y,manager);
-		}
-	}
-
-	private Tower create_tower(int current_tower)
-	{// returns an instance of Tower class based on value of current_tower
-		// enables us to quickly switch which tower we want to place down
-		float x = 0, y = 0;
-		switch (current_tower)
+		if (level == Level.MARIO)
 		{
-		case CASTLE: return new CastleTower(enemies, x, y,manager);
-		case HAMMER: return new HammerBros(enemies, x, y,manager);
-		case FLOWER: return new FlowerTower(enemies, x, y,manager);
-		case PSYCHIC: return new PsychicTower(enemies, x, y,manager);
-		case FIRE: return new FireTower(enemies, x, y,manager);
-		case GRASS: return new GrassTower(enemies, x, y,manager);
-		case WATER: return new WaterTower(enemies, x, y,manager);
-		case BOMB: return new BombTower(enemies, x, y,manager);
-		case BOOMERANG: return new BoomerangTower(enemies, x, y,manager);
-		case SLINGSHOT: return new SlingshotTower(enemies, x, y,manager);
-		case SWORD: return new SwordTower(enemies, x, y,manager);
-		case G1: return new G1Tower(enemies, x, y,manager);
-		case G2: return new G2Tower(enemies, x, y,manager);
-		case G3: return new G3Tower(enemies, x, y,manager);
-		case G4: return new G4Tower(enemies, x, y,manager);
-
-		default: return new BasicTower(enemies, x, y,manager);
+			switch (current_tower)
+			{
+				case 0:	return new CastleTower(enemies, x, y, manager);
+				case 1: return new HammerBros(enemies, x, y, manager);
+				case 2: return new FlowerTower(enemies, x, y, manager);
+				default: return new CastleTower(enemies, x, y, manager);
+			}
 		}
+		else if (level == Level.POKEMON)
+		{
+			switch (current_tower)
+			{
+				case 0: return new FireTower(enemies, x, y, manager);
+				case 1: return new WaterTower(enemies, x, y, manager);
+				case 2: return new GrassTower(enemies, x, y, manager);
+				case 3: return new PsychicTower(enemies, x, y, manager);
+				default: return new FireTower(enemies, x, y, manager);
+			}
+		}
+		else if (level == Level.ZELDA)
+		{
+			switch (current_tower)
+			{
+				case 0: return new BombTower(enemies, x, y, manager);
+				case 1: return new BoomerangTower(enemies, x, y, manager);
+				case 2: return new SlingshotTower(enemies, x, y, manager);
+				case 3: return new SwordTower(enemies, x, y, manager);
+				default: return new BombTower(enemies, x, y, manager);
+			}
+		}
+		else if (level == Level.GALAGA)
+		{
+			switch (current_tower)
+			{
+				case 0: return new G1Tower(enemies, x, y, manager);
+				case 1: return new G2Tower(enemies, x, y, manager);
+				case 2: return new G3Tower(enemies, x, y, manager);
+				case 3: return new G4Tower(enemies, x, y, manager);
+				default: return new G1Tower(enemies, x, y, manager);
+			}
+		}
+		else
+			return new CastleTower(enemies, x, y, manager);
+		
 	}
+
 
 	private String tower_name(int current_tower)
 	{// returns the name of the current Tower
@@ -736,30 +768,6 @@ public class World
 		return true;
 	}
 	
-//	private void spawn_enemy()
-//	{
-//		if (wave_number < map.numWaves())
-//		{
-//			if (!wave.isEmpty())
-//				enemies.add(wave.poll());
-//			else
-//			{// go to next wave
-//				
-//				if (++wave_number < map.numWaves())
-//					wave = map.getWave(wave_number);
-//			}
-//		}
-//	}
-	
-//	private void next_wave()
-//	{
-//		if (++wave_number < map.numWaves())
-//		{
-//			wave = map.getWave(wave_number);
-//			timer.clear();
-////			timer.schedule(spawn_enemy(), 5, wave_number * )
-//		}
-//	}
 	
 	private class EnableSpawn extends Task
 	{

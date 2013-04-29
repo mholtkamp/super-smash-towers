@@ -1,6 +1,6 @@
 package com.me.td;
 
-import towers.Tower;
+//import towers.Tower;
 import util.CreateTower;
 
 import com.badlogic.gdx.Gdx;
@@ -14,229 +14,225 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
+import enums.Level;
 import enums.TowerEnum;
+
+import towers.*;
 
 
 public class TowerSelect
 {
+	final int PAUSE = 0, SELL = 1, UPGRADE = 2; 
 	
-	final int MARIO = 0, POKEMON = 1, ZELDA = 2, GALAGA = 3;
-	final int NUM_BUTTONS = 18;
-	final int PAUSE = 0, SELL = 1, UPGRADE = 2, CASTLE = 3, HAMMER = 4, FLOWER = 5, FIRE = 6, WATER = 7, GRASS = 8, PSYCHIC = 9, BOMB = 10, BOOMERANG = 11, SLINGSHOT = 12, SWORD = 13,
-			           G1 = 14, G2 = 15, G3 = 16, G4 = 17;
-	final int NUM_MARIO_BUTTONS = 3, NUM_POKEMON_BUTTONS = 4, NUM_ZELDA_BUTTONS = 4;
-	final int NUM_UTIL_BUTTONS = 3;
-	// final int CASTLE_PRICE = 250, HAMMER_PRICE = 500, PSYCHIC_PRICE = 750, FIRE_PRICE = 500, GRASS_PRICE = 1000, WATER_PRICE = 750;
-	int CASTLE_PRICE, HAMMER_PRICE, FLOWER_PRICE, PSYCHIC_PRICE, FIRE_PRICE, GRASS_PRICE, WATER_PRICE, BOMB_PRICE, BOOMERANG_PRICE, SLINGSHOT_PRICE, SWORD_PRICE, 
-	    G1_PRICE, G2_PRICE, G3_PRICE, G4_PRICE;
-	
-	private int mapID;
-	private int[] upgrade_cost, sell_cost;
+	private Level level;
+	private int[] cost,upgrade_cost, sell_cost;
 	private OrthographicCamera camera;
 	private Texture TowerMenu;
-	private Texture[] tex;
-	private Rectangle[] buttons;
-	private boolean is_pressed;
+	private Texture[] tex, util_tex;
+	private Rectangle[] buttons, util_buttons;
+	private boolean is_pressed, sell_state, upgrade_state;
 	private BitmapFont font;
 	private int current_tower;
-	private ShapeRenderer shape_renderer;
-	private Texture white;
+	private Texture selected;
 	
-	public TowerSelect(OrthographicCamera camera, int mapID, AssetManager manager)
+	public TowerSelect(OrthographicCamera camera, Level level, AssetManager manager)
 	{
 		this.camera = camera;
-		this.mapID = mapID;
+		this.level = level;
 		is_pressed = true;
+		
 		font = manager.get("data/nint.fnt");
-		if(mapID == MARIO)
+		if(level == Level.MARIO)
 			TowerMenu = manager.get("data/mario_tower_select.png");
-		else if(mapID == POKEMON)
+		else if(level == Level.POKEMON)
 			TowerMenu = manager.get("data/pokemon_tower_select.png");
-		else if(mapID == ZELDA)
+		else if(level == Level.ZELDA)
 			TowerMenu = manager.get("data/pokemon_tower_select.png");
-		else if(mapID == GALAGA)
+		else if(level == Level.GALAGA)
 			TowerMenu = manager.get("data/pokemon_tower_select.png");
 		// textures
-		white = manager.get("data/selected.png");
-		tex = new Texture[NUM_BUTTONS];
-
-		tex[PAUSE] = manager.get("data/pause_button.png");
-		tex[SELL] = manager.get("data/sell.png");
-		tex[UPGRADE] = manager.get("data/upgrade.png");
-		tex[CASTLE] = manager.get("data/towers/castle1.png");
-		tex[HAMMER] = manager.get("data/towers/hammer_bros_left_idle.png");
-		tex[FLOWER] = manager.get("data/towers/firetower.png");
-		tex[PSYCHIC] = manager.get("data/towers/Abra.png");
-		tex[FIRE] = manager.get("data/towers/charm.png");
-		tex[GRASS] = manager.get("data/towers/bulba.png");
-		tex[WATER] = manager.get("data/towers/squirtle.png");
-		tex[BOMB] = manager.get("data/towers/BombTower.png");
-		tex[BOOMERANG] = manager.get("data/towers/BoomerangTower.png");
-		tex[SLINGSHOT] = manager.get("data/towers/SlingShotTower.png");
-		tex[SWORD] = manager.get("data/towers/SwordTower.png");
-		tex[G1] = manager.get("data/towers/galagaTower.png");
-		tex[G2] = manager.get("data/towers/galagaTower2.png");
-		tex[G3] = manager.get("data/towers/GalagaTower3.png");
-		tex[G4] = manager.get("data/towers/GalagaTower4.png");
+		selected = manager.get("data/selected.png");
 		
-		if (mapID == MARIO)
-			current_tower = CASTLE;
-		else if (mapID == POKEMON)
-			current_tower = FIRE;
-		else if (mapID == ZELDA)
-			current_tower = BOMB;
-		else if (mapID == GALAGA)
-			current_tower = G1;
+		//starting towers
+		if (level == Level.MARIO)
+			current_tower = TowerEnum.CASTLE.index;
+		else if (level == Level.POKEMON)
+			current_tower = TowerEnum.FIRE.index;
+		else if (level == Level.ZELDA)
+			current_tower = TowerEnum.BOMB.index;
+		else if (level == Level.GALAGA)
+			current_tower = TowerEnum.G1.index;
 		else
-			current_tower = -1;
+			current_tower = TowerEnum.CASTLE.index;
+			
+		// util buttons
+		util_tex = new Texture[3];
+		util_tex[PAUSE] = manager.get("data/pause_button.png");
+		util_tex[SELL] = manager.get("data/sell.png");
+		util_tex[UPGRADE] = manager.get("data/upgrade.png");
+		
+		util_buttons = new Rectangle[3];
+		util_buttons[PAUSE] = new Rectangle(715, 375, 25, 25);
+		util_buttons[SELL] = new Rectangle(620, 20, 40, 40);
+		util_buttons[UPGRADE] = new Rectangle(680, 20, 40, 40);
+		
 		
 		// buttons
-		if(mapID == MARIO)
+		if(level == Level.MARIO)
 		{
-			buttons = new Rectangle[NUM_MARIO_BUTTONS + NUM_UTIL_BUTTONS];
-			//UTIL BUTTONS
-			buttons[0] = new Rectangle(715, 375, 25, 25);
-			buttons[1] = new Rectangle(620, 20, 40, 40);
-			buttons[2] = new Rectangle(680, 20, 40, 40);
-			tex[0] = tex[PAUSE];
-			tex[1] = tex[SELL];
-			tex[2] = tex[UPGRADE];
-			//MARIO BUTTONS
-			buttons[3] = new Rectangle(620, 315, 40, 40);
-			buttons[4] = new Rectangle(620, 255, 40, 40);
-			buttons[5] = new Rectangle(615, 195, 40, 40);
-			tex[3] = tex[CASTLE];
-			tex[4] = tex[HAMMER];
-			tex[5] = tex[FLOWER];
+			tex = new Texture[TowerEnum.NUM_MARIO_TOWERS];
+			tex[TowerEnum.CASTLE.index] = manager.get("data/towers/tower.png");
+			tex[TowerEnum.HAMMER_BROS.index] = manager.get("data/towers/hammer_bros_left_idle.png");
+			tex[TowerEnum.FLOWER.index] = manager.get("data/towers/firetower.png");
+			
+			buttons = new Rectangle[TowerEnum.NUM_MARIO_TOWERS];
+			buttons[TowerEnum.CASTLE.index] = new Rectangle(620, 315, 40, 40);
+			buttons[TowerEnum.HAMMER_BROS.index] = new Rectangle(620, 255, 40, 40);
+			buttons[TowerEnum.FLOWER.index] = new Rectangle(615, 195, 40, 40);
 		}
-		else if(mapID == POKEMON)
+		else if(level == Level.POKEMON)
 		{
-			buttons = new Rectangle[NUM_POKEMON_BUTTONS + NUM_UTIL_BUTTONS];
-			//UTIL BUTTONS
-			buttons[0] = new Rectangle(715, 375, 25, 25);
-			buttons[1] = new Rectangle(620, 20, 40, 40);
-			buttons[2] = new Rectangle(680, 20, 40, 40);
-			tex[0] = tex[PAUSE];
-			tex[1] = tex[SELL];
-			tex[2] = tex[UPGRADE];
-			//POKEMON BUTTONS
-			buttons[3] = new Rectangle(615, 315, 40, 40);
-			buttons[4] = new Rectangle(615, 255, 40, 40);
-			buttons[5] = new Rectangle(615, 195, 40, 40);
-			buttons[6] = new Rectangle(615, 135, 40, 40);
-			tex[3] = tex[FIRE];
-			tex[4] = tex[WATER];
-			tex[5] = tex[GRASS];
-			tex[6] = tex[PSYCHIC];
+			tex = new Texture[TowerEnum.NUM_POKEMON_TOWERS];
+			tex[TowerEnum.FIRE.index] = manager.get("data/towers/charm.png");
+			tex[TowerEnum.WATER.index] = manager.get("data/towers/squirtle.png");
+			tex[TowerEnum.GRASS.index] = manager.get("data/towers/bulba.png");
+			tex[TowerEnum.PSYCHIC.index] = manager.get("data/towers/Abra.png");
+			
+			buttons = new Rectangle[TowerEnum.NUM_POKEMON_TOWERS];
+			buttons[TowerEnum.FIRE.index] = new Rectangle(615, 315, 40, 40);
+			buttons[TowerEnum.WATER.index] = new Rectangle(615, 255, 40, 40);
+			buttons[TowerEnum.GRASS.index] = new Rectangle(615, 195, 40, 40);
+			buttons[TowerEnum.PSYCHIC.index] = new Rectangle(615, 135, 40, 40);
 		}
-		else if(mapID == ZELDA)
+		else if(level == Level.ZELDA)
 		{
-			buttons = new Rectangle[NUM_POKEMON_BUTTONS + NUM_UTIL_BUTTONS];
-			//UTIL BUTTONS
-			buttons[0] = new Rectangle(715, 375, 25, 25);
-			buttons[1] = new Rectangle(620, 20, 40, 40);
-			buttons[2] = new Rectangle(680, 20, 40, 40);
-			tex[0] = tex[PAUSE];
-			tex[1] = tex[SELL];
-			tex[2] = tex[UPGRADE];
-			//POKEMON BUTTONS
-			buttons[3] = new Rectangle(615, 315, 40, 40);
-			buttons[4] = new Rectangle(615, 255, 40, 40);
-			buttons[5] = new Rectangle(615, 195, 40, 40);
-			buttons[6] = new Rectangle(615, 135, 40, 40);
-			tex[3] = tex[BOMB];
-			tex[4] = tex[BOOMERANG];
-			tex[5] = tex[SLINGSHOT];
-			tex[6] = tex[SWORD];
+			tex = new Texture[TowerEnum.NUM_ZELDA_TOWERS];
+			tex[TowerEnum.BOMB.index] = manager.get("data/towers/BombTower.png");
+			tex[TowerEnum.BOOMERANG.index] = manager.get("data/towers/BoomerangTower.png");
+			tex[TowerEnum.SLINGSHOT.index] = manager.get("data/towers/SlingShotTower.png");
+			tex[TowerEnum.SWORD.index] = manager.get("data/towers/SwordTower.png");
+			
+			buttons = new Rectangle[TowerEnum.NUM_ZELDA_TOWERS];
+			buttons[TowerEnum.BOMB.index] = new Rectangle(620, 315, 40, 40);
+			buttons[TowerEnum.BOOMERANG.index] = new Rectangle(615, 255, 40, 40);
+			buttons[TowerEnum.SLINGSHOT.index] = new Rectangle(615, 195, 40, 40);
+			buttons[TowerEnum.SWORD.index] = new Rectangle(615, 135, 40, 40);
 		}
-		else if(mapID == GALAGA)
+		else if(level == Level.GALAGA)
 		{
-			buttons = new Rectangle[NUM_POKEMON_BUTTONS + NUM_UTIL_BUTTONS];
-			//UTIL BUTTONS
-			buttons[0] = new Rectangle(715, 375, 25, 25);
-			buttons[1] = new Rectangle(620, 20, 40, 40);
-			buttons[2] = new Rectangle(680, 20, 40, 40);
-			tex[0] = tex[PAUSE];
-			tex[1] = tex[SELL];
-			tex[2] = tex[UPGRADE];
-			//POKEMON BUTTONS
-			buttons[3] = new Rectangle(615, 315, 40, 40);
-			buttons[4] = new Rectangle(615, 255, 40, 40);
-			buttons[5] = new Rectangle(615, 195, 40, 40);
-			buttons[6] = new Rectangle(615, 135, 40, 40);
-			tex[3] = tex[G1];
-			tex[4] = tex[G2];
-			tex[5] = tex[G3];
-			tex[6] = tex[G4];
+			tex = new Texture[TowerEnum.NUM_GALAGA_TOWERS];
+			tex[TowerEnum.G1.index] = manager.get("data/towers/galagaTower.png");
+			tex[TowerEnum.G2.index] = manager.get("data/towers/galagaTower2.png");
+			tex[TowerEnum.G3.index] = manager.get("data/towers/GalagaTower3.png");
+			tex[TowerEnum.G4.index] = manager.get("data/towers/GalagaTower4.png");
+			
+			buttons = new Rectangle[TowerEnum.NUM_GALAGA_TOWERS];
+			buttons[TowerEnum.G1.index] = new Rectangle(620, 315, 40, 40);
+			buttons[TowerEnum.G2.index] = new Rectangle(620, 255, 40, 40);
+			buttons[TowerEnum.G3.index] = new Rectangle(620, 195, 40, 40);
+			buttons[TowerEnum.G4.index] = new Rectangle(615, 135, 40, 40);
 		}
-		
-//		buttons[PAUSE] = new Rectangle(710, 370, 30, 30);
-//		buttons[SELL] = new Rectangle(620, 20, 40, 40);
-//		buttons[UPGRADE] = new Rectangle(680, 20, 40, 40);
-//    	buttons[CASTLE] = new Rectangle(620, 320, 40, 40);
-//		buttons[HAMMER] = new Rectangle(680, 320, 40, 40);
-//		buttons[PSYCHIC] = new Rectangle(620, 260, 40, 40);
-//		buttons[FIRE] = new Rectangle(680, 260, 40, 40);
-//		buttons[GRASS] = new Rectangle(620, 200, 40, 40);
 		
 		// get Tower costs
 		initializeTowerCosts();
+       
+	   //initialize states
+	   sell_state = false;
+	   upgrade_state = false;
 	}
 	
 	private void initializeTowerCosts()
-	{
-		// get costs
-		CASTLE_PRICE = new CreateTower(TowerEnum.CASTLE).getTower().getCost();
-		HAMMER_PRICE = new CreateTower(TowerEnum.HAMMER_BROS).getTower().getCost();
-		FLOWER_PRICE = new CreateTower(TowerEnum.FLOWER).getTower().getCost();
-		PSYCHIC_PRICE = new CreateTower(TowerEnum.PSYCHIC).getTower().getCost();
-		FIRE_PRICE = new CreateTower(TowerEnum.FIRE).getTower().getCost();
-		GRASS_PRICE = new CreateTower(TowerEnum.GRASS).getTower().getCost();
-		WATER_PRICE = new CreateTower(TowerEnum.WATER).getTower().getCost();
-		BOMB_PRICE = new CreateTower(TowerEnum.BOMB).getTower().getCost();
-		BOOMERANG_PRICE = new CreateTower(TowerEnum.BOOMERANG).getTower().getCost();
-		SLINGSHOT_PRICE = new CreateTower(TowerEnum.SLINGSHOT).getTower().getCost();
-		SWORD_PRICE = new CreateTower(TowerEnum.SWORD).getTower().getCost();
-		G1_PRICE = new CreateTower(TowerEnum.G1).getTower().getCost();
-		G2_PRICE = new CreateTower(TowerEnum.G2).getTower().getCost();
-		G3_PRICE = new CreateTower(TowerEnum.G3).getTower().getCost();
-		G4_PRICE = new CreateTower(TowerEnum.G4).getTower().getCost();
+	{  
 		
-		// get upgrade costs
-		upgrade_cost = new int[TowerEnum.values().length];
-		upgrade_cost[TowerEnum.CASTLE.index] = new CreateTower(TowerEnum.CASTLE).getTower().getUpgradeCost();
-		upgrade_cost[TowerEnum.HAMMER_BROS.index] = new CreateTower(TowerEnum.HAMMER_BROS).getTower().getUpgradeCost();
-		upgrade_cost[TowerEnum.FLOWER.index] = new CreateTower(TowerEnum.FLOWER).getTower().getUpgradeCost();
-		upgrade_cost[TowerEnum.PSYCHIC.index] = new CreateTower(TowerEnum.PSYCHIC).getTower().getUpgradeCost();
-		upgrade_cost[TowerEnum.FIRE.index] = new CreateTower(TowerEnum.FIRE).getTower().getUpgradeCost();
-		upgrade_cost[TowerEnum.GRASS.index] = new CreateTower(TowerEnum.GRASS).getTower().getUpgradeCost();
-		upgrade_cost[TowerEnum.WATER.index] = new CreateTower(TowerEnum.G1).getTower().getUpgradeCost();
-		upgrade_cost[TowerEnum.BOMB.index] = new CreateTower(TowerEnum.BOMB).getTower().getUpgradeCost();
-		upgrade_cost[TowerEnum.BOOMERANG.index] = new CreateTower(TowerEnum.BOOMERANG).getTower().getUpgradeCost();
-		upgrade_cost[TowerEnum.SLINGSHOT.index] = new CreateTower(TowerEnum.SLINGSHOT).getTower().getUpgradeCost();
-		upgrade_cost[TowerEnum.SWORD.index] = new CreateTower(TowerEnum.SWORD).getTower().getUpgradeCost();
-		upgrade_cost[TowerEnum.G1.index] = new CreateTower(TowerEnum.G1).getTower().getUpgradeCost();
-		upgrade_cost[TowerEnum.G2.index] = new CreateTower(TowerEnum.G2).getTower().getUpgradeCost();
-		upgrade_cost[TowerEnum.G3.index] = new CreateTower(TowerEnum.G3).getTower().getUpgradeCost();
-		upgrade_cost[TowerEnum.G4.index] = new CreateTower(TowerEnum.G4).getTower().getUpgradeCost();
-		
-		// get sell costs
-		sell_cost = new int[TowerEnum.values().length];
-		sell_cost[TowerEnum.CASTLE.index] = new CreateTower(TowerEnum.CASTLE).getTower().getSellCost();
-		sell_cost[TowerEnum.HAMMER_BROS.index] = new CreateTower(TowerEnum.HAMMER_BROS).getTower().getSellCost();
-		sell_cost[TowerEnum.FLOWER.index] = new CreateTower(TowerEnum.FLOWER).getTower().getSellCost();
-		sell_cost[TowerEnum.PSYCHIC.index] = new CreateTower(TowerEnum.PSYCHIC).getTower().getSellCost();
-		sell_cost[TowerEnum.FIRE.index] = new CreateTower(TowerEnum.FIRE).getTower().getSellCost();
-		sell_cost[TowerEnum.GRASS.index] = new CreateTower(TowerEnum.GRASS).getTower().getSellCost();
-		sell_cost[TowerEnum.WATER.index] = new CreateTower(TowerEnum.WATER).getTower().getSellCost();
-		sell_cost[TowerEnum.BOMB.index] = new CreateTower(TowerEnum.BOMB).getTower().getSellCost();
-		sell_cost[TowerEnum.BOOMERANG.index] = new CreateTower(TowerEnum.BOOMERANG).getTower().getSellCost();
-		sell_cost[TowerEnum.SLINGSHOT.index] = new CreateTower(TowerEnum.SLINGSHOT).getTower().getSellCost();
-		sell_cost[TowerEnum.SWORD.index] = new CreateTower(TowerEnum.SWORD).getTower().getSellCost();
-		sell_cost[TowerEnum.G1.index] = new CreateTower(TowerEnum.G1).getTower().getSellCost();
-		sell_cost[TowerEnum.G2.index] = new CreateTower(TowerEnum.G2).getTower().getSellCost();
-		sell_cost[TowerEnum.G3.index] = new CreateTower(TowerEnum.G3).getTower().getSellCost();
-		sell_cost[TowerEnum.G4.index] = new CreateTower(TowerEnum.G4).getTower().getSellCost();
+		if (level == Level.MARIO)
+		{
+			// get costs
+			cost = new int[TowerEnum.NUM_MARIO_TOWERS];
+			cost[TowerEnum.CASTLE.index] = (new CastleTower()).getCost();
+			cost[TowerEnum.HAMMER_BROS.index] = (new HammerBros()).getCost();
+			cost[TowerEnum.FLOWER.index] = (new FlowerTower()).getCost();
+			
+			// get sell costs
+			sell_cost = new int[TowerEnum.NUM_MARIO_TOWERS];
+			sell_cost[TowerEnum.CASTLE.index] = (new CastleTower()).getSellCost();
+			sell_cost[TowerEnum.HAMMER_BROS.index] = (new HammerBros()).getSellCost();
+			sell_cost[TowerEnum.FLOWER.index] = (new FlowerTower()).getSellCost();
+			
+			// get upgrade costs
+			upgrade_cost = new int[TowerEnum.NUM_MARIO_TOWERS];
+			upgrade_cost[TowerEnum.CASTLE.index] = (new CastleTower()).getUpgradeCost();
+			upgrade_cost[TowerEnum.HAMMER_BROS.index] = (new HammerBros()).getUpgradeCost();
+			upgrade_cost[TowerEnum.FLOWER.index] = (new FlowerTower()).getUpgradeCost();
+		}
+		else if (level == Level.POKEMON)
+		{
+			// get costs
+			cost = new int[TowerEnum.NUM_POKEMON_TOWERS];
+			cost[TowerEnum.FIRE.index] = (new FireTower()).getCost();
+			cost[TowerEnum.WATER.index] = (new WaterTower()).getCost();
+			cost[TowerEnum.GRASS.index] = (new GrassTower()).getCost();
+			cost[TowerEnum.PSYCHIC.index] = (new PsychicTower()).getCost();
+			
+			// get sell costs
+			sell_cost = new int[TowerEnum.NUM_POKEMON_TOWERS];
+			sell_cost[TowerEnum.FIRE.index] = (new FireTower()).getSellCost();
+			sell_cost[TowerEnum.WATER.index] = (new WaterTower()).getSellCost();
+			sell_cost[TowerEnum.GRASS.index] = (new GrassTower()).getSellCost();
+			sell_cost[TowerEnum.PSYCHIC.index] = (new PsychicTower()).getSellCost();
+			
+			// get upgrade costs
+			upgrade_cost = new int[TowerEnum.NUM_POKEMON_TOWERS];
+			upgrade_cost[TowerEnum.FIRE.index] = (new FireTower()).getUpgradeCost();
+			upgrade_cost[TowerEnum.WATER.index] = (new WaterTower()).getUpgradeCost();
+			upgrade_cost[TowerEnum.GRASS.index] = (new GrassTower()).getUpgradeCost();
+			upgrade_cost[TowerEnum.PSYCHIC.index] = (new PsychicTower()).getUpgradeCost();
+		}
+		else if (level == Level.ZELDA)
+		{
+			// get costs
+			cost = new int[TowerEnum.NUM_ZELDA_TOWERS];
+			cost[TowerEnum.BOMB.index] = (new BombTower()).getCost();
+			cost[TowerEnum.BOOMERANG.index] = (new BoomerangTower()).getCost();
+			cost[TowerEnum.SLINGSHOT.index] = (new SlingshotTower()).getCost();
+			cost[TowerEnum.SWORD.index] = (new SwordTower()).getCost();
+
+			// get sell costs
+			sell_cost = new int[TowerEnum.NUM_ZELDA_TOWERS];
+			sell_cost[TowerEnum.BOMB.index] = (new BombTower()).getSellCost();
+			sell_cost[TowerEnum.BOOMERANG.index] = (new BoomerangTower()).getSellCost();
+			sell_cost[TowerEnum.SLINGSHOT.index] = (new SlingshotTower()).getSellCost();
+			sell_cost[TowerEnum.SWORD.index] = (new SwordTower()).getSellCost();
+
+			// get upgrade costs
+			upgrade_cost = new int[TowerEnum.NUM_ZELDA_TOWERS];
+			upgrade_cost[TowerEnum.BOMB.index] = (new BombTower()).getUpgradeCost();
+			upgrade_cost[TowerEnum.BOOMERANG.index] = (new BoomerangTower()).getUpgradeCost();
+			upgrade_cost[TowerEnum.SLINGSHOT.index] = (new SlingshotTower()).getUpgradeCost();
+			upgrade_cost[TowerEnum.SWORD.index] = (new SwordTower()).getUpgradeCost();
+		}
+		else if (level == Level.GALAGA)
+		{
+			// get costs
+			cost = new int[TowerEnum.NUM_GALAGA_TOWERS];
+			cost[TowerEnum.G1.index] = (new G1Tower()).getCost();
+			cost[TowerEnum.G2.index] = (new G2Tower()).getCost();
+			cost[TowerEnum.G3.index] = (new G3Tower()).getCost();
+			cost[TowerEnum.G4.index] = (new G4Tower()).getCost();
+
+			// get sell costs
+			sell_cost = new int[TowerEnum.NUM_GALAGA_TOWERS];
+			sell_cost[TowerEnum.G1.index] = (new G1Tower()).getSellCost();
+			sell_cost[TowerEnum.G2.index] = (new G2Tower()).getSellCost();
+			sell_cost[TowerEnum.G3.index] = (new G3Tower()).getSellCost();
+			sell_cost[TowerEnum.G4.index] = (new G4Tower()).getSellCost();
+
+			// get upgrade costs
+			upgrade_cost = new int[TowerEnum.NUM_GALAGA_TOWERS];
+			upgrade_cost[TowerEnum.G1.index] = (new G1Tower()).getUpgradeCost();
+			upgrade_cost[TowerEnum.G2.index] = (new G2Tower()).getUpgradeCost();
+			upgrade_cost[TowerEnum.G3.index] = (new G3Tower()).getUpgradeCost();
+			upgrade_cost[TowerEnum.G4.index] = (new G4Tower()).getUpgradeCost();
+		}
 	}
 	
 	public void render(SpriteBatch batch)
@@ -245,194 +241,36 @@ public class TowerSelect
 		font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 		font.setScale(1.0f);
 		font.draw(batch, "TOWERS", 635, 380);
+		
+		if (sell_state)
+			batch.draw(selected, util_buttons[SELL].x, util_buttons[SELL].y, util_buttons[SELL].width, util_buttons[SELL].height);
+		else if (upgrade_state)
+			batch.draw(selected, util_buttons[UPGRADE].x, util_buttons[UPGRADE].y, util_buttons[UPGRADE].width, util_buttons[UPGRADE].height);
+		else
+			batch.draw(selected, buttons[current_tower].x, buttons[current_tower].y, buttons[current_tower].width, buttons[current_tower].height);
+		
+		for (int i = 0; i < util_buttons.length; i++)
+			batch.draw(util_tex[i], util_buttons[i].x, util_buttons[i].y, util_buttons[i].width, util_buttons[i].height);
+		
 		for (int i = 0; i < buttons.length; i++)
 		{
-			if(mapID == MARIO)
-			{
-				if(current_tower == i)
-				{
-					batch.draw(white,buttons[i].x,buttons[i].y,buttons[i].width,buttons[i].height);
-
-
-				}
-				font.setColor(0f,0f,0f,1f);
-				if (current_tower == UPGRADE)
-				{
-					if(i == CASTLE)
-						font.draw(batch, "$"+upgrade_cost[TowerEnum.CASTLE.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i == HAMMER)
-						font.draw(batch, "$"+upgrade_cost[TowerEnum.HAMMER_BROS.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i == FLOWER)
-						font.draw(batch, "$"+upgrade_cost[TowerEnum.FLOWER.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-				}
-				else if (current_tower == SELL)
-				{
-					if(i == CASTLE)
-						font.draw(batch, "$"+sell_cost[TowerEnum.CASTLE.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i == HAMMER)
-						font.draw(batch, "$"+sell_cost[TowerEnum.HAMMER_BROS.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i == FLOWER)
-						font.draw(batch, "$"+upgrade_cost[TowerEnum.FLOWER.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-				}
-				else
-				{
-					if(i == CASTLE)
-						font.draw(batch, "$"+CASTLE_PRICE, buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i == HAMMER)
-						font.draw(batch, "$"+HAMMER_PRICE, buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i == FLOWER)
-						font.draw(batch, "$"+upgrade_cost[TowerEnum.FLOWER.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-				}
-
-				batch.draw(tex[i],buttons[i].x,buttons[i].y,buttons[i].width,buttons[i].height);
-				font.setColor(1f,1f,1f,1f);
-
-			}
-			else if(mapID == POKEMON)
-			{
-				if((i >= NUM_UTIL_BUTTONS - 1) && (current_tower == i + NUM_MARIO_BUTTONS))
-					batch.draw(white,buttons[i].x,buttons[i].y,buttons[i].width,buttons[i].height);
-				else if((i < NUM_UTIL_BUTTONS) && (current_tower == i))
-					batch.draw(white,buttons[i].x,buttons[i].y,buttons[i].width,buttons[i].height);
-				
-				font.setColor(0f,0f,0f,1f);
-				if (current_tower == UPGRADE)
-				{
-					if(i + NUM_MARIO_BUTTONS == PSYCHIC)
-						font.draw(batch, "$"+upgrade_cost[TowerEnum.PSYCHIC.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS == FIRE)
-						font.draw(batch, "$"+upgrade_cost[TowerEnum.FIRE.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS == GRASS)
-						font.draw(batch, "$"+upgrade_cost[TowerEnum.GRASS.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS == WATER)
-						font.draw(batch, "$"+upgrade_cost[TowerEnum.WATER.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-				}
-				else if (current_tower == SELL)
-				{
-					if(i + NUM_MARIO_BUTTONS == PSYCHIC)
-						font.draw(batch, "$"+sell_cost[TowerEnum.PSYCHIC.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS == FIRE)
-						font.draw(batch, "$"+sell_cost[TowerEnum.FIRE.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS == GRASS)
-						font.draw(batch, "$"+sell_cost[TowerEnum.GRASS.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS == WATER)
-						font.draw(batch, "$"+sell_cost[TowerEnum.WATER.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-				}
-				else
-				{
-					if(i + NUM_MARIO_BUTTONS == PSYCHIC)
-						font.draw(batch, "$"+PSYCHIC_PRICE, buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS == FIRE)
-						font.draw(batch, "$"+FIRE_PRICE, buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS == GRASS)
-						font.draw(batch, "$"+GRASS_PRICE, buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS == WATER)
-						font.draw(batch, "$"+WATER_PRICE, buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-				}
-				
-				batch.draw(tex[i],buttons[i].x,buttons[i].y,buttons[i].width,buttons[i].height);
-				font.setColor(1f,1f,1f,1f);
-
-			}
-			else if(mapID == ZELDA)
-			{
-				if((i >= NUM_UTIL_BUTTONS - 1) && (current_tower == i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS))
-					batch.draw(white,buttons[i].x,buttons[i].y,buttons[i].width,buttons[i].height);
-				else if((i < NUM_UTIL_BUTTONS) && (current_tower == i))
-					batch.draw(white,buttons[i].x,buttons[i].y,buttons[i].width,buttons[i].height);
-				
-				font.setColor(0f,0f,0f,1f);
-				if (current_tower == UPGRADE)
-				{
-					if(i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS == BOMB)
-						font.draw(batch, "$"+upgrade_cost[TowerEnum.BOMB.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS == BOOMERANG)
-						font.draw(batch, "$"+upgrade_cost[TowerEnum.BOOMERANG.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS == SLINGSHOT)
-						font.draw(batch, "$"+upgrade_cost[TowerEnum.SLINGSHOT.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS == SWORD)
-						font.draw(batch, "$"+upgrade_cost[TowerEnum.SWORD.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-				}
-				else if (current_tower == SELL)
-				{
-					if(i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS == BOMB)
-						font.draw(batch, "$"+sell_cost[TowerEnum.BOMB.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS == BOOMERANG)
-						font.draw(batch, "$"+sell_cost[TowerEnum.BOOMERANG.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS == SLINGSHOT)
-						font.draw(batch, "$"+sell_cost[TowerEnum.SLINGSHOT.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS == SWORD)
-						font.draw(batch, "$"+sell_cost[TowerEnum.SWORD.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-				}
-				else
-				{
-					if(i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS == BOMB)
-						font.draw(batch, "$"+BOMB_PRICE, buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS == BOOMERANG)
-						font.draw(batch, "$"+BOOMERANG_PRICE, buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS == SLINGSHOT)
-						font.draw(batch, "$"+SLINGSHOT_PRICE, buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS == SWORD)
-						font.draw(batch, "$"+SWORD_PRICE, buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-				}
-				
-				batch.draw(tex[i],buttons[i].x,buttons[i].y,buttons[i].width,buttons[i].height);
-				font.setColor(1f,1f,1f,1f);
-
-			}
-			else if(mapID == GALAGA)
-			{
-				if((i >= NUM_UTIL_BUTTONS - 1) && (current_tower == i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS + NUM_ZELDA_BUTTONS))
-					batch.draw(white,buttons[i].x,buttons[i].y,buttons[i].width,buttons[i].height);
-				else if((i < NUM_UTIL_BUTTONS) && (current_tower == i))
-					batch.draw(white,buttons[i].x,buttons[i].y,buttons[i].width,buttons[i].height);
-				
-				font.setColor(0f,0f,0f,1f);
-				if (current_tower == UPGRADE)
-				{
-					if(i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS + NUM_ZELDA_BUTTONS == G1)
-						font.draw(batch, "$"+upgrade_cost[TowerEnum.G1.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS + NUM_ZELDA_BUTTONS == G2)
-						font.draw(batch, "$"+upgrade_cost[TowerEnum.G2.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS + NUM_ZELDA_BUTTONS == G3)
-						font.draw(batch, "$"+upgrade_cost[TowerEnum.G3.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS  + NUM_ZELDA_BUTTONS == G4)
-						font.draw(batch, "$"+upgrade_cost[TowerEnum.G4.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-				}
-				else if (current_tower == SELL)
-				{
-					if(i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS + NUM_ZELDA_BUTTONS == G1)
-						font.draw(batch, "$"+sell_cost[TowerEnum.G1.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS + NUM_ZELDA_BUTTONS == G2)
-						font.draw(batch, "$"+sell_cost[TowerEnum.G2.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS + NUM_ZELDA_BUTTONS == G3)
-						font.draw(batch, "$"+sell_cost[TowerEnum.G3.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS  + NUM_ZELDA_BUTTONS == G4)
-						font.draw(batch, "$"+sell_cost[TowerEnum.G4.index], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-				}
-				else
-				{
-					if(i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS + NUM_ZELDA_BUTTONS == G1)
-						font.draw(batch, "$"+G1_PRICE, buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS + NUM_ZELDA_BUTTONS == G2)
-						font.draw(batch, "$"+G2_PRICE, buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS + NUM_ZELDA_BUTTONS == G3)
-						font.draw(batch, "$"+G3_PRICE, buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-					else if(i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS + NUM_ZELDA_BUTTONS == G4)
-						font.draw(batch, "$"+G4_PRICE, buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
-				}
-				
-				batch.draw(tex[i],buttons[i].x,buttons[i].y,buttons[i].width,buttons[i].height);
-				font.setColor(1f,1f,1f,1f);
-
-			}
-
+			batch.draw(tex[i], buttons[i].x, buttons[i].y, buttons[i].width, buttons[i].height);
+			if (sell_state)
+				font.draw(batch, "$"+sell_cost[i], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
+			else if (upgrade_state)
+				font.draw(batch, "$"+upgrade_cost[i], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
+			else
+				font.draw(batch, "$"+cost[i], buttons[i].x + buttons[i].width*1.25f,  buttons[i].y + buttons[i].height/2);
 		}
 			
 	}
 	
-	public int update()
+	
+	public int update(boolean sell_state, boolean upgrade_state)
 	{
+		this.sell_state = sell_state;
+		this.upgrade_state = upgrade_state;
+		
 		Vector3 touchPos = new Vector3();
 		touchPos.set(0, 0, 0);
 		if (Gdx.input.isTouched())
@@ -448,60 +286,34 @@ public class TowerSelect
 			is_pressed = true;
 		
 		
+		for (int i = 0; i < util_buttons.length; i++)
+		{
+			if (util_buttons[i].contains(touchPos.x, touchPos.y))
+			{
+				if (!is_pressed)
+				{
+					if (i == PAUSE)
+						return -3;
+					else if (i == SELL)
+						return -2;
+					else if (i == UPGRADE)
+						return -1;
+				}
+			}
+		}
+		
 		for (int i = 0; i < buttons.length; i++)
 		{
 			if (buttons[i].contains(touchPos.x, touchPos.y))
 			{
 				if (!is_pressed)
 				{
-					if(mapID == MARIO)
-					{
-						current_tower = i;
-						return i;
-					}
-					else if(mapID == POKEMON)
-					{
-						if(i > 2)
-						{
-							current_tower = i + NUM_MARIO_BUTTONS;
-							return i + NUM_MARIO_BUTTONS;
-						}
-						else
-						{
-							current_tower = i;
-							return i;
-						}
-					}
-					else if(mapID == ZELDA)
-					{
-						if(i > 2)
-						{
-							current_tower = i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS;
-							return i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS;
-						}
-						else
-						{
-							current_tower = i;
-							return i;
-						}
-					}
-					else if(mapID == GALAGA)
-					{
-						if(i > 2)
-						{
-							current_tower = i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS + NUM_ZELDA_BUTTONS;
-							return i + NUM_MARIO_BUTTONS + NUM_POKEMON_BUTTONS + NUM_ZELDA_BUTTONS;
-						}
-						else
-						{
-							current_tower = i;
-							return i;
-						}
-					}
+					current_tower = i;
+					return i;
 				}
 			}
 		}
 		
-		return -1;
+		return -4;
 	}
 }

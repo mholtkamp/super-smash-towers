@@ -1,7 +1,7 @@
 package towers;
 
 import bullets.Bullet;
-import bullets.FireBall;
+import bullets.GalagaPurple;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -92,7 +92,7 @@ public class G1Tower extends Tower
 				if (Math.sqrt(xE*xE + yE*yE) < range)
 				{
 					target = enemies.get(i);
-					bullets.add(new FireBall(target, center_x, center_y, damagemultiplier, manager));
+					bullets.add(new GalagaPurple(target, center_x, center_y, damagemultiplier, enemies, manager));
 					time_since_last_shot = 0;
 					break;
 				}

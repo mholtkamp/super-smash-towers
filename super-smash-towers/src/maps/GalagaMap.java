@@ -91,9 +91,9 @@ public class GalagaMap extends Map
 				{
 					path = leftRight();
 					if(j % 5 == 0)
-						q.add(new Arcanine(path, difficulty,manager));
+						q.add(new galagaEnemy1(path, difficulty,manager));
 					else
-						q.add(new Weedle(path, difficulty,manager));
+						q.add(new galagaEnemy2(path, difficulty,manager));
 				}
 			}
 			else if (wave < 2)
@@ -102,9 +102,9 @@ public class GalagaMap extends Map
 				{
 					path = leftRight();
 					if(j % 3 == 0)
-						q.add(new Geodude(path, difficulty,manager));
+						q.add(new galagaEnemy3(path, difficulty,manager));
 					else
-						q.add(new Arcanine(path, difficulty,manager));
+						q.add(new galagaEnemy4(path, difficulty,manager));
 				}
 			}
 			else if (wave < 3)
@@ -112,7 +112,7 @@ public class GalagaMap extends Map
 				for (int j = 0; j < wave*5 + 5; j++)
 				{
 					path = leftRight();
-					q.add(new Tentacool(path, difficulty,manager));
+					q.add(new galagaEnemy1(path, difficulty,manager));
 				}
 			}
 			else if (wave < 5)
@@ -121,9 +121,9 @@ public class GalagaMap extends Map
 				{
 					path = leftRight();
 					if(j % 2 == 0)
-						q.add(new Voltorb(path, difficulty,manager));
+						q.add(new galagaEnemy2(path, difficulty,manager));
 					else
-						q.add(new Weedle(path, difficulty,manager));
+						q.add(new galagaEnemy3(path, difficulty,manager));
 				}
 			}
 			else if (wave < 7)
@@ -132,11 +132,11 @@ public class GalagaMap extends Map
 				{
 					path = leftRight();
 					if(j % 8 == 0)
-						q.add(new Tentacool(path, difficulty,manager));
+						q.add(new galagaEnemy1(path, difficulty,manager));
 					else if(j % 3 == 0)
-						q.add(new Geodude(path, difficulty,manager));
+						q.add(new galagaEnemy2(path, difficulty,manager));
 					else
-						q.add(new Weedle(path, difficulty,manager));
+						q.add(new galagaEnemy3(path, difficulty,manager));
 
 				}
 			}
@@ -146,11 +146,11 @@ public class GalagaMap extends Map
 				{
 					path = leftRight();
 					if(j % 8 == 0)
-						q.add(new Arcanine(path, difficulty,manager));
+						q.add(new galagaEnemy2(path, difficulty,manager));
 					else if(j % 3 == 0)
-						q.add(new Tentacool(path, difficulty,manager));
+						q.add(new galagaEnemy3(path, difficulty,manager));
 					else
-						q.add(new Geodude(path, difficulty,manager));
+						q.add(new galagaEnemy4(path, difficulty,manager));
 
 				}
 			}
@@ -160,11 +160,11 @@ public class GalagaMap extends Map
 				{
 					path = leftRight();
 					if(j % 8 == 0)
-						q.add(new Tentacool(path, difficulty,manager));
+						q.add(new galagaEnemy1(path, difficulty,manager));
 					else if(j % 3 == 0)
-						q.add(new Geodude(path, difficulty,manager));
+						q.add(new galagaEnemy3(path, difficulty,manager));
 					else
-						q.add(new Weedle(path, difficulty,manager));
+						q.add(new galagaEnemy4(path, difficulty,manager));
 
 				}
 			}
@@ -178,30 +178,14 @@ public class GalagaMap extends Map
 		batch.draw(bg_tex, 0, 0, WIDTH, HEIGHT);
 		batch.draw(field,4*GRID_WIDTH, 4*GRID_HEIGHT, 200,120 );
 		batch.draw(flagship,6*GRID_WIDTH, 5*GRID_HEIGHT, 40,40 );
-		/*batch.draw(towerPlace, 0*GRID_WIDTH, 9*GRID_HEIGHT, 30,30);
-		batch.draw(towerPlace, 14*GRID_WIDTH, 9*GRID_HEIGHT, 30,30);
-		batch.draw(towerPlace, 2*GRID_WIDTH, 8*GRID_HEIGHT, 30,30);
-		batch.draw(towerPlace, 11*GRID_WIDTH, 8*GRID_HEIGHT, 30,30);
-		batch.draw(towerPlace, 7*GRID_WIDTH, 7*GRID_HEIGHT, 30,30);
-		batch.draw(towerPlace, 1*GRID_WIDTH, 6*GRID_HEIGHT, 30,30);
-		batch.draw(towerPlace, 13*GRID_WIDTH, 6*GRID_HEIGHT, 30,30);
-		batch.draw(towerPlace, 8*GRID_WIDTH, 5*GRID_HEIGHT, 30,30);
-		batch.draw(towerPlace, 12*GRID_WIDTH, 4*GRID_HEIGHT, 30,30);
-		batch.draw(towerPlace, 2*GRID_WIDTH, 3*GRID_HEIGHT, 30,30);
-		batch.draw(towerPlace, 10*GRID_WIDTH, 3*GRID_HEIGHT, 30,30);
-		batch.draw(towerPlace, 5*GRID_WIDTH, 1*GRID_HEIGHT, 30,30);
-		batch.draw(towerPlace, 11*GRID_WIDTH, 1*GRID_HEIGHT, 30,30);
-		batch.draw(towerPlace, 0*GRID_WIDTH, 0*GRID_HEIGHT, 30,30);
-		batch.draw(towerPlace, 8*GRID_WIDTH, 0*GRID_HEIGHT, 30,30);
-		batch.draw(towerPlace, 14*GRID_WIDTH, 0*GRID_HEIGHT, 30,30);*/
 	}
 	
 	public Point[] leftRight()
 	{
 		// WAYPOINTS
-		waypoints = new Point[9];
+		waypoints = new Point[5];
 		Random generator = new Random(); 
-		int randx, randy,rand2x=1, rand2y=1, waypoint;
+		int randx, randy, waypoint;
 		
 		//create random starting position
 		if(generator.nextInt(2) > 0)
@@ -214,7 +198,7 @@ public class GalagaMap extends Map
 		waypoints[0] = new Point(randx*GRID_WIDTH, randy*GRID_HEIGHT);
 		
 		//create random path
-		for(waypoint = 1; waypoint <8;waypoint++)
+		for(waypoint = 1; waypoint <4;waypoint++)
 		{
 				randx = generator.nextInt(15);
 				randy = generator.nextInt(10);
@@ -228,7 +212,7 @@ public class GalagaMap extends Map
 		}
 		
 		//end path at base
-		waypoints[8] = new Point(6*GRID_WIDTH, 5*GRID_HEIGHT);
+		waypoints[4] = new Point(6*GRID_WIDTH, 5*GRID_HEIGHT);
 		
 		
 		

@@ -1,7 +1,7 @@
 package towers;
 
 import bullets.Bullet;
-import bullets.BasicBullet;
+import bullets.Pebble;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -18,7 +18,7 @@ public class SlingshotTower extends Tower
 {
 
 	private final int CALLS_BETWEEN_TOGGLE = 15;
-	private int current_tex, toggle_count;
+	private int current_tex;
 	private Texture[] tex;
 	
 	public SlingshotTower()
@@ -42,7 +42,7 @@ public class SlingshotTower extends Tower
 		width = 40;
 		height = 50;
 		range = 200;
-		cost = 250;
+		cost = 800;
 		firing_speed = 1.5f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
 		
@@ -61,7 +61,7 @@ public class SlingshotTower extends Tower
 		//add textures 2-5 for lvls 2 and 3
 		
 		current_tex = 0;
-		toggle_count = CALLS_BETWEEN_TOGGLE;
+		//toggle_count = CALLS_BETWEEN_TOGGLE;
 	}
 	
 	public void levelUp()
@@ -92,7 +92,7 @@ public class SlingshotTower extends Tower
 				if (Math.sqrt(xE*xE + yE*yE) < range)
 				{
 					target = enemies.get(i);
-					bullets.add(new BasicBullet(target, center_x, center_y, damagemultiplier, manager));
+					bullets.add(new Pebble(target, center_x, center_y, damagemultiplier, manager));
 					time_since_last_shot = 0;
 					break;
 				}
