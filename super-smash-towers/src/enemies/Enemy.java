@@ -2,11 +2,12 @@ package enemies;
 
 import com.me.td.*;
 
-
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.me.td.Options;
+import com.sun.jndi.ldap.ManageReferralControl;
 
 import util.Point;
 
@@ -24,7 +25,10 @@ public abstract class Enemy
 	protected float speed, speed_multiplier;
 	protected boolean dead, hit_tower, toggle, left;
 	protected String name;
+	//enemy dmg bar
 	private int	maxHealth;
+	private AssetManager manager = TDGame.manager;
+	protected Texture red,green;
 	
 	public float getX() {return collider.x;}
 	
@@ -83,6 +87,9 @@ public abstract class Enemy
 		left = false;
 		speed_multiplier = 1.0f;
 		this.maxHealth = maxHealth;
+		red = manager.get("data/redfade.png");
+		green = manager.get("data/greenfade.png");
+		
 	}
 	
 	public void update()
@@ -127,11 +134,12 @@ public abstract class Enemy
 //			batch.draw(tex[cur_tex], collider.x, collider.y, width, height);
 			batch.draw(tex[cur_tex], collider.x, collider.y, (float)width, (float)height, 0, 0, width, height, left, false);
 			
-			//FIXME
+			//TODO damage bar
 			//DamageBAR on enemies
 			if (Options.isEnemyHealthDisplay())
 			{
-				/// code to display enemy damage
+				batch.draw(red,collider.x,collider.y-10, (float)width, 10);
+				batch.draw(green,collider.x,collider.y-10, (health/maxHealth)*(float)width, 10);
 			}
 		}
 	}

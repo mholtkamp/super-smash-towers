@@ -29,7 +29,7 @@ public class TDGame implements ApplicationListener
 	private Menu menu;
 	private State state;
 	private Level level;
-	private AssetManager manager;
+	public static AssetManager manager;
 	private LoadBar load;
 	private boolean enable_pause;
 	public Options options;
