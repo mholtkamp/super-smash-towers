@@ -9,15 +9,15 @@ import util.Point;
 
 public class Weedle extends Enemy
 {
-	
+	static int maxHealth = 200 ;
 	public Weedle(Point[] waypoints,float difficulty,AssetManager manager)
 	{
-		super(waypoints);
+		super(waypoints, maxHealth);
 		
 		name = "Weedle";
 		width = 40;
 		height = 28;
-		health = 200;
+		health = maxHealth;
 		speed = 1.5f;
 		damage = 20;
 		gold_given = 50;

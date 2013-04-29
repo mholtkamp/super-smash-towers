@@ -171,9 +171,12 @@ public class World
 		this.camera = camera;
 		font = manager.get("data/nint.fnt");
 		katana_font = manager.get("data/snes.fnt");
+		//Health BAR
+		health_bar_unsafe = manager.get("data/redfade.png");
+		health_bar_safe = manager.get("data/greenfade.png");
 		health_bar_max = manager.get("data/health_bar_max.png");
-		health_bar_unsafe = manager.get("data/health_bar_unsafe.png");
-		health_bar_safe = manager.get("data/health_bar_safe.png");
+//		health_bar_unsafe = manager.get("data/health_bar_unsafe.png");
+//		health_bar_safe = manager.get("data/health_bar_safe.png");
 		hover = manager.get("data/hover.png");
 		coin = manager.get("data/coin.png");
 //		heart0 = new Texture("data/textures/heart0.png");

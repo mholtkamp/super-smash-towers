@@ -192,7 +192,7 @@ public class Menu
 		else if (state == MenuState.INSTRUCTION)
 		{
 			batch.draw(instrbg, 0, 0, WIDTH, HEIGHT);
-			batch.draw(backButtonTex, backButton.x, backButton.y, backButton.width, backButton.height);
+			drawBackButton(batch);
 			
 			// write instructions
 			font.setScale(1);
@@ -204,7 +204,7 @@ public class Menu
 		else if (state == MenuState.OPTIONS)
 		{
 			batch.draw(instrbg, 0, 0, WIDTH, HEIGHT);
-			batch.draw(backButtonTex, backButton.x, backButton.y, backButton.width, backButton.height);
+			drawBackButton(batch);
 			batch.draw(deleteButtonTex, deleteButton.x, deleteButton.y, deleteButton.width, deleteButton.height);
 			
 			// write instructions
@@ -218,12 +218,12 @@ public class Menu
 			batch.draw(easyButtonTex,easyButton.x,easyButton.y,easyButton.width,easyButton.height);
 			batch.draw(mediumButtonTex,mediumButton.x,mediumButton.y,mediumButton.width,mediumButton.height);
 			batch.draw(hardButtonTex,hardButton.x,hardButton.y,hardButton.width,hardButton.height);
-			batch.draw(backButtonTex,backButton.x,backButton.y,backButton.width,backButton.height);
+			drawBackButton(batch);
 		}
 		else if (state == MenuState.LEVEL)
 		{
 			batch.draw(levelbg, 0, 0, WIDTH, HEIGHT);
-			batch.draw(backButtonTex,backButton.x,backButton.y,backButton.width,backButton.height);
+			drawBackButton(batch);
 			for (int i = 0; i < level_buttons.length; i++)
 				batch.draw(level_buttons_tex[i], level_buttons[i].x, level_buttons[i].y, level_buttons[i].width, level_buttons[i].height);
 			for (int i = 0; i < stars_dimensions.length; i++)
@@ -390,4 +390,14 @@ public class Menu
 		}
 		return Level.NONE;
 	}
+	
+	//draw buttons
+	void drawBackButton(SpriteBatch batch)
+	{
+		batch.draw(backButtonTex, backButton.x, backButton.y, backButton.width, backButton.height);
+		
+	}
 }
+
+
+

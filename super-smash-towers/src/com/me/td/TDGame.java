@@ -34,6 +34,7 @@ public class TDGame implements ApplicationListener
 	private LoadBar load;
 	private boolean enable_pause;
 	private Texture tex34;
+	public Options options;
 
 	@Override
 	public void create()
@@ -48,6 +49,7 @@ public class TDGame implements ApplicationListener
 		tex34 = new Texture(Gdx.files.internal("data/triangle.png"));
 		load = new LoadBar(manager);
 		enable_pause = true;
+		options = new Options();
 	}
 
 	@Override
@@ -241,8 +243,10 @@ public class TDGame implements ApplicationListener
 
 		// UI Textures
 		manager.load("data/health_bar_max.png",Texture.class);
-		manager.load("data/health_bar_safe.png",Texture.class);
-		manager.load("data/health_bar_unsafe.png",Texture.class);
+		manager.load("data/greenfade.png",Texture.class);
+		manager.load("data/redfade.png",Texture.class);
+//		manager.load("data/health_bar_safe.png",Texture.class);
+//		manager.load("data/health_bar_unsafe.png",Texture.class);
 		manager.load("data/hover.png",Texture.class);
 		manager.load("data/textures/heart0.png",Texture.class);
 		manager.load("data/textures/heart25.png",Texture.class);

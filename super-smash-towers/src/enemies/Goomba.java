@@ -9,15 +9,15 @@ import util.Point;
 
 public class Goomba extends Enemy
 {
-	
+	static int maxHealth = 50;
 	public Goomba(Point[] waypoints,float difficulty,AssetManager manager)
 	{
-		super(waypoints);
+		super(waypoints ,maxHealth);
 		
 		name = "Goomba";
 		width = 32;
 		height = 32;
-		health = 50;
+		health = maxHealth;
 		speed = 2.5f;
 		damage = 5;
 		gold_given = 10;

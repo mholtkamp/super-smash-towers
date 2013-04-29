@@ -9,15 +9,15 @@ import util.Point;
 
 public class Bowser extends Enemy
 {
-	
+	static int maxHealth = 9500;
 	public Bowser(Point[] waypoints,float difficulty,AssetManager manager)
 	{
-		super(waypoints);
+		super(waypoints, maxHealth);
 		
 		name = "Bowser";
 		width = 64;
 		height = 64;
-		health = 9500;
+		health = maxHealth;
 		speed = 1.0f;
 		damage = 100;
 		gold_given = 2500;

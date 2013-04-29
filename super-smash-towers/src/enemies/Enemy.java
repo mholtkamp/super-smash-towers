@@ -1,8 +1,12 @@
 package enemies;
 
+import com.me.td.*;
+
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.me.td.Options;
 
 import util.Point;
 
@@ -20,6 +24,7 @@ public abstract class Enemy
 	protected float speed, speed_multiplier;
 	protected boolean dead, hit_tower, toggle, left;
 	protected String name;
+	private int	maxHealth;
 	
 	public float getX() {return collider.x;}
 	
@@ -66,7 +71,7 @@ public abstract class Enemy
 		return false;
 	}
 	
-	public Enemy(Point[] waypoints)
+	public Enemy(Point[] waypoints,int maxHealth)
 	{
 		this.waypoints = waypoints;
 		cur_waypoint = 0;
@@ -77,6 +82,7 @@ public abstract class Enemy
 		toggle = false;
 		left = false;
 		speed_multiplier = 1.0f;
+		this.maxHealth = maxHealth;
 	}
 	
 	public void update()
@@ -120,6 +126,13 @@ public abstract class Enemy
 			}
 //			batch.draw(tex[cur_tex], collider.x, collider.y, width, height);
 			batch.draw(tex[cur_tex], collider.x, collider.y, (float)width, (float)height, 0, 0, width, height, left, false);
+			
+			//FIXME
+			//DamageBAR on enemies
+			if (Options.isEnemyHealthDisplay())
+			{
+				/// code to display enemy damage
+			}
 		}
 	}
 	
