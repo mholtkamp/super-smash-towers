@@ -1,7 +1,7 @@
 package towers;
 
 import bullets.Bullet;
-import bullets.BasicBullet;
+import bullets.FireBall;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -27,10 +27,10 @@ public class FlowerTower extends Tower
 		// attributes
 		name = "FlowerTower";
 		width = 40;
-		height = 48;
-		range = 130;
+		height = 50;
+		range = 200;
 		cost = 200;
-		firing_speed = 2.0f;	// shoot every x seconds
+		firing_speed = 1.5f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
 	}
 	
@@ -99,7 +99,7 @@ public class FlowerTower extends Tower
 				if (Math.sqrt(xE*xE + yE*yE) < range)
 				{
 					target = enemies.get(i);
-					bullets.add(new BasicBullet(target, center_x, center_y, damagemultiplier, manager));
+					bullets.add(new FireBall(target, center_x, center_y, damagemultiplier, manager));
 					time_since_last_shot = 0;
 					break;
 				}
