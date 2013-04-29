@@ -9,10 +9,11 @@ import util.Point;
 
 public class Onix extends Enemy
 {
-	
-	public Onix(Point[] waypoints, float difficulty, AssetManager manager)
-	{
-		super(waypoints);
+	static int maxHealth=50000;
+ 	
+ 	public Onix(Point[] waypoints, float difficulty, AssetManager manager)
+ 	{
+		super(waypoints,maxHealth);
 		
 		name = "Onix";
 		width = 64;

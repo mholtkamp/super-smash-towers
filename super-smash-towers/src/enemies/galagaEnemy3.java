@@ -9,10 +9,11 @@ import util.Point;
 
 public class galagaEnemy3 extends Enemy
 {
-	
-	public galagaEnemy3(Point[] waypoints, float difficulty, AssetManager manager)
-	{
-		super(waypoints);
+	static int maxHealth=800;
+ 	
+ 	public galagaEnemy3(Point[] waypoints, float difficulty, AssetManager manager)
+ 	{
+		super(waypoints,maxHealth);
 		
 		name = "G Enemy 3";
 		width = 28;

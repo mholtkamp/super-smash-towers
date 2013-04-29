@@ -9,10 +9,11 @@ import util.Point;
 
 public class Victree extends Enemy
 {
-	
-	public Victree(Point[] waypoints, float difficulty, AssetManager manager)
-	{
-		super(waypoints);
+	static int maxHealth=9500;
+ 	
+ 	public Victree(Point[] waypoints, float difficulty, AssetManager manager)
+ 	{
+		super(waypoints,maxHealth);
 		
 		name = "Victree";
 		width = 64;

@@ -9,10 +9,11 @@ import util.Point;
 
 public class Eye extends Enemy
 {
-	
-	public Eye(Point[] waypoints, float difficulty, AssetManager manager)
-	{
-		super(waypoints);
+	static int maxHealth=800;
+ 	
+ 	public Eye(Point[] waypoints, float difficulty, AssetManager manager)
+ 	{
+		super(waypoints,maxHealth);
 		
 		name = "Eye";
 		width = 28;

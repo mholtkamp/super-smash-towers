@@ -14,7 +14,7 @@ public class Arcanine extends Enemy
  	public Arcanine(Point[] waypoints, float difficulty, AssetManager manager)
  	{
 		super(waypoints,maxHealth);
-		super(waypoints);
+		
  		
  		name = "Arcanine";
  		width = 35;

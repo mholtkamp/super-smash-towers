@@ -9,10 +9,11 @@ import util.Point;
 
 public class Knight extends Enemy
 {
-	
-	public Knight(Point[] waypoints, float difficulty, AssetManager manager)
-	{
-		super(waypoints);
+	static int maxHealth=1000;
+ 	
+ 	public Knight(Point[] waypoints, float difficulty, AssetManager manager)
+ 	{
+		super(waypoints,maxHealth);
 		
 		name = "Knight";
 		width = 28;

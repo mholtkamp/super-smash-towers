@@ -9,10 +9,11 @@ import util.Point;
 
 public class Jellyfish extends Enemy
 {
-	
-	public Jellyfish(Point[] waypoints, float difficulty, AssetManager manager)
-	{
-		super(waypoints);
+	static int maxHealth=600;
+ 	
+ 	public Jellyfish(Point[] waypoints, float difficulty, AssetManager manager)
+ 	{
+		super(waypoints,maxHealth);
 		
 		name = "Jellyfish";
 		width = 28;

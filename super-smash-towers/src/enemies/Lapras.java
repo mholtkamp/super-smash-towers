@@ -9,10 +9,11 @@ import util.Point;
 
 public class Lapras extends Enemy
 {
-	
-	public Lapras(Point[] waypoints, float difficulty, AssetManager manager)
-	{
-		super(waypoints);
+	static int maxHealth=95000;
+ 	
+ 	public Lapras(Point[] waypoints, float difficulty, AssetManager manager)
+ 	{
+		super(waypoints,maxHealth);
 		
 		name = "Lapras";
 		width = 35;

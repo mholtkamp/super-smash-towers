@@ -10,9 +10,11 @@ import util.Point;
 public class Gannon extends Enemy
 {
 	
-	public Gannon(Point[] waypoints, float difficulty, AssetManager manager)
-	{
-		super(waypoints);
+	static int maxHealth=50000;
+ 	
+ 	public Gannon(Point[] waypoints, float difficulty, AssetManager manager)
+ 	{
+		super(waypoints,maxHealth);
 		
 		name = "Gannon";
 		width = 35;

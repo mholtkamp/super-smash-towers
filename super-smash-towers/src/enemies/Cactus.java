@@ -9,15 +9,16 @@ import util.Point;
 
 public class Cactus extends Enemy
 {
-	
-	public Cactus(Point[] waypoints, float difficulty, AssetManager manager)
-	{
-		super(waypoints);
+	static int maxHealth=300;
+ 	
+ 	public Cactus(Point[] waypoints, float difficulty, AssetManager manager)
+ 	{
+		super(waypoints,maxHealth);
 		
 		name = "Cactus";
 		width = 28;
 		height = 42;
-		health = 300;
+		health = maxHealth;
 		speed = 2.5f;
 		damage = 15;
 		gold_given = 50;
