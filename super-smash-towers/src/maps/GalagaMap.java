@@ -198,7 +198,7 @@ public class GalagaMap extends Map
 		waypoints[0] = new Point(randx*GRID_WIDTH, randy*GRID_HEIGHT);
 		
 		//create random path
-		for(waypoint = 1; waypoint <4;waypoint++)
+		for(waypoint = 1; waypoint < 4; waypoint++)
 		{
 				randx = generator.nextInt(15);
 				randy = generator.nextInt(10);

@@ -14,6 +14,7 @@ import util.Point;
 
 public abstract class Map
 {
+	
 	protected final int WIDTH = 600, HEIGHT = 400, GRID_WIDTH = 40, GRID_HEIGHT = 40;
 	
 	protected int width, height;

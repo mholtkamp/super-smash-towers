@@ -51,7 +51,7 @@ public abstract class Tower
 	
 	public int getCost() {return cost;}
 	
-	public int getSellCost() {return cost / 2;}
+	public int getSellCost() {return (cost + upgradecost * (level - 1)) * 2 / 3;}
 	
 	public String getName() {return name;}
 	

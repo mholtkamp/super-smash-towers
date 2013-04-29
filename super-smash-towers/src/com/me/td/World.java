@@ -272,7 +272,7 @@ public class World
 				font.draw(batch, "GAME OVER", (600 - font.getBounds("GAME OVER").width) / 2, (400 + font.getBounds("GAME OVER").height) / 2);
 			else
 			{
-				font.draw(batch, "CONGRATULATIONS!", (600 - font.getBounds("CONGRATULATIONS!").width) / 2, (400 + font.getBounds("CONGRATULATIONS!").height) / 2);
+				font.draw(batch, "CONGRATULATIONS!", (740 - font.getBounds("CONGRATULATIONS!").width) / 2, (400 + font.getBounds("CONGRATULATIONS!").height) / 2);
 				congrats_played = play_once(congratulations, congrats_played, 0.5f);
 			}
 		}

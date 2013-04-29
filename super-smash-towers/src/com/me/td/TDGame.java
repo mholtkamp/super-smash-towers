@@ -40,6 +40,7 @@ public class TDGame implements ApplicationListener
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, WIDTH, HEIGHT);
 		batch = new SpriteBatch();
+		System.out.println(batch.getColor().r + " " + batch.getColor().g + " " + batch.getColor().b + " " + batch.getColor().a);
 		shape_renderer = new ShapeRenderer();
 		manager = new AssetManager();
 		load();
@@ -62,6 +63,7 @@ public class TDGame implements ApplicationListener
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
+		batch.enableBlending();
 
 		shape_renderer.setProjectionMatrix(camera.combined);
 		if (!manager.update())

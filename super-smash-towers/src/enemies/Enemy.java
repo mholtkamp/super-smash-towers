@@ -24,7 +24,7 @@ public abstract class Enemy
 	protected Rectangle collider;
 	protected int width, height, health, cur_waypoint, damage, gold_given, cur_tex, tex_count, animation_speed;
 	protected float speed, speed_multiplier;
-	protected boolean dead, hit_tower, toggle, left;
+	protected boolean dead, hit_tower, toggle, left, attack;
 	protected String name;
 	private int	maxHealth;	// enemy dmg bar
 	private AssetManager manager = TDGame.manager;
@@ -88,6 +88,7 @@ public abstract class Enemy
 		hit_tower = false;
 		toggle = false;
 		left = false;
+		attack = false;
 		speed_multiplier = 1.0f;
 		this.maxHealth = maxHealth;
 		red = manager.get("data/redfade.png");
@@ -107,8 +108,14 @@ public abstract class Enemy
 		collider.y = collider.y + (yE/hE)*speed*speed_multiplier;
 		
 		if (Math.abs(collider.x - (float) (waypoints[cur_waypoint+1].getX())) < WAYPOINT_ACCURACY)
+		{
 			if (Math.abs(collider.y - (float) (waypoints[cur_waypoint+1].getY())) < WAYPOINT_ACCURACY)
+			{
 				cur_waypoint++;
+				if (cur_waypoint + 2 >= waypoints.length)
+					attack = true;
+			}
+		}
 		
 		if (cur_waypoint + 1 >= waypoints.length)
 		{
@@ -135,7 +142,14 @@ public abstract class Enemy
 				}
 			}
 //			batch.draw(tex[cur_tex], collider.x, collider.y, width, height);
-			batch.draw(tex[cur_tex], collider.x, collider.y, (float)width, (float)height, 0, 0, width, height, left, false);
+			if (attack)
+			{
+				batch.setColor(1, 0, 0, 1);
+				batch.draw(tex[cur_tex], collider.x, collider.y, (float)width, (float)height, 0, 0, width, height, left, false);
+				batch.setColor(1, 1, 1, 0.99607843f);
+			}
+			else
+				batch.draw(tex[cur_tex], collider.x, collider.y, (float)width, (float)height, 0, 0, width, height, left, false);
 			
 			//TODO damage bar
 			//DamageBAR on enemies
