@@ -4,17 +4,17 @@
 
 *.pydevproject
 #.project
-.metadata
+#.metadata
 #bin/
 tmp/
 *.tmp
-*.bak
+#*.bak
 *.swp
 *~.nib
 local.properties
 #.classpath
-.settings/
-.loadpath
+#.settings/
+#.loadpath
 
 # External tool builders
 .externalToolBuilders/
@@ -26,7 +26,7 @@ local.properties
 .cproject
 
 # PDT-specific
-.buildpath
+#.buildpath
 
 
 #################
@@ -97,21 +97,21 @@ DocProject/Help/html
 publish
 
 # Others
-[Bb]in
-[Oo]bj
+#[Bb]in
+#[Oo]bj
 sql
 TestResults
 *.Cache
 ClientBin
 stylecop.*
-~$*
+#~$*
 *.dbmdl
 Generated_Code #added for RIA/Silverlight projects
 
 # Backup & report files from converting an old project file to a newer
 # Visual Studio version. Backup files are not needed, because we have git ;-)
 _UpgradeReport_Files/
-Backup*/
+#Backup*/
 UpgradeLog*.XML
 
 
@@ -136,14 +136,14 @@ Desktop.ini
 # Packages
 *.egg
 *.egg-info
-dist
-build
-eggs
-parts
-bin
-var
-sdist
-develop-eggs
+#dist
+#build
+#eggs
+#parts
+#bin
+#var
+#sdist
+#develop-eggs
 .installed.cfg
 
 # Installer logs
