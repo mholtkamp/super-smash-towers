@@ -42,7 +42,7 @@ public class G3Tower extends Tower
 		width = 40;
 		height = 48;
 		range = 130;
-		cost = 1400;
+		cost = 1200;
 		firing_speed = 2.0f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
 		

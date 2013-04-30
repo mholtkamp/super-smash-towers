@@ -11,7 +11,7 @@ import util.Point;
 
 public class Voltorb extends Enemy
 {
-	static int maxHealth = 200;
+	static int maxHealth = 325;
 	public Voltorb(Point[] waypoints,float difficulty,AssetManager manager)
 	{
 		super(waypoints,maxHealth);
@@ -19,10 +19,10 @@ public class Voltorb extends Enemy
 		name = "Voltorb";
 		width = 29;
 		height = 29;
-		health = maxHealth;
+		health = (int)(maxHealth*difficulty);
 		speed = 1.5f;
-		damage = 20;
-		gold_given = 50;
+		damage = (int)(20*difficulty);
+		gold_given = 40;
 		animation_speed = 20;
 		type = Type.ELECTRIC;
 		

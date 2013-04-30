@@ -18,8 +18,8 @@ public class galagaEnemy4 extends Enemy
 		name = "G Enemy 4";
 		width = 28;
 		height = 42;
-		health = 1200;
-		speed = 2.0f;
+		health = (int)(maxHealth*difficulty);
+		speed = 2.0f*difficulty;
 		damage = 20;
 		gold_given = 50;
 		animation_speed = 10;

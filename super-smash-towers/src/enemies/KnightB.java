@@ -18,9 +18,9 @@ public class KnightB extends Enemy
 		name = "KnightB";
 		width = 28;
 		height = 42;
-		health = 2000;
+		health = (int)(maxHealth*difficulty);
 		speed = 2.0f;
-		damage = 40;
+		damage = (int)(40*difficulty);
 		gold_given = 50;
 		animation_speed = 10;
 		

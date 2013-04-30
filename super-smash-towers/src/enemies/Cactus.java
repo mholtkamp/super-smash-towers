@@ -18,9 +18,9 @@ public class Cactus extends Enemy
 		name = "Cactus";
 		width = 28;
 		height = 42;
-		health = maxHealth;
+		health = (int)(maxHealth*difficulty);
 		speed = 2.5f;
-		damage = 15;
+		damage = (int)(15*difficulty);
 		gold_given = 50;
 		animation_speed = 10;
 		

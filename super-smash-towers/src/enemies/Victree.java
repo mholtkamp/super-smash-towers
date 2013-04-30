@@ -11,7 +11,7 @@ import util.Point;
 
 public class Victree extends Enemy
 {
-	static int maxHealth=9500;
+	static int maxHealth=15000;
  	
  	public Victree(Point[] waypoints, float difficulty, AssetManager manager)
  	{
@@ -20,9 +20,9 @@ public class Victree extends Enemy
 		name = "Victree";
 		width = 57;
 		height = 45;
-		health = 9500;
+		health = (int)(maxHealth*difficulty);
 		speed = 1.5f;
-		damage = 100;
+		damage = (int)(40*difficulty);
 		gold_given = 50;
 		animation_speed = 10;
 		type = Type.GRASS;

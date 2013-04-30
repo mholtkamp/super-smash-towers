@@ -9,7 +9,7 @@ import util.Point;
 
 public class Koopa extends Enemy
 {
-	static int maxHealth = 200;
+	static int maxHealth = 1000;
 	public Koopa(Point[] waypoints,float difficulty,AssetManager manager)
 	{
 		super(waypoints, maxHealth);
@@ -17,10 +17,10 @@ public class Koopa extends Enemy
 		name = "Koopa";
 		width = 32;
 		height = 46;
-		health = maxHealth;
+		health = (int)(maxHealth*difficulty);
 		speed = 1.5f;
-		damage = 20;
-		gold_given = 50;
+		damage = (int)(20*difficulty);
+		gold_given = 55;
 		animation_speed = 7;
 		
 		tex = new Texture[2];

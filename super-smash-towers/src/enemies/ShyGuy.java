@@ -9,7 +9,7 @@ import util.Point;
 
 public class ShyGuy extends Enemy
 {
-	static int maxHealth = 100;
+	static int maxHealth = 650;
 	public ShyGuy(Point[] waypoints,float difficulty,AssetManager manager)
 	{
 		super(waypoints, maxHealth);
@@ -17,10 +17,10 @@ public class ShyGuy extends Enemy
 		name = "ShyGuy";
 		width = 32;
 		height = 32;
-		health = maxHealth;
+		health = (int)(maxHealth*difficulty);
 		speed = 2.0f;
-		damage = 10;
-		gold_given = 25;
+		damage = (int)(10*difficulty);
+		gold_given = 30;
 		animation_speed = 6;
 		
 		tex = new Texture[2];

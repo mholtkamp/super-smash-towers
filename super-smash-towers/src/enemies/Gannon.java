@@ -19,7 +19,7 @@ public class Gannon extends Enemy
 		name = "Gannon";
 		width = 35;
 		height = 34;
-		health = 50000;
+		health = (int)(maxHealth*difficulty);
 		speed = 1.0f;
 		damage = 100;
 		gold_given = 50;

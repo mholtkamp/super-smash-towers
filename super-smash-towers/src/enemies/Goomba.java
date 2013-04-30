@@ -9,7 +9,7 @@ import util.Point;
 
 public class Goomba extends Enemy
 {
-	static int maxHealth = 50;
+	static int maxHealth = 250;
 	public Goomba(Point[] waypoints,float difficulty,AssetManager manager)
 	{
 		super(waypoints ,maxHealth);
@@ -17,9 +17,9 @@ public class Goomba extends Enemy
 		name = "Goomba";
 		width = 32;
 		height = 32;
-		health = maxHealth;
+		health = (int)(maxHealth*difficulty);
 		speed = 2.5f;
-		damage = 5;
+		damage = (int)(5*difficulty);
 		gold_given = 10;
 		animation_speed = 6;
 		

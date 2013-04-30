@@ -11,7 +11,7 @@ import util.Point;
 
 public class Tentacool extends Enemy
 {
-	static int maxHealth = 200;
+	static int maxHealth = 325;
 	public Tentacool(Point[] waypoints,float difficulty,AssetManager manager)
 	{
 		super(waypoints, maxHealth);
@@ -19,10 +19,10 @@ public class Tentacool extends Enemy
 		name = "Tentacool";
 		width = 37;
 		height = 45;
-		health = maxHealth;
+		health = (int)(maxHealth*difficulty);
 		speed = 1.5f;
-		damage = 20;
-		gold_given = 50;
+		damage = (int)(20*difficulty);
+		gold_given = 30;
 		animation_speed = 20;
 		type = Type.WATER;
 		

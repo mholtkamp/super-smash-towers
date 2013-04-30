@@ -11,7 +11,7 @@ import util.Point;
 
 public class Weedle extends Enemy
 {
-	static int maxHealth = 200 ;
+	static int maxHealth = 225;
 	public Weedle(Point[] waypoints,float difficulty,AssetManager manager)
 	{
 		super(waypoints, maxHealth);
@@ -19,10 +19,10 @@ public class Weedle extends Enemy
 		name = "Weedle";
 		width = 40;
 		height = 28;
-		health = maxHealth;
+		health = (int)(maxHealth*difficulty);
 		speed = 1.5f;
-		damage = 20;
-		gold_given = 50;
+		damage = (int)(10*difficulty);
+		gold_given = 25;
 		animation_speed = 7;
 		type = Type.GRASS;
 		
