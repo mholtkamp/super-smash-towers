@@ -21,7 +21,7 @@ public class G4Tower extends Tower
 		name = "G4Tower";
 		width = 40;
 		height = 48;
-		range = 130;
+		range = 110;
 		cost = 2000;
 		firing_speed = 2.0f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
@@ -36,13 +36,13 @@ public class G4Tower extends Tower
 		name = "G4Tower";
 		width = 40;
 		height = 48;
-		range = 130;
+		range = 110;
 		cost = 2000;
 		firing_speed = 2.0f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
 		max_level = 2;
 		
-		damagemultiplier = 4;
+		damagemultiplier = 2;
 		
 		center_x = x + width/2;
 		center_y = y + height/2;

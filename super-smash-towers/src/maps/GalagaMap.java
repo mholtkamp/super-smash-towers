@@ -82,15 +82,15 @@ public class GalagaMap extends Map
 		for (int wave = 0; wave < WAVE_COUNT; wave++)
 		{
 			q = new LinkedList<Enemy>();
-			if (wave  < 1)
+			if (wave < 1)
 			{ 
 				for (int j = 0; j < wave*5 + 5; j++)
 				{
 					path = leftRight();
-					if(j % 5 == 0)
-						q.add(new galagaEnemy1(path, difficulty,manager));
+					if (j % 5 == 0)
+						q.add(new galagaEnemy2(path, difficulty, manager));
 					else
-						q.add(new galagaEnemy2(path, difficulty,manager));
+						q.add(new galagaEnemy1(path, difficulty, manager));
 				}
 			}
 			else if (wave < 2)
@@ -99,17 +99,17 @@ public class GalagaMap extends Map
 				{
 					path = leftRight();
 					if(j % 3 == 0)
-						q.add(new galagaEnemy3(path, difficulty,manager));
+						q.add(new galagaEnemy2(path, difficulty, manager));
 					else
-						q.add(new galagaEnemy4(path, difficulty,manager));
+						q.add(new galagaEnemy1(path, difficulty, manager));
 				}
 			}
 			else if (wave < 3)
-			{// for next 3 waves, spawn Koopa
+			{
 				for (int j = 0; j < wave*5 + 5; j++)
 				{
 					path = leftRight();
-					q.add(new galagaEnemy1(path, difficulty,manager));
+					q.add(new galagaEnemy2(path, difficulty, manager));
 				}
 			}
 			else if (wave < 5)
@@ -118,9 +118,9 @@ public class GalagaMap extends Map
 				{
 					path = leftRight();
 					if(j % 2 == 0)
-						q.add(new galagaEnemy2(path, difficulty,manager));
+						q.add(new galagaEnemy3(path, difficulty, manager));
 					else
-						q.add(new galagaEnemy3(path, difficulty,manager));
+						q.add(new galagaEnemy2(path, difficulty, manager));
 				}
 			}
 			else if (wave < 7)
@@ -129,11 +129,11 @@ public class GalagaMap extends Map
 				{
 					path = leftRight();
 					if(j % 8 == 0)
-						q.add(new galagaEnemy1(path, difficulty,manager));
+						q.add(new galagaEnemy1(path, difficulty, manager));
 					else if(j % 3 == 0)
-						q.add(new galagaEnemy2(path, difficulty,manager));
+						q.add(new galagaEnemy2(path, difficulty, manager));
 					else
-						q.add(new galagaEnemy3(path, difficulty,manager));
+						q.add(new galagaEnemy3(path, difficulty, manager));
 
 				}
 			}
@@ -143,11 +143,11 @@ public class GalagaMap extends Map
 				{
 					path = leftRight();
 					if(j % 8 == 0)
-						q.add(new galagaEnemy2(path, difficulty,manager));
+						q.add(new galagaEnemy1(path, difficulty, manager));
 					else if(j % 3 == 0)
-						q.add(new galagaEnemy3(path, difficulty,manager));
+						q.add(new galagaEnemy3(path, difficulty, manager));
 					else
-						q.add(new galagaEnemy4(path, difficulty,manager));
+						q.add(new galagaEnemy4(path, difficulty, manager));
 
 				}
 			}
@@ -157,11 +157,11 @@ public class GalagaMap extends Map
 				{
 					path = leftRight();
 					if(j % 8 == 0)
-						q.add(new galagaEnemy1(path, difficulty,manager));
+						q.add(new galagaEnemy2(path, difficulty, manager));
 					else if(j % 3 == 0)
-						q.add(new galagaEnemy3(path, difficulty,manager));
+						q.add(new galagaEnemy3(path, difficulty, manager));
 					else
-						q.add(new galagaEnemy4(path, difficulty,manager));
+						q.add(new galagaEnemy4(path, difficulty, manager));
 
 				}
 			}

@@ -385,10 +385,6 @@ public class World
 
 
 				// spawn a tower on the position that is clicked
-				// TODO change this back to input.isTouched() so that it will work for Android
-				// however, this will cause problems with the selling of Towers, since right click
-				// technically falls under the isTouched() method
-				// if (Gdx.input.isTouched())
 				if (Gdx.input.isTouched())
 				{
 					touch_pos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
@@ -443,7 +439,6 @@ public class World
 			/**
 			 * GAME OVER
 			 * game over occurs if health drains to 0 or you destroy the boss
-			 * TODO when boss is dead, go to next level instead of ending the game
 			 */
 			if (health <= 0 || (wave_number >= map.numWaves() && enemies.size() == 0))
 			{

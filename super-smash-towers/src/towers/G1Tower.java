@@ -22,8 +22,8 @@ public class G1Tower extends Tower
 		width = 40;
 		height = 40;
 		range = 130;
-		cost = 200;
-		firing_speed = 2.0f;	// shoot every x seconds
+		cost = 500;
+		firing_speed = 2.5f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
 		max_level = 2;
 	}
@@ -37,8 +37,8 @@ public class G1Tower extends Tower
 		width = 40;
 		height = 40;
 		range = 130;
-		cost = 200;
-		firing_speed = 2.0f;	// shoot every x seconds
+		cost = 500;
+		firing_speed = 2.5f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
 		max_level = 2;
 		

@@ -1,6 +1,6 @@
 package towers;
 
-import bullets.GalagaPurple;
+import bullets.GalagaThermo;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -21,8 +21,8 @@ public class G3Tower extends Tower
 		name = "G3Tower";
 		width = 40;
 		height = 48;
-		range = 130;
-		cost = 1200;
+		range = 110;
+		cost = 1500;
 		firing_speed = 2.0f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
 		max_level = 2;
@@ -36,13 +36,11 @@ public class G3Tower extends Tower
 		name = "G3Tower";
 		width = 40;
 		height = 48;
-		range = 130;
-		cost = 1200;
+		range = 110;
+		cost = 1500;
 		firing_speed = 2.0f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
 		max_level = 2;
-		
-		damagemultiplier = 3;
 		
 		center_x = x + width/2;
 		center_y = y + height/2;
@@ -72,7 +70,7 @@ public class G3Tower extends Tower
 				if (Math.sqrt(xE*xE + yE*yE) < range)
 				{
 					target = enemies.get(i);
-					bullets.add(new GalagaPurple(target, center_x, center_y, damagemultiplier, enemies, manager));
+					bullets.add(new GalagaThermo(target, center_x, center_y, damagemultiplier, enemies, manager));
 					time_since_last_shot = 0;
 					break;
 				}

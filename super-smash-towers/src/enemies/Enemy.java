@@ -17,6 +17,7 @@ import util.Point;
 public abstract class Enemy
 {
 	
+	private final int WIDTH = 740, HEIGHT = 400;
 	private final float WAYPOINT_ACCURACY = 1.0f;
 	private float xE, yE, hE;
 	
@@ -153,6 +154,12 @@ public abstract class Enemy
 		{
 			hit_tower = true;
 			dead = true;
+		}
+		
+		if (cur_waypoint > 0)
+		{
+			if (collider.x > WIDTH || collider.y > HEIGHT || collider.x + collider.width < 0 || collider.y + collider.y < 0)
+				dead = true;
 		}
 	}
 	

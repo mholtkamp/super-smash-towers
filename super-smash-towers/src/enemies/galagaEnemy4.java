@@ -10,7 +10,7 @@ import util.Point;
 public class galagaEnemy4 extends Enemy
 {
 	
-	static int maxHealth=1200;
+	static int maxHealth=1600;
  	
  	public galagaEnemy4(Point[] waypoints, float difficulty, AssetManager manager)
  	{
@@ -19,9 +19,9 @@ public class galagaEnemy4 extends Enemy
 		width = 28;
 		height = 42;
 		health = (int)(maxHealth*difficulty);
-		speed = 2.0f*difficulty;
-		damage = 20;
-		gold_given = 50;
+		speed = 2.0f;
+		damage = (int)(10*difficulty);
+		gold_given = 100;
 		animation_speed = 10;
 		can_attack = true;
 		

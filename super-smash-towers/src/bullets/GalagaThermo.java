@@ -1,7 +1,5 @@
 package bullets;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,7 +8,11 @@ import com.badlogic.gdx.math.Rectangle;
 
 import enemies.Enemy;
 
-public class GalagaThermo extends Bullet{
+import java.util.ArrayList;
+
+
+public class GalagaThermo extends Bullet
+{
 	
 	// change WIDTH and HEIGHT for each new Bullet
 	private final int WIDTH = 20, HEIGHT = 20;
@@ -32,12 +34,12 @@ public class GalagaThermo extends Bullet{
 		// attributes - change for each new Bullet
 		tex = manager.get("data/bullets/thermoBullet.png");
 		explodeTex = manager.get("data/bullets/GalagaExplosion.png");
-		damage = 200*damagemultiplier;
-		speed = 5;
+		damage = 800*damagemultiplier;
+		speed = 7;
 		exploding = false;
 		firstHit = false;
 		explodeTimer = 1;
-		explosionCollider = new Rectangle(0,0,50,50);
+		explosionCollider = new Rectangle(0,0,75,75);
 	}
 	
 	public void render(SpriteBatch batch)
