@@ -1,21 +1,18 @@
 package maps;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
-
 
 import enemies.*;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
-
+import java.util.Random;
 
 import util.Point;
-import java.util.Random;
 
 
 public class GalagaMap extends Map

@@ -1,5 +1,7 @@
 package maps;
 
+import com.badlogic.gdx.assets.AssetManager;
+
 import enemies.Bowser;
 import enemies.Enemy;
 import enemies.Goomba;
@@ -9,9 +11,6 @@ import enemies.ShyGuy;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 
 import util.Point;
 

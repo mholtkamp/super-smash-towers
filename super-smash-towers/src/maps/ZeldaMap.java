@@ -1,17 +1,14 @@
 package maps;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Texture;
-
 
 import enemies.*;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
-
 
 import util.Point;
 
@@ -22,7 +19,6 @@ public class ZeldaMap extends Map
 	private final int GRID_WIDTH = 40, GRID_HEIGHT = 40;
 	private final int WAVE_COUNT = 10; 
 	private Texture bg_tex;
-	private boolean left;
 	protected Point[] path;
 	
 	public ZeldaMap(float difficulty,AssetManager manager)
