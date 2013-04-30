@@ -210,7 +210,10 @@ public class Menu
 			font.setScale(1);
 			font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 			font.draw(batch, "OPTIONS", camera.viewportWidth / 2 - font.getBounds("OPTIONS").width / 2, 350);
-		}
+			font.draw(batch, "Display Enemy Health", camera.viewportWidth / 10, 325);
+			font.draw(batch, "Option 2", camera.viewportWidth / 10, 300);
+			font.draw(batch, "Option 3", camera.viewportWidth / 10, 275);
+			}
 		else if (state == MenuState.DIFFICULTY)
 		{
 			batch.draw(diffbg, 0, 0, WIDTH, HEIGHT);
