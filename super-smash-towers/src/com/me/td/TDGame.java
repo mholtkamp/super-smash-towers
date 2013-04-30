@@ -316,6 +316,8 @@ public class TDGame implements ApplicationListener
 		manager.load("data/3_stars.png",Texture.class);
 		manager.load("data/speaker_on.png",Texture.class);
 		manager.load("data/speaker_off.png",Texture.class);
+		manager.load("data/redShroom.png",Texture.class);
+		manager.load("data/greenShroom.png",Texture.class);
 		
 		// Sounds
 		manager.load("sounds/mario.mp3",Music.class);

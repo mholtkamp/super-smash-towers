@@ -43,6 +43,7 @@ public class Menu
 	private Texture startButtonTex;
 	private Texture instrButtonTex;
 	private Texture optionsButtonTex;
+	private Texture greenShroom, redShroom; // option buttons
 	private Texture mute_on;
 	private Texture mute_off;
 
@@ -110,7 +111,8 @@ public class Menu
 		// options
 		deleteButtonTex = manager.get("data/delete.png");
 		deleteButton = new Rectangle((camera.viewportWidth - 140) / 2, (camera.viewportHeight - 50) / 2, 140, 50);
-
+		redShroom = manager.get("data/redShroom.png");
+		greenShroom = manager.get("data/greenShroom.png");
 		
 		// LEVEL SELECT
 //		marioWorldButton = new Rectangle(10,200,160,160);
@@ -215,9 +217,15 @@ public class Menu
 			font.setScale(1);
 			font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 			font.draw(batch, "OPTIONS", camera.viewportWidth / 2 - font.getBounds("OPTIONS").width / 2, 350);
-			font.draw(batch, "Display Enemy Health", camera.viewportWidth / 10, 325);
-			font.draw(batch, "Option 2", camera.viewportWidth / 10, 300);
-			font.draw(batch, "Option 3", camera.viewportWidth / 10, 275);
+			
+			font.draw(batch, "Display Enemy Health", camera.viewportWidth / 10, 300);
+			batch.draw(greenShroom, camera.viewportWidth/2, 300-25);
+			
+			font.draw(batch, "Option 2", camera.viewportWidth / 10, 250);
+			batch.draw(greenShroom, camera.viewportWidth/2, 250-25);
+			
+			font.draw(batch, "Option 3", camera.viewportWidth / 10, 200);
+			batch.draw(greenShroom, camera.viewportWidth/2, 200-25);
 			}
 		else if (state == MenuState.DIFFICULTY)
 		{
