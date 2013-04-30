@@ -1,5 +1,5 @@
 package enemies;
-
+import com.me.td.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
@@ -9,7 +9,7 @@ import util.Point;
 
 public class Koopa extends Enemy
 {
-	static int maxHealth = 1000;
+	static float maxHealth = 1000*World.globaldiff;
 	public Koopa(Point[] waypoints,float difficulty,AssetManager manager)
 	{
 		super(waypoints, maxHealth);
@@ -17,7 +17,7 @@ public class Koopa extends Enemy
 		name = "Koopa";
 		width = 32;
 		height = 46;
-		health = (int)(maxHealth*difficulty);
+		health = (int)maxHealth;
 		speed = 1.5f;
 		damage = (int)(20*difficulty);
 		gold_given = 55;

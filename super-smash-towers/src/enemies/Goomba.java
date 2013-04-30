@@ -12,7 +12,7 @@ import util.Point;
 public class Goomba extends Enemy
 {
 	
-	static float maxHealth =(250 ;
+	static float maxHealth =250 ;
 	public Goomba(Point[] waypoints,float difficulty,AssetManager manager)
 	{
 		super(waypoints ,maxHealth*difficulty);

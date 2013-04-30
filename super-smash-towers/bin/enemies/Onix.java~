@@ -1,5 +1,5 @@
 package enemies;
-
+import com.me.td.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
@@ -11,7 +11,7 @@ import util.Point;
 
 public class Onix extends Enemy
 {
-	static int maxHealth=55000;
+	static float maxHealth=55000*World.globaldiff;
  	
  	public Onix(Point[] waypoints, float difficulty, AssetManager manager)
  	{
@@ -20,7 +20,7 @@ public class Onix extends Enemy
 		name = "Onix";
 		width = 58;
 		height = 63;
-		health = (int)(maxHealth*difficulty);
+		health = (int)maxHealth;
 		speed = 1.5f*difficulty;
 		damage = 110;
 		gold_given = 50;

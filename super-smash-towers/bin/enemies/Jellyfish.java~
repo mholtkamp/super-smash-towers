@@ -1,5 +1,5 @@
 package enemies;
-
+import com.me.td.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
@@ -9,7 +9,7 @@ import util.Point;
 
 public class Jellyfish extends Enemy
 {
-	static int maxHealth=600;
+	static float maxHealth=600*World.globaldiff;
  	
  	public Jellyfish(Point[] waypoints, float difficulty, AssetManager manager)
  	{
@@ -18,7 +18,7 @@ public class Jellyfish extends Enemy
 		name = "Jellyfish";
 		width = 28;
 		height = 42;
-		health = (int)(maxHealth*difficulty);
+		health = (int)maxHealth;
 		speed = 2.0f;
 		damage = (int)(10*difficulty);
 		gold_given = 50;

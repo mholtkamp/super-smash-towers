@@ -1,5 +1,5 @@
 package enemies;
-
+import com.me.td.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
@@ -9,7 +9,7 @@ import util.Point;
 
 public class ShyGuy extends Enemy
 {
-	static int maxHealth = 650;
+	static float maxHealth = 650*World.globaldiff;
 	public ShyGuy(Point[] waypoints,float difficulty,AssetManager manager)
 	{
 		super(waypoints, maxHealth);
@@ -17,7 +17,7 @@ public class ShyGuy extends Enemy
 		name = "ShyGuy";
 		width = 32;
 		height = 32;
-		health = (int)(maxHealth*difficulty);
+		health = (int)maxHealth;
 		speed = 2.0f;
 		damage = (int)(10*difficulty);
 		gold_given = 30;

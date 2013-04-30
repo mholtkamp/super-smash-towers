@@ -11,7 +11,7 @@ import util.Point;
 public class BasicEnemy extends Enemy
 {
 	static float maxHealth = 50;
-	public BasicEnemy(Pofloat[] waypoints,float difficulty,AssetManager manager)
+	public BasicEnemy(Point[] waypoints,float difficulty,AssetManager manager)
 	{
 		super(waypoints,  maxHealth*difficulty);
 		

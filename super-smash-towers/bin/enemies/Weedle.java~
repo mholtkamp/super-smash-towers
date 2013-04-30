@@ -1,8 +1,9 @@
 package enemies;
-
+import com.me.td.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.me.td.World;
 
 import enums.Type;
 
@@ -11,7 +12,7 @@ import util.Point;
 
 public class Weedle extends Enemy
 {
-	static int maxHealth = 225;
+	static float maxHealth = 225;
 	public Weedle(Point[] waypoints,float difficulty,AssetManager manager)
 	{
 		super(waypoints, maxHealth);
@@ -19,7 +20,7 @@ public class Weedle extends Enemy
 		name = "Weedle";
 		width = 40;
 		height = 28;
-		health = (int)(maxHealth*difficulty);
+		health = (int)maxHealth;
 		speed = 1.5f;
 		damage = (int)(10*difficulty);
 		gold_given = 25;

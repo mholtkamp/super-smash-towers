@@ -3,13 +3,14 @@ package enemies;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.me.td.World;
 
 import util.Point;
 
 
 public class Cactus extends Enemy
 {
-	static int maxHealth=300;
+	static float maxHealth=300*World.globaldiff;
  	
  	public Cactus(Point[] waypoints, float difficulty, AssetManager manager)
  	{
@@ -18,7 +19,7 @@ public class Cactus extends Enemy
 		name = "Cactus";
 		width = 28;
 		height = 42;
-		health = (int)(maxHealth*difficulty);
+		health = (int)maxHealth;
 		speed = 2.5f;
 		damage = (int)(15*difficulty);
 		gold_given = 50;
