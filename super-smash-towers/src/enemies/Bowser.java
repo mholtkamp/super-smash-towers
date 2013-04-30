@@ -3,16 +3,17 @@ package enemies;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.me.td.World;
 
 import util.Point;
 
 
 public class Bowser extends Enemy
 {
-	static int maxHealth = 90000;
+	static float maxHealth = 90000;
 	public Bowser(Point[] waypoints,float difficulty,AssetManager manager)
 	{
-		super(waypoints, maxHealth);
+		super(waypoints, maxHealth*difficulty);
 		
 		name = "Bowser";
 		width = 64;
@@ -22,6 +23,10 @@ public class Bowser extends Enemy
 		damage = 110;
 		gold_given = 2500;
 		animation_speed = 10;
+
+	
+		
+		
 		
 		tex = new Texture[2];
 //		tex[0] = new Texture("data/enemies/bowser_right_left.png");

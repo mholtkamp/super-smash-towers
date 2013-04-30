@@ -3,16 +3,17 @@ package enemies;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.me.td.World;
 
 import util.Point;
 
 
 public class BasicEnemy extends Enemy
 {
-	static int maxHealth = 50;
-	public BasicEnemy(Point[] waypoints,float difficulty,AssetManager manager)
+	static float maxHealth = 50;
+	public BasicEnemy(Pofloat[] waypoints,float difficulty,AssetManager manager)
 	{
-		super(waypoints,  maxHealth);
+		super(waypoints,  maxHealth*difficulty);
 		
 		name = "Mushroom";
 		width = 32;

@@ -3,16 +3,19 @@ package enemies;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.me.td.Menu;
+import com.me.td.World;
 
 import util.Point;
 
 
 public class Goomba extends Enemy
 {
-	static int maxHealth = 250;
+	
+	static float maxHealth =(250 ;
 	public Goomba(Point[] waypoints,float difficulty,AssetManager manager)
 	{
-		super(waypoints ,maxHealth);
+		super(waypoints ,maxHealth*difficulty);
 		
 		name = "Goomba";
 		width = 32;

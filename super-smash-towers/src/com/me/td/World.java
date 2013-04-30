@@ -45,7 +45,7 @@ public class World
 	// variables
 	int health, gold, wave_number, current_tower, current_enemy, time_between_waves;
 	float difficulty;
-	
+	public static float globaldiff;
 	//EnemyEnum current_enemy;
 	float current_range;
 	Map map;
@@ -89,6 +89,7 @@ public class World
 			map = new GalagaMap(difficulty, manager);
 		
 		this.difficulty = difficulty;
+		globaldiff = difficulty;
 		health = 100;
 		gold = 1000;
 		wave_number = 0;

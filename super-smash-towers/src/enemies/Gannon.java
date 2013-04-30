@@ -1,5 +1,5 @@
 package enemies;
-
+import com.me.td.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
@@ -10,11 +10,11 @@ import util.Point;
 public class Gannon extends Enemy
 {
 	
-	static int maxHealth=50000;
+	static float maxHealth=50000;
  	
  	public Gannon(Point[] waypoints, float difficulty, AssetManager manager)
  	{
-		super(waypoints,maxHealth);
+		super(waypoints,maxHealth*difficulty);
 		
 		name = "Gannon";
 		width = 35;

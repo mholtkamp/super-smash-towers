@@ -1,5 +1,5 @@
 package enemies;
-
+import com.me.td.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
@@ -11,11 +11,11 @@ import util.Point;
 
 public class Lapras extends Enemy
 {
-	static int maxHealth=15000;
+	static float maxHealth=15000;
  	
  	public Lapras(Point[] waypoints, float difficulty, AssetManager manager)
  	{
-		super(waypoints,maxHealth);
+		super(waypoints,maxHealth*difficulty);
 		
 		name = "Lapras";
 		width = 35;

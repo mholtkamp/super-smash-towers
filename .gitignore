@@ -7,7 +7,9 @@ super-smash-towers/bin/maps/*.class
 super-smash-towers/bin/towers/*.class
 super-smash-towers/bin/bullets/*.class
 super-smash-towers/bin/*.class
+stars.txt
 
+*.java~ #VIM FILES
 *.pydevproject
 #.project
 #.metadata

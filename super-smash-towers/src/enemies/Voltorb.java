@@ -14,14 +14,14 @@ public class Voltorb extends Enemy
 	static int maxHealth = 325;
 	public Voltorb(Point[] waypoints,float difficulty,AssetManager manager)
 	{
-		super(waypoints,maxHealth);
+		super(waypoints,maxHealth*difficulty);
 		
 		name = "Voltorb";
 		width = 29;
 		height = 29;
 		health = (int)(maxHealth*difficulty);
 		speed = 1.5f;
-		damage = (int)(20*difficulty);
+		damage = (int)(20);
 		gold_given = 40;
 		animation_speed = 20;
 		type = Type.ELECTRIC;

@@ -47,10 +47,13 @@ public class Menu
 	private Texture mute_on;
 	private Texture mute_off;
 
+	//Options buttons
+	private Rectangle deleteButton;
+	private Rectangle displayEnemyHealthButton;
+	
 	private Rectangle startButton;
 	private Rectangle instrButton;
 	private Rectangle optionsButton;
-	private Rectangle deleteButton;
 	private Rectangle backButton;
 	private Rectangle mute_onButton;
 	private Rectangle mute_offButton;
@@ -113,6 +116,10 @@ public class Menu
 		deleteButton = new Rectangle((camera.viewportWidth - 140) / 2, (camera.viewportHeight - 50) / 2, 140, 50);
 		redShroom = manager.get("data/redShroom.png");
 		greenShroom = manager.get("data/greenShroom.png");
+		displayEnemyHealthButton = new Rectangle();
+//		easyButton = new Rectangle(80, 170, 120, 30);  //using as reference
+//		mediumButton = new Rectangle(310, 170, 120, 30);
+//		hardButton = new Rectangle(530, 170, 120, 30);
 		
 		// LEVEL SELECT
 //		marioWorldButton = new Rectangle(10,200,160,160);
@@ -202,10 +209,14 @@ public class Menu
 			drawBackButton(batch);
 						// write instructions
 			font.setScale(1);
-			font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
-			font.draw(batch, "INSTRUCTIONS", camera.viewportWidth/2 - 100, 350);
-			font.draw(batch, "Place towers to stop enemies from", camera.viewportWidth/2 - 230, 275);
-			font.draw(batch, "reaching your castle!", camera.viewportWidth/2 - 150, 255);
+			font.setColor(1.0f, 1.0f, 1.0f, 1.0f); 
+			font.draw(batch, "INSTRUCTIONS", camera.viewportWidth/2 - 100, 350); int instruc = 275;
+			font.draw(batch, "Place towers to stop enemies from", camera.viewportWidth/2 - 230, instruc);
+			font.draw(batch, "reaching your castle!", camera.viewportWidth/2 - 150, instruc-=20);
+			font.draw(batch, "thrid!", camera.viewportWidth/2 - 150, instruc-=20);
+			font.draw(batch, "fourth!", camera.viewportWidth/2 - 150, instruc-=20);
+			font.draw(batch, "fifth!", camera.viewportWidth/2 - 150, instruc-=20);
+			font.draw(batch, "sixth!", camera.viewportWidth/2 - 150, instruc-=20);
 		}
 		else if (state == MenuState.OPTIONS)
 		{
@@ -213,20 +224,29 @@ public class Menu
 			drawBackButton(batch);
 			batch.draw(deleteButtonTex, deleteButton.x, deleteButton.y, deleteButton.width, deleteButton.height);
 			
-			// write instructions
+			
 			font.setScale(1);
 			font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
 			font.draw(batch, "OPTIONS", camera.viewportWidth / 2 - font.getBounds("OPTIONS").width / 2, 350);
-			
+			//DisplayEnemyHealth Options block
 			font.draw(batch, "Display Enemy Health", camera.viewportWidth / 10, 300);
-			batch.draw(greenShroom, camera.viewportWidth/2, 300-25);
+			displayEnemyHealthButton.x = camera.viewportWidth/2; //setting the rectangle's x pos, also used
+			displayEnemyHealthButton.y = 300-25; // pos also used to draw the actual mushroom
+			displayEnemyHealthButton.width = 38;
+			displayEnemyHealthButton.height = 30;
+			
+			if(Options.isEnemyHealthDisplay())
+				batch.draw(greenShroom, displayEnemyHealthButton.x, displayEnemyHealthButton.y);//WHEN SET
+			else
+				batch.draw(redShroom, displayEnemyHealthButton.x, displayEnemyHealthButton.y);//WHEN CLEAR
+			//END DisplayEnemyHealth Options block
 			
 			font.draw(batch, "Option 2", camera.viewportWidth / 10, 250);
 			batch.draw(greenShroom, camera.viewportWidth/2, 250-25);
 			
 			font.draw(batch, "Option 3", camera.viewportWidth / 10, 200);
 			batch.draw(greenShroom, camera.viewportWidth/2, 200-25);
-			}
+			}//END state==options Menu state
 		else if (state == MenuState.DIFFICULTY)
 		{
 			batch.draw(diffbg, 0, 0, WIDTH, HEIGHT);
@@ -251,8 +271,8 @@ public class Menu
 			batch.draw(mute_off, mute_offButton.x, mute_offButton.y, mute_offButton.width, mute_offButton.height);
 		
 		batch.end();
-	}
-
+	}//END public void render(SpriteBatch batch)
+	
 	public float getDiff()
 	{
 		return difficulty;
@@ -334,6 +354,9 @@ public class Menu
 				if(!is_pressed)
 					World.mute = !World.mute;
 			}
+			if (displayEnemyHealthButton.contains(touch_pos.x, touch_pos.y))
+				if(!is_pressed)
+					Options.toggleEnemyHealthDisplay();
 		}
 		else if (state == MenuState.DIFFICULTY)
 		{
