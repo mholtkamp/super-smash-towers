@@ -36,7 +36,7 @@ public class World
 	
 	// constants
 	final int NONE = -4, PAUSE = -3, SELL = -2, UPGRADE = -1;
-	final int ENEMY_COUNT = 22, TOWER_COUNT = 15, TIME_BETWEEN_WAVES = 10;
+	final int ENEMY_COUNT = 22, TOWER_COUNT = 16, TIME_BETWEEN_WAVES = 10;
 
 	final int GRID_WIDTH = 40, GRID_HEIGHT = 40;
 	final int BAR_WIDTH = 300, BAR_HEIGHT = 16, BAR_X = 5, BAR_Y = 375;
@@ -695,6 +695,7 @@ public class World
 				case 0:	return new CastleTower(enemies, x, y, manager);
 				case 1: return new HammerBros(enemies, x, y, manager);
 				case 2: return new FlowerTower(enemies, x, y, manager);
+				case 3: return new BulletBill(enemies,x,y,manager);
 				default: return new CastleTower(enemies, x, y, manager);
 			}
 		}

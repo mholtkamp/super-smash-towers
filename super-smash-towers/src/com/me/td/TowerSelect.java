@@ -79,11 +79,13 @@ public class TowerSelect
 			tex[TowerEnum.CASTLE.index] = manager.get("data/towers/tower.png");
 			tex[TowerEnum.HAMMER_BROS.index] = manager.get("data/towers/hammer_bros_left_idle.png");
 			tex[TowerEnum.FLOWER.index] = manager.get("data/towers/firetower.png");
+			tex[TowerEnum.BILL.index] = manager.get("data/towers/bill.png");
 			
 			buttons = new Rectangle[TowerEnum.NUM_MARIO_TOWERS];
 			buttons[TowerEnum.CASTLE.index] = new Rectangle(620, 315, 40, 40);
 			buttons[TowerEnum.HAMMER_BROS.index] = new Rectangle(620, 255, 40, 40);
 			buttons[TowerEnum.FLOWER.index] = new Rectangle(615, 195, 40, 40);
+			buttons[TowerEnum.BILL.index] = new Rectangle(615,135,40,40);
 		}
 		else if(level == Level.POKEMON)
 		{
@@ -146,18 +148,21 @@ public class TowerSelect
 			cost[TowerEnum.CASTLE.index] = (new CastleTower()).getCost();
 			cost[TowerEnum.HAMMER_BROS.index] = (new HammerBros()).getCost();
 			cost[TowerEnum.FLOWER.index] = (new FlowerTower()).getCost();
+			cost[TowerEnum.BILL.index] = (new BulletBill()).getCost();
 			
 			// get sell costs
 			sell_cost = new int[TowerEnum.NUM_MARIO_TOWERS];
 			sell_cost[TowerEnum.CASTLE.index] = (new CastleTower()).getSellCost();
 			sell_cost[TowerEnum.HAMMER_BROS.index] = (new HammerBros()).getSellCost();
 			sell_cost[TowerEnum.FLOWER.index] = (new FlowerTower()).getSellCost();
+			sell_cost[TowerEnum.BILL.index] = (new BulletBill()).getSellCost();
 			
 			// get upgrade costs
 			upgrade_cost = new int[TowerEnum.NUM_MARIO_TOWERS];
 			upgrade_cost[TowerEnum.CASTLE.index] = (new CastleTower()).getUpgradeCost();
 			upgrade_cost[TowerEnum.HAMMER_BROS.index] = (new HammerBros()).getUpgradeCost();
 			upgrade_cost[TowerEnum.FLOWER.index] = (new FlowerTower()).getUpgradeCost();
+			upgrade_cost[TowerEnum.BILL.index] = (new BulletBill()).getUpgradeCost();
 		}
 		else if (level == Level.POKEMON)
 		{

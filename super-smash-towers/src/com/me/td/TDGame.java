@@ -156,6 +156,7 @@ public class TDGame implements ApplicationListener
 		manager.load("data/maps/galaga_map.png",Texture.class);
 
 		// Tower Textures
+		manager.load("data/towers/bill.png", Texture.class);
 		manager.load("data/towers/tower.png",Texture.class);
 		manager.load("data/towers/charm.png",Texture.class);
 		manager.load("data/towers/charmealon.png",Texture.class);
