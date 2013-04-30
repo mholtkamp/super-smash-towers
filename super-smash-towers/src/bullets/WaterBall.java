@@ -73,7 +73,8 @@ public class WaterBall extends Bullet{
 						target.subHealth(damage*2);
 					else 
 						target.subHealth(damage);
-					
+					target.burn_timer.clear();
+					target.burning = false;
 					exploding = true;
 					explosionCollider.x = collider.x - (explosionCollider.width/2);
 					explosionCollider.y = collider.y - (explosionCollider.height/2);

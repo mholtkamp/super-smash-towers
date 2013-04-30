@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Timer;
 
 import com.me.td.Options;
 import com.me.td.TDGame;
@@ -22,14 +23,16 @@ public abstract class Enemy
 	protected Point[] waypoints;
 	protected Texture[] tex;
 	protected Rectangle collider;
-	protected int width, height, health, cur_waypoint, damage, gold_given, cur_tex, tex_count, animation_speed;
+	protected int width, height, health, cur_waypoint, damage, gold_given, cur_tex, tex_count, animation_speed, burn_count;
 	protected float speed, speed_multiplier;
-	protected boolean dead, hit_tower, toggle, left, attack;
+	protected boolean dead, hit_tower, toggle, left, attack, can_attack;
+	public boolean burning;
 	protected String name;
 	private int	maxHealth;	// enemy dmg bar
 	private AssetManager manager = TDGame.manager;
-	protected Texture red,green;
+	protected Texture red, green, burning_tex;
 	protected Type type;
+	public Timer burn_timer;
 	
 	public float getX() {return collider.x;}
 	
@@ -48,6 +51,31 @@ public abstract class Enemy
 	public boolean isDead() {return dead;}
 	
 	public void kill() {this.dead = true;}
+	
+	public void burn()
+	{
+		if (!burning)
+		{
+			this.burning = true;
+			burn_count = 5;
+			Timer.schedule(new burnTask(), 1, 1, 5);
+		}
+	}
+	
+	private class burnTask extends Timer.Task
+	{
+		
+		public void run()
+		{
+			if (burn_count-- <= 0)
+			{
+				burning = false;
+			}
+			else
+				subHealth(10);
+		}
+		
+	}
 	
 	public void changeSpeedMultiplier(float new_speed_multiplier)
 	{
@@ -78,7 +106,7 @@ public abstract class Enemy
 		return false;
 	}
 	
-	public Enemy(Point[] waypoints,int maxHealth)
+	public Enemy(Point[] waypoints, int maxHealth)
 	{
 		this.waypoints = waypoints;
 		cur_waypoint = 0;
@@ -89,11 +117,15 @@ public abstract class Enemy
 		toggle = false;
 		left = false;
 		attack = false;
+		can_attack = false;
+		burning = false;
 		speed_multiplier = 1.0f;
 		this.maxHealth = maxHealth;
 		red = manager.get("data/redfade.png");
 		green = manager.get("data/greenfade.png");
+		burning_tex = manager.get("data/bullets/burning.png");
 		type = Type.NEUTRAL;
+		burn_timer = new Timer();
 	}
 	
 	public void update()
@@ -142,7 +174,7 @@ public abstract class Enemy
 				}
 			}
 //			batch.draw(tex[cur_tex], collider.x, collider.y, width, height);
-			if (attack)
+			if (can_attack && attack)
 			{
 				batch.setColor(1, 0, 0, 1);
 				batch.draw(tex[cur_tex], collider.x, collider.y, (float)width, (float)height, 0, 0, width, height, left, false);
@@ -151,6 +183,8 @@ public abstract class Enemy
 			else
 				batch.draw(tex[cur_tex], collider.x, collider.y, (float)width, (float)height, 0, 0, width, height, left, false);
 			
+			if (burning)
+				batch.draw(burning_tex, collider.x, collider.y, (float)width, (float)height);
 			//TODO damage bar
 			//DamageBAR on enemies
 			if (Options.isEnemyHealthDisplay())

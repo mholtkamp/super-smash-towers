@@ -64,12 +64,13 @@ public class FireBall extends Bullet
 				collider.y += (yE/hE)*speed;
 				if (collider.overlaps(target.getCollider()))
 				{// hit target
-					if (target.getType() == Type.FIRE || target.getType() == Type.WATER)
+					if (target.getType() == Type.FIRE || target.getType() == Type.WATER || target.getType() == Type.ROCK)
 						target.subHealth((int)(damage/2));
 					else if (target.getType() == Type.GRASS)
 						target.subHealth(damage*2);
 					else 
 						target.subHealth(damage);
+					target.burn();
 					active = false;
 				}
 			}

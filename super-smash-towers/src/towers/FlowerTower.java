@@ -18,7 +18,7 @@ public class FlowerTower extends Tower
 {
 
 	private final int CALLS_BETWEEN_TOGGLE = 15;
-	private int current_tex, tex_count;
+	private int tex_count;
 	private Texture[] texDown, texUp;
 	private boolean down;
 	
@@ -36,7 +36,7 @@ public class FlowerTower extends Tower
 	
 	public FlowerTower(ArrayList<Enemy> enemies, float x, float y, AssetManager manager)
 	{
-		super(enemies, x, y, manager);
+		super(enemies, manager);
 		
 		// attributes
 		name = "FlowerTower";
@@ -46,9 +46,6 @@ public class FlowerTower extends Tower
 		cost = 200;
 		firing_speed = 1.5f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
-		
-		damagemultiplier = 1;
-		level = 1;
 		
 		center_x = x + width/2;
 		center_y = y + height/2;
@@ -62,24 +59,10 @@ public class FlowerTower extends Tower
 		texUp[0] = this.manager.get("data/towers/firetower2.png");
 		texUp[1] = this.manager.get("data/towers/fireUpgrade2.png");
 		texUp[2] = this.manager.get("data/towers/fireUpgrade2.png");
-		//tex[2] = this.manager.get("data/towers/charz.png");
-		//add textures 2-5 for lvls 2 and 3
 		
-		current_tex = 0;
 		down = true;
 		tex_count = 0;
-		//toggle_count = CALLS_BETWEEN_TOGGLE;
 	}
-	
-	public void levelUp()
-	{
-		level++;
-		damagemultiplier++;
-		firing_speed = firing_speed*0.75f;
-		range = range*1.25f;
-		current_tex++;
-	}
-	
 	
 	public void update()
 	{
@@ -110,25 +93,26 @@ public class FlowerTower extends Tower
 	public void render(SpriteBatch batch)
 	{
 		// render Tower
-			tex_count++;
-		
-			if (tex_count == CALLS_BETWEEN_TOGGLE)
-			{
-				down = false;
-			}
-			if (tex_count == 2*CALLS_BETWEEN_TOGGLE)
-			{
-				down = true;
-				tex_count = 0;
-			}
-		
-			if(down)
-				batch.draw(texDown[current_tex], collider.x, collider.y);
-			else
-				batch.draw(texUp[current_tex], collider.x, collider.y);
-		
+		tex_count++;
+
+		if (tex_count == CALLS_BETWEEN_TOGGLE)
+		{
+			down = false;
+		}
+		if (tex_count == 2*CALLS_BETWEEN_TOGGLE)
+		{
+			down = true;
+			tex_count = 0;
+		}
+
+		if(down)
+			batch.draw(texDown[current_tex], collider.x, collider.y);
+		else
+			batch.draw(texUp[current_tex], collider.x, collider.y);
+
 		// render Bullets
 		for (Bullet bullet : bullets)
 			bullet.render(batch);
 	}
+	
 }

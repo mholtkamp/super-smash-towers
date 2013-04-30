@@ -40,7 +40,7 @@ public class TDGame implements ApplicationListener
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, WIDTH, HEIGHT);
 		batch = new SpriteBatch();
-		System.out.println(batch.getColor().r + " " + batch.getColor().g + " " + batch.getColor().b + " " + batch.getColor().a);
+//		System.out.println(batch.getColor().r + " " + batch.getColor().g + " " + batch.getColor().b + " " + batch.getColor().a);
 		shape_renderer = new ShapeRenderer();
 		manager = new AssetManager();
 		load();
@@ -165,7 +165,6 @@ public class TDGame implements ApplicationListener
 		manager.load("data/towers/warturtle.png",Texture.class);
 		manager.load("data/towers/blastoise.png",Texture.class);
 		manager.load("data/towers/hammer_bros_left_idle.png",Texture.class);
-		manager.load("data/towers/hammer_bros_right_idle.png",Texture.class);
 		manager.load("data/towers/Abra.png",Texture.class);
 		manager.load("data/towers/kadabra.png",Texture.class);
 		manager.load("data/towers/alakazam.png",Texture.class);
@@ -194,7 +193,6 @@ public class TDGame implements ApplicationListener
 		manager.load("data/towers/upgradedBroleft.png", Texture.class);
 		manager.load("data/towers/upgradedBroright.png", Texture.class);
 		manager.load("data/towers/big_hammer_bros.png", Texture.class);
-		manager.load("data/towers/big_hammer_bros_right.png", Texture.class);
 		manager.load("data/towers/BombTower.png", Texture.class);
 		manager.load("data/towers/BombTowerUpgrade.png", Texture.class);
 		manager.load("data/towers/BoomerangTower.png", Texture.class);
@@ -208,6 +206,7 @@ public class TDGame implements ApplicationListener
 		manager.load("data/bullets/bullet.png",Texture.class);
 		manager.load("data/bullets/fire_ball_1.png",Texture.class);
 		manager.load("data/bullets/fire_ball_2.png",Texture.class);
+		manager.load("data/bullets/burning.png",Texture.class);
 		manager.load("data/bullets/hammer/hammer_left_up.png",Texture.class);
 		manager.load("data/bullets/hammer/hammer_left_left.png",Texture.class);
 		manager.load("data/bullets/hammer/hammer_left_down.png",Texture.class);
@@ -270,9 +269,6 @@ public class TDGame implements ApplicationListener
 		manager.load("data/enemies/galagaEnemy3.png",Texture.class);
 		manager.load("data/enemies/galagaEnemy4.png",Texture.class);
 
-
-
-
 		// UI Textures
 		manager.load("data/greenfade.png",Texture.class);
 		manager.load("data/redfade.png",Texture.class);
@@ -297,11 +293,7 @@ public class TDGame implements ApplicationListener
 		manager.load("data/zeldaTowerSelect.png",Texture.class);
 		manager.load("data/pokeMenu.png",Texture.class);
 		manager.load("data/selected.png",Texture.class);
-		manager.load("data/delete.png",Texture.class);
-
-
-
-
+		
 		// Menu Textures
 		manager.load("data/menuStart.png",Texture.class);
 		//manager.load("data/menubegin.png",Texture.class);
@@ -311,10 +303,11 @@ public class TDGame implements ApplicationListener
 		manager.load("data/easy.png",Texture.class);
 		manager.load("data/medium.png",Texture.class);
 		manager.load("data/hard.png",Texture.class);
-
-		manager.load("data/menu_start.png",Texture.class);
-		manager.load("data/menu_instr.png",Texture.class);
+		manager.load("data/start.png",Texture.class);
+		manager.load("data/instructions.png",Texture.class);
 		manager.load("data/options.png",Texture.class);
+		manager.load("data/delete.png",Texture.class);
+		manager.load("data/back.png",Texture.class);
 		manager.load("data/instr_back.png",Texture.class);
 		manager.load("data/maps/mario_map_3.png",Texture.class);
 		manager.load("data/0_stars.png",Texture.class);
@@ -323,9 +316,7 @@ public class TDGame implements ApplicationListener
 		manager.load("data/3_stars.png",Texture.class);
 		manager.load("data/speaker_on.png",Texture.class);
 		manager.load("data/speaker_off.png",Texture.class);
-
-
-
+		
 		// Sounds
 		manager.load("sounds/mario.mp3",Music.class);
 		manager.load("sounds/pokemon.mp3",Music.class);

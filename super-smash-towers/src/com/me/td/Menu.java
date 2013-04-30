@@ -95,16 +95,16 @@ public class Menu
 		hardButton = new Rectangle(530, 170, 120, 30);
 
 		//start screen textures
-		startButtonTex = manager.get("data/menu_start.png");
-		instrButtonTex = manager.get("data/menu_instr.png");
+		startButtonTex = manager.get("data/start.png");
+		instrButtonTex = manager.get("data/instructions.png");
 		optionsButtonTex = manager.get("data/options.png");
-		backButtonTex = manager.get("data/instr_back.png");
+		backButtonTex = manager.get("data/back.png");
 		// startButton = new Rectangle(320,160,145,55);
 		// instrButton = new Rectangle(320,90,145,55);
 		// backButton = new Rectangle(650,80,128,70);
-		startButton = new Rectangle(camera.viewportWidth/2 - BUTTON_WIDTH/2, 150, BUTTON_WIDTH, BUTTON_HEIGHT);
-		instrButton = new Rectangle(camera.viewportWidth/2 - BUTTON_WIDTH/2, 80, BUTTON_WIDTH, BUTTON_HEIGHT);
-		optionsButton = new Rectangle(camera.viewportWidth/2 - BUTTON_WIDTH/2, 10, BUTTON_WIDTH, BUTTON_HEIGHT);
+		startButton = new Rectangle(camera.viewportWidth/2 - BUTTON_WIDTH/2 - 25, 160, BUTTON_WIDTH, BUTTON_HEIGHT);
+		instrButton = new Rectangle(camera.viewportWidth/2 - BUTTON_WIDTH/2 - 25, 90, BUTTON_WIDTH, BUTTON_HEIGHT);
+		optionsButton = new Rectangle(camera.viewportWidth/2 - BUTTON_WIDTH/2 - 25, 20, BUTTON_WIDTH, BUTTON_HEIGHT);
 		backButton = new Rectangle(camera.viewportWidth - 100 - 10, 10, 100, 50);
 		
 		// options
@@ -121,10 +121,15 @@ public class Menu
 //		pokemon_level_button_tex = new Texture("data/maps/mario_map_3.png");
 		
 		level_buttons = new Rectangle[Level.values().length - 1];
-		level_buttons[Level.MARIO.index] = new Rectangle(50, 200, 150, 100);
-		level_buttons[Level.POKEMON.index] = new Rectangle(260, 200, 150, 100);
-		level_buttons[Level.ZELDA.index] = new Rectangle(470, 200, 150, 100);
-		level_buttons[Level.GALAGA.index] = new Rectangle(50, 60, 150, 100);
+//		level_buttons[Level.MARIO.index] = new Rectangle(50, 200, 150, 100);
+//		level_buttons[Level.POKEMON.index] = new Rectangle(260, 200, 150, 100);
+//		level_buttons[Level.ZELDA.index] = new Rectangle(470, 200, 150, 100);
+//		level_buttons[Level.GALAGA.index] = new Rectangle(50, 60, 150, 100);
+		
+		level_buttons[Level.MARIO.index] = new Rectangle(200, 200, 150, 100);
+		level_buttons[Level.POKEMON.index] = new Rectangle(410, 200, 150, 100);
+		level_buttons[Level.ZELDA.index] = new Rectangle(200, 60, 150, 100);
+		level_buttons[Level.GALAGA.index] = new Rectangle(410, 60, 150, 100);
 		
 		level_buttons_tex = new Texture[Level.values().length - 1];
 		level_buttons_tex[Level.MARIO.index] = manager.get("data/maps/mario_map_3.png");
@@ -138,10 +143,10 @@ public class Menu
 		level_stars = file_manager.read_stars();
 		
 		stars_dimensions = new Rectangle[Level.values().length - 1];
-		stars_dimensions[0] = new Rectangle(75, 170, 100, 30);
-		stars_dimensions[1] = new Rectangle(285, 170, 100, 30);
-		stars_dimensions[2] = new Rectangle(495, 170, 100, 30);
-		stars_dimensions[3] = new Rectangle(75, 30, 100, 30);
+		stars_dimensions[0] = new Rectangle(225, 170, 100, 30);
+		stars_dimensions[1] = new Rectangle(435, 170, 100, 30);
+		stars_dimensions[2] = new Rectangle(225, 30, 100, 30);
+		stars_dimensions[3] = new Rectangle(435, 30, 100, 30);
 		
 		stars = new Texture[4];
 		stars[0] = manager.get("data/0_stars.png");

@@ -23,6 +23,7 @@ public class galagaEnemy4 extends Enemy
 		damage = 20;
 		gold_given = 50;
 		animation_speed = 10;
+		can_attack = true;
 		
 		tex = new Texture[2];
 		tex[0] = manager.get("data/enemies/galagaEnemy4.png");

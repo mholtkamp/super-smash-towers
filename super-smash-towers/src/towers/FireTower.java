@@ -1,11 +1,9 @@
 package towers;
 
-import bullets.Bullet;
 import bullets.FireBall;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 
@@ -16,10 +14,6 @@ import java.util.ArrayList;
 
 public class FireTower extends Tower
 {
-
-	private final int CALLS_BETWEEN_TOGGLE = 15;
-	private int current_tex, toggle_count;
-	private Texture[] tex;
 	
 	public FireTower()
 	{
@@ -35,19 +29,16 @@ public class FireTower extends Tower
 	
 	public FireTower(ArrayList<Enemy> enemies, float x, float y, AssetManager manager)
 	{
-		super(enemies, x, y, manager);
+		super(enemies, manager);
 		
 		// attributes
 		name = "FireTower";
 		width = 40;
 		height = 48;
-		range = 130;
-		cost = 500;
+		range = 150;
+		cost = 250;
 		firing_speed = 2.0f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
-		
-		damagemultiplier = 1;
-		level = 1;
 		
 		center_x = x + width/2;
 		center_y = y + height/2;
@@ -57,21 +48,7 @@ public class FireTower extends Tower
 		tex[0] = this.manager.get("data/towers/charm.png");
 		tex[1] = this.manager.get("data/towers/charmealon.png");
 		tex[2] = this.manager.get("data/towers/charz.png");
-		//add textures 2-5 for lvls 2 and 3
-		
-		current_tex = 0;
-		toggle_count = CALLS_BETWEEN_TOGGLE;
 	}
-	
-	public void levelUp()
-	{
-		level++;
-		damagemultiplier++;
-		firing_speed = firing_speed*0.75f;
-		range = range*1.25f;
-		current_tex++;
-	}
-	
 	
 	public void update()
 	{
@@ -99,28 +76,4 @@ public class FireTower extends Tower
 		}
 	}
 	
-	public void render(SpriteBatch batch)
-	{
-		// render Tower
-		/* 2 different textures for each level of tower
-		 * if (level = 1)
-		 * { batch.draw(tex[current_tex], collider.x, collider.y; }
-		 * if (level = 2)
-		 * { batch.draw(tex[current_tex+2], collider.x, collider.y; }
-		 * if (level = 3)
-		 * { batch.draw(tex[current_tex+4], collider.x, collider.y; }
-		 */
-		batch.draw(tex[current_tex], collider.x, collider.y);
-		
-		// toggle textures
-		//if (--toggle_count < 0)
-		//{
-		//	current_tex = (current_tex + 1) % tex.length;
-		//	toggle_count = CALLS_BETWEEN_TOGGLE;
-		//}
-		
-		// render Bullets
-		for (Bullet bullet : bullets)
-			bullet.render(batch);
-	}
 }

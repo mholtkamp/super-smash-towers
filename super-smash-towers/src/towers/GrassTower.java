@@ -17,9 +17,6 @@ public class GrassTower extends Tower
 	
 	private int LEAF_DAMAGE;
 	
-	private final int CALLS_BETWEEN_TOGGLE = 15;
-	private int current_tex, toggle_count;
-	private Texture[] tex;
 	private Texture leafTex;
 	private Rectangle leaf1;
 	private Rectangle leaf2;
@@ -51,7 +48,7 @@ public class GrassTower extends Tower
 	
 	public GrassTower(ArrayList<Enemy> enemies, float x, float y, AssetManager manager)
 	{
-		super(enemies, x, y, manager);
+		super(enemies, manager);
 		
 		// attributes
 		name = "GrassTower";
@@ -63,9 +60,6 @@ public class GrassTower extends Tower
 		upgradecost = cost * 3 / 4;
 		LEAF_DAMAGE = 2;
 		
-		level = 1;
-		damagemultiplier = 1;
-		
 		center_x = x + width/2;
 		center_y = y + height/2;
 		collider = new Rectangle(x, y, width, height);
@@ -74,11 +68,6 @@ public class GrassTower extends Tower
 		tex[0] = this.manager.get("data/towers/bulba.png");
 		tex[1] = this.manager.get("data/towers/ivy.png");
 		tex[2] = this.manager.get("data/towers/venus.png");
-		//tex[0] = new Texture(Gdx.files.internal("data/towers/grass_tower_1.png"));
-		//tex[1] = new Texture(Gdx.files.internal("data/towers/grass_tower_2.png"));
-		//add tex 2-5 for lvls 2 and 3
-		current_tex = 0;
-		toggle_count = CALLS_BETWEEN_TOGGLE;
 		
 		leafTex = this.manager.get("data/bullets/leaf.png");
 		
@@ -92,7 +81,6 @@ public class GrassTower extends Tower
 		leafRotationAngularVelocity = 1000f;
 		
 		expanding = true;
-
 	}
 	
 	public void levelUp()
@@ -105,7 +93,6 @@ public class GrassTower extends Tower
 	
 	public void update()
 	{
-
 		leafAngle += leafAngularVelocity*Gdx.graphics.getDeltaTime();
 		if(leafAngle >= (Math.PI * 2))
 				leafAngle = 0f;
@@ -159,31 +146,17 @@ public class GrassTower extends Tower
 	
 	public void render(SpriteBatch batch)
 	{
+		// face left?
+		right = face_left() ? false : true;
+
 		// render Tower
-		/* 2 different textures for each level of tower
-		 * if (level = 1)
-		 * { batch.draw(tex[current_tex], collider.x, collider.y; }
-		 * else
-		 * { if (level = 2)
-		 * { batch.draw(tex[current_tex+2], collider.x, collider.y; }}
-		 * else 
-		 * {if (level = 3)
-		 * { batch.draw(tex[current_tex+4], collider.x, collider.y; }}
-		 */
-		batch.draw(tex[current_tex], collider.x, collider.y);
-		
-		// toggle textures
-		//if (--toggle_count < 0)
-		//{
-			//current_tex = (current_tex + 1) % tex.length;
-			//toggle_count = CALLS_BETWEEN_TOGGLE;
-		//}
-		
+		batch.draw(tex[current_tex], collider.x, collider.y, (float)width, (float)height, 0, 0, width, height, right, false);
+
 		// render Bullets
 		batch.draw(leafTex, leaf1.x, leaf1.y, 0, 0, leafTex.getWidth(), leafTex.getHeight(), 1, 1, leafRotationAngle, 0, 0, leafTex.getWidth(), leafTex.getHeight(), false, false);
 		batch.draw(leafTex, leaf2.x, leaf2.y, 0, 0, leafTex.getWidth(), leafTex.getHeight(), 1, 1, leafRotationAngle, 0, 0, leafTex.getWidth(), leafTex.getHeight(), false, false);
 		batch.draw(leafTex, leaf3.x, leaf3.y, 0, 0, leafTex.getWidth(), leafTex.getHeight(), 1, 1, leafRotationAngle, 0, 0, leafTex.getWidth(), leafTex.getHeight(), false, false);
 		batch.draw(leafTex, leaf4.x, leaf4.y, 0, 0, leafTex.getWidth(), leafTex.getHeight(), 1, 1, leafRotationAngle, 0, 0, leafTex.getWidth(), leafTex.getHeight(), false, false);
-
 	}
+	
 }
