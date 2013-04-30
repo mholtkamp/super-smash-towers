@@ -25,6 +25,7 @@ public class PsychicTower extends Tower
 		cost = 400;
 		firing_speed = 2.0f;	// shoot every x seconds		
 		upgradecost = cost * 3 / 4;
+		max_level = 3;
 	}
 	
 	public PsychicTower(ArrayList<Enemy> enemies, float x, float y, AssetManager manager)
@@ -39,6 +40,7 @@ public class PsychicTower extends Tower
 		cost = 400;
 		firing_speed = 2.0f;	// shoot every x seconds		
 		upgradecost = cost * 3 / 4;
+		max_level = 3;
 		
 		center_x = x + width/2;
 		center_y = y + height/2;

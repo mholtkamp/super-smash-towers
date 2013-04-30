@@ -25,6 +25,7 @@ public class G2Tower extends Tower
 		cost = 800;
 		firing_speed = 2.0f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
+		max_level = 2;
 	}
 	
 	public G2Tower(ArrayList<Enemy> enemies, float x, float y, AssetManager manager)
@@ -39,6 +40,7 @@ public class G2Tower extends Tower
 		cost = 800;
 		firing_speed = 2.0f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
+		max_level = 2;
 		
 		damagemultiplier = 2;
 		

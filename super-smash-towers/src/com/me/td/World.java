@@ -415,10 +415,10 @@ public class World
 					{// UPGRADE TOWER
 						if (map.check_indices(x, y) && tower_grid[y][x] != null)
 						{
-							if (gold >= tower_grid[y][x].getUpgradeCost() && tower_grid[y][x].getLevel() < 3)
+							if (gold >= tower_grid[y][x].getUpgradeCost())
 							{
-								tower_grid[y][x].levelUp();
-								gold -= tower_grid[y][x].getUpgradeCost();
+								if (tower_grid[y][x].levelUp())
+									gold -= tower_grid[y][x].getUpgradeCost();
 							}
 						}
 						enable_tower_spawn = false;

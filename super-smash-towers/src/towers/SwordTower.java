@@ -25,6 +25,7 @@ public class SwordTower extends Tower
 		cost = 1600;
 		firing_speed = 2.0f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
+		max_level = 2;
 	}
 	
 	public SwordTower(ArrayList<Enemy> enemies, float x, float y, AssetManager manager)
@@ -39,6 +40,7 @@ public class SwordTower extends Tower
 		cost = 1600;
 		firing_speed = 1.5f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
+		max_level = 2;
 		
 		damagemultiplier = 1;
 		level = 1;

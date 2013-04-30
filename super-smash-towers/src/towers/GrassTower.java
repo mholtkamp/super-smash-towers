@@ -44,6 +44,7 @@ public class GrassTower extends Tower
 		firing_speed = 2.0f;
 		upgradecost = cost * 3 / 4;
 		LEAF_DAMAGE = 2;
+		max_level = 3;
 	}
 	
 	public GrassTower(ArrayList<Enemy> enemies, float x, float y, AssetManager manager)
@@ -59,6 +60,7 @@ public class GrassTower extends Tower
 		firing_speed = 2.0f;
 		upgradecost = cost * 3 / 4;
 		LEAF_DAMAGE = 2;
+		max_level = 3;
 		
 		center_x = x + width/2;
 		center_y = y + height/2;
@@ -83,12 +85,17 @@ public class GrassTower extends Tower
 		expanding = true;
 	}
 	
-	public void levelUp()
+	public boolean levelUp()
 	{
-		level++;
-		LEAF_DAMAGE++;
-		leafAngularVelocity += 2;
-		current_tex++;
+		if (level < max_level)
+		{
+			level++;
+			LEAF_DAMAGE++;
+			leafAngularVelocity += 2;
+			current_tex++;
+			return true;
+		}
+		return false;
 	}
 	
 	public void update()

@@ -22,7 +22,7 @@ public abstract class Enemy
 	
 	protected Point[] waypoints;
 	protected Texture[] tex;
-	protected Rectangle collider;
+	public Rectangle collider;
 	protected int width, height, health, cur_waypoint, damage, gold_given, cur_tex, tex_count, animation_speed, burn_count;
 	protected float speed, speed_multiplier;
 	protected boolean dead, hit_tower, toggle, left, attack, can_attack;

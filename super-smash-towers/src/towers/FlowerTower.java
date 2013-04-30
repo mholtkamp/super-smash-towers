@@ -32,6 +32,7 @@ public class FlowerTower extends Tower
 		cost = 800;
 		firing_speed = 1.5f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
+		max_level = 2;
 	}
 	
 	public FlowerTower(ArrayList<Enemy> enemies, float x, float y, AssetManager manager)
@@ -46,6 +47,7 @@ public class FlowerTower extends Tower
 		cost = 800;
 		firing_speed = 1.5f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
+		max_level = 2;
 		
 		center_x = x + width/2;
 		center_y = y + height/2;

@@ -10,7 +10,8 @@ import com.badlogic.gdx.math.Rectangle;
 
 import enemies.Enemy;
 
-public class GalagaPurple extends Bullet{
+public class GalagaPurple extends Bullet
+{
 	
 	// change WIDTH and HEIGHT for each new Bullet
 	private final int WIDTH = 20, HEIGHT = 20;
@@ -66,20 +67,13 @@ public class GalagaPurple extends Bullet{
 				collider.y += (yE/hE)*speed;
 				if (collider.overlaps(target.getCollider()))
 				{// hit target
-/*					if((target.getType() == WATER) || (target.getType() == GRASS))
-					{
-						target.subHealth((int)(damage*0.5));
-					}
-					else if((target.getType() == FIRE) ||(target.getType() == ROCK))
-					{
-						target.subHealth(damage*2);
-					}
-					else 
-*/					target.subHealth(damage);
+					target.subHealth(damage);
 					
 					exploding = true;
-					explosionCollider.x = collider.x + (explosionCollider.width/3);
-					explosionCollider.y = collider.y + (explosionCollider.height/3);
+//					explosionCollider.x = collider.x + (explosionCollider.width/3);
+//					explosionCollider.y = collider.y + (explosionCollider.height/3);
+					explosionCollider.x = target.collider.x - Math.abs(explosionCollider.width - target.collider.width) / 2;
+					explosionCollider.y = target.collider.y - Math.abs(explosionCollider.height - target.collider.height) / 2;
 				}
 			}
 		}

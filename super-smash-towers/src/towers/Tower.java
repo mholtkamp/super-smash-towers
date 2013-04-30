@@ -70,13 +70,18 @@ public abstract class Tower
 			return false;
 	}
 	
-	public void levelUp()
+	public boolean levelUp()
 	{
-		level++;
-		damagemultiplier++;
-		current_tex++;
-		firing_speed = firing_speed*0.75f;
-		range = range*1.25f;
+		if (level < max_level)
+		{
+			level++;
+			damagemultiplier++;
+			current_tex++;
+			firing_speed = firing_speed*0.75f;
+			range = range*1.25f;
+			return true;
+		}
+		return false;
 	}
 	
 	public abstract void update();
