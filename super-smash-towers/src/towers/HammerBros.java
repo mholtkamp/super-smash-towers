@@ -22,7 +22,7 @@ public class HammerBros extends Tower
 		width = 40;
 		height = 48;
 		range = 150;
-		cost = 500;
+		cost = 400;
 		firing_speed = 1.0f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
 	}
@@ -36,7 +36,7 @@ public class HammerBros extends Tower
 		width = 40;
 		height = 48;
 		range = 150;
-		cost = 500;
+		cost = 400;
 		firing_speed = 1.0f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
 		

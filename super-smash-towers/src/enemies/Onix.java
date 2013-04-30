@@ -11,7 +11,7 @@ import util.Point;
 
 public class Onix extends Enemy
 {
-	static int maxHealth=50000;
+	static int maxHealth=55000;
  	
  	public Onix(Point[] waypoints, float difficulty, AssetManager manager)
  	{
@@ -20,9 +20,9 @@ public class Onix extends Enemy
 		name = "Onix";
 		width = 58;
 		height = 63;
-		health = 50000;
-		speed = 1.5f;
-		damage = 100;
+		health = (int)(maxHealth*difficulty);
+		speed = 1.5f*difficulty;
+		damage = 110;
 		gold_given = 50;
 		animation_speed = 10;
 		type = Type.ROCK;

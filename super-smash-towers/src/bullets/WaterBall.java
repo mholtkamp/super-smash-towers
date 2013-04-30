@@ -33,7 +33,7 @@ public class WaterBall extends Bullet{
 		// attributes - change for each new Bullet
 		tex = manager.get("data/bullets/water_ball.png");
 		explodeTex = manager.get("data/bullets/waterExp.png");
-		damage = 400*damagemultiplier;
+		damage = 350*damagemultiplier;
 		speed = 10;
 		exploding = false;
 		firstHit = false;

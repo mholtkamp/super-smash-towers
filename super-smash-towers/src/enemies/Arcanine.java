@@ -11,7 +11,7 @@ import util.Point;
 
 public class Arcanine extends Enemy
 {
-	static int maxHealth=600;
+	static int maxHealth=500;
  	
  	public Arcanine(Point[] waypoints, float difficulty, AssetManager manager)
  	{
@@ -21,9 +21,9 @@ public class Arcanine extends Enemy
  		name = "Arcanine";
  		width = 36;
  		height = 34;
-		health = maxHealth;
+		health = (int)(maxHealth*difficulty);
 		speed = 1.5f;
-		damage = 20;
+		damage = (int)(20*difficulty);
 		gold_given = 50;
 		animation_speed = 10;
 		type = Type.FIRE;

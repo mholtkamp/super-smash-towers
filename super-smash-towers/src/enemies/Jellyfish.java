@@ -18,9 +18,9 @@ public class Jellyfish extends Enemy
 		name = "Jellyfish";
 		width = 28;
 		height = 42;
-		health = 600;
+		health = (int)(maxHealth*difficulty);
 		speed = 2.0f;
-		damage = 10;
+		damage = (int)(10*difficulty);
 		gold_given = 50;
 		animation_speed = 10;
 		

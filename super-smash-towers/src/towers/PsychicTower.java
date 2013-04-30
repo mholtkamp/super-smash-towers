@@ -22,7 +22,7 @@ public class PsychicTower extends Tower
 		width = 40;
 		height = 48;
 		range = 130;
-		cost = 750;
+		cost = 400;
 		firing_speed = 2.0f;	// shoot every x seconds		
 		upgradecost = cost * 3 / 4;
 	}
@@ -36,7 +36,7 @@ public class PsychicTower extends Tower
 		width = 40;
 		height = 48;
 		range = 130;
-		cost = 750;
+		cost = 400;
 		firing_speed = 2.0f;	// shoot every x seconds		
 		upgradecost = cost * 3 / 4;
 		

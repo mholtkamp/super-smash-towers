@@ -18,9 +18,9 @@ public class Eye extends Enemy
 		name = "Eye";
 		width = 28;
 		height = 42;
-		health = 800;
+		health = (int)(maxHealth*difficulty);
 		speed = 1.0f;
-		damage = 40;
+		damage = (int)(40*difficulty);
 		gold_given = 50;
 		animation_speed = 10;
 		

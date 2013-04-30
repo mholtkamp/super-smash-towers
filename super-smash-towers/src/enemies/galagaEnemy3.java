@@ -18,9 +18,9 @@ public class galagaEnemy3 extends Enemy
 		name = "G Enemy 3";
 		width = 28;
 		height = 42;
-		health = 800;
+		health = (int)(maxHealth*difficulty);
 		speed = 1.8f;
-		damage = 20;
+		damage = (int)(20*difficulty);
 		gold_given = 50;
 		animation_speed = 10;
 		can_attack = true;

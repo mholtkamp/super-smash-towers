@@ -91,7 +91,7 @@ public class PokemonMap extends Map
 				for (int j = 0; j < wave*5 + 5; j++)
 				{
 					if(j % 5 == 0)
-						q.add(new Arcanine(waypoints, difficulty,manager));
+						q.add(new Tentacool(waypoints, difficulty,manager));
 					else
 						q.add(new Weedle(waypoints, difficulty,manager));
 				}
@@ -101,24 +101,24 @@ public class PokemonMap extends Map
 				for (int j = 0; j < wave*5 + 5; j++)
 				{
 					if(j % 3 == 0)
-						q.add(new Geodude(waypoints, difficulty,manager));
+						q.add(new Voltorb(waypoints, difficulty,manager));
 					else
-						q.add(new Arcanine(waypoints, difficulty,manager));
+						q.add(new Geodude(waypoints, difficulty,manager));
 				}
 			}
 			else if (wave < 3)
 			{// for next 3 waves, spawn Koopa
 				for (int j = 0; j < wave*5 + 5; j++)
-					q.add(new Tentacool(waypoints, difficulty,manager));
+					q.add(new Voltorb(waypoints, difficulty,manager));
 			}
 			else if (wave < 5)
 			{	
 				for (int j = 0; j < wave*5 + 5; j++)
 				{
 					if(j % 2 == 0)
-						q.add(new Voltorb(waypoints, difficulty,manager));
+						q.add(new Arcanine(waypoints, difficulty,manager));
 					else
-						q.add(new Weedle(waypoints, difficulty,manager));
+						q.add(new Geodude(waypoints, difficulty,manager));
 				}
 			}
 			else if (wave < 7)
@@ -130,7 +130,7 @@ public class PokemonMap extends Map
 					else if(j % 3 == 0)
 						q.add(new Geodude(waypoints, difficulty,manager));
 					else
-						q.add(new Weedle(waypoints, difficulty,manager));
+						q.add(new Arcanine(waypoints, difficulty,manager));
 
 				}
 			}
@@ -141,7 +141,7 @@ public class PokemonMap extends Map
 					if(j % 8 == 0)
 						q.add(new Arcanine(waypoints, difficulty,manager));
 					else if(j % 3 == 0)
-						q.add(new Tentacool(waypoints, difficulty,manager));
+						q.add(new Voltorb(waypoints, difficulty,manager));
 					else
 						q.add(new Geodude(waypoints, difficulty,manager));
 
@@ -149,26 +149,23 @@ public class PokemonMap extends Map
 			}
 			else if(wave == 9)
 			{
-				for(int j = 0; j<wave*5; j++)
-				{
-					if(j==0)
-						q.add(new Lapras(waypoints, difficulty,manager));
-					if(j==24)
-						q.add(new Onix(waypoints, difficulty,manager));
-					if(j==49)
-						q.add(new Victree(waypoints, difficulty,manager));
-				}
+					q.add(new Onix(waypoints, difficulty,manager));
+
 			}
 			else
 			{	
 				for (int j = 0; j < wave*5 + 5; j++)
 				{
+					if(j==0)
+						q.add(new Lapras(waypoints, difficulty,manager));
 					if(j % 8 == 0)
-						q.add(new Tentacool(waypoints, difficulty,manager));
+						q.add(new Arcanine(waypoints, difficulty,manager));
 					else if(j % 3 == 0)
 						q.add(new Geodude(waypoints, difficulty,manager));
+					else if(j==wave*5+4)
+						q.add(new Victree(waypoints, difficulty,manager));
 					else
-						q.add(new Weedle(waypoints, difficulty,manager));
+						q.add(new Tentacool(waypoints, difficulty,manager));
 
 				}
 			}

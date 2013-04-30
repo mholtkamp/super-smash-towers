@@ -2,6 +2,7 @@
 ## Eclipse
 #################
 
+super-smash-towers/bin/*.class
 *.pydevproject
 #.project
 #.metadata

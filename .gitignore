@@ -2,7 +2,12 @@
 ## Eclipse
 #################
 
-super-smash-towers/bin/com/me/td/*.class
+#super-smash-towers/bin/enemies/*.class
+#super-smash-towers/bin/maps/*.class
+#super-smash-towers/bin/towers/*.class
+#super-smash-towers/bin/bullets/*.class
+#super-smash-towers/bin/*.class
+
 *.pydevproject
 #.project
 #.metadata

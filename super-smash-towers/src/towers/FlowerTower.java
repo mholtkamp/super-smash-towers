@@ -29,7 +29,7 @@ public class FlowerTower extends Tower
 		width = 40;
 		height = 50;
 		range = 200;
-		cost = 200;
+		cost = 800;
 		firing_speed = 1.5f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
 	}
@@ -43,7 +43,7 @@ public class FlowerTower extends Tower
 		width = 40;
 		height = 50;
 		range = 200;
-		cost = 200;
+		cost = 800;
 		firing_speed = 1.5f;	// shoot every x seconds
 		upgradecost = cost * 3 / 4;
 		

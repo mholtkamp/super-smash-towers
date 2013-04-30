@@ -11,7 +11,7 @@ import util.Point;
 
 public class Lapras extends Enemy
 {
-	static int maxHealth=95000;
+	static int maxHealth=15000;
  	
  	public Lapras(Point[] waypoints, float difficulty, AssetManager manager)
  	{
@@ -20,9 +20,9 @@ public class Lapras extends Enemy
 		name = "Lapras";
 		width = 35;
 		height = 52;
-		health = 95000;
+		health = (int)(maxHealth*difficulty);
 		speed = 1.5f;
-		damage = 50;
+		damage = (int)(40*difficulty);
 		gold_given = 80;
 		animation_speed = 20;
 		type = Type.WATER;
