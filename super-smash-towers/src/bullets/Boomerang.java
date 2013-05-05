@@ -1,9 +1,11 @@
 package bullets;
 
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.me.td.World;
 
 import enemies.Enemy;
 
@@ -23,6 +25,9 @@ public class Boomerang extends Bullet
 		collider = new Rectangle(center_x, center_y, WIDTH, HEIGHT);
 		this.target = target;
 		active = true;
+		
+		Sound shoot = manager.get("sounds/Boomerang.mp3");
+		shoot.play(World.volume);
 		
 		// attributes - change for each new Bullet
 		tex = new Texture[4];	// four sprites to simulate animation

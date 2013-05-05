@@ -32,7 +32,7 @@ public class GalagaMap extends Map
 		//towerPlace = manager.get("data/towers/ship.png");
 		field = manager.get("data/towers/forceField.png");
 		
-		song = manager.get("sounds/pokemon.mp3");
+		song = manager.get("sounds/Galaga.mp3");
 		song.setLooping(true);
 		song.play();
 		

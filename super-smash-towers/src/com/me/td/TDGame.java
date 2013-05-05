@@ -326,6 +326,15 @@ public class TDGame implements ApplicationListener
 		manager.load("sounds/congratulations.mp3",Sound.class);
 		manager.load("sounds/zeldaOverworld.mp3", Music.class);
 		manager.load("sounds/GameOverZelda.mp3", Sound.class);
+		manager.load("sounds/Galaga.mp3", Music.class);
+		manager.load("sounds/Galaga_shot_sound.mp3", Sound.class);
+		manager.load("sounds/Galaga_kill.mp3", Sound.class);
+		manager.load("sounds/Bomb_Drop.mp3", Sound.class);
+		manager.load("sounds/Bomb_Blow.mp3", Sound.class);
+		manager.load("sounds/Boomerang.mp3", Sound.class);
+//		manager.load("sounds/Sword.mp3", Sound.class);
+		manager.load("sounds/LowHealth.mp3", Sound.class);
+		manager.load("sounds/Galaga_Alert.mp3", Sound.class);
 
 		// Bitmap Fonts
 		manager.load("data/nint.fnt",BitmapFont.class);//("data/nint_0.png"), false);

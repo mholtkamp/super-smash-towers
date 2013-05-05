@@ -59,6 +59,7 @@ public class World
 	Texture health_bar_max, health_bar_unsafe, health_bar_safe, hover, coin, heart0, heart25, heart50, heart75, heart100;
 //	Texture heart0, heart25, heart50, heart75, heart100;
 	Sound congratulations;
+	Sound low_health;
 	Vector3 touch_pos, circle_pos;
 	boolean enable_enemy_spawn, enable_tower_spawn, gameover, timeKeeper, enable_enemy_switch,
 		enable_tower_switch, enable_gold, congrats_played, enable_selling, selling_state, upgrade_state,
@@ -149,6 +150,11 @@ public class World
 		enable_spawn = new EnableSpawn();
 		timer.scheduleTask(enable_spawn, 2.5f);
 //		timer.schedule(spawn_enemy(), 3, )
+		
+		if (level == Level.GALAGA)
+			low_health = manager.get("sounds/Galaga_Alert.mp3");
+		else
+			low_health = manager.get("sounds/LowHealth.mp3");
 
 		tower_grid = new Tower[map.getHeight()/GRID_HEIGHT][map.getWidth()/GRID_WIDTH];
 //		System.out.println("tower_grid: " + tower_grid.length + " " + tower_grid[0].length);
@@ -341,6 +347,11 @@ public class World
 
 			if (health > 0)
 			{
+				if(health <= 30)
+				{
+					low_health.play(volume);
+				}
+				
 				if (spawn)
 				{
 					if (wave_number < map.numWaves())
@@ -442,6 +453,8 @@ public class World
 			 */
 			if (health <= 0 || (wave_number >= map.numWaves() && enemies.size() == 0))
 			{
+				low_health.stop();
+				volume = 0.0f;
 				if (health > 0 && !wrote_to_file)
 				{
 					int diff = (difficulty == 0.75f) ? 1 : (difficulty == 1.0f) ? 2 : 3;
@@ -563,6 +576,11 @@ public class World
 				{
 					enemies.remove(i--);
 					gold += e.getGold();
+					if (level == Level.GALAGA)
+					{
+						Sound galaga_kill = manager.get("sounds/Galaga_kill.mp3");
+						galaga_kill.play(volume);
+					}
 				}
 			}
 

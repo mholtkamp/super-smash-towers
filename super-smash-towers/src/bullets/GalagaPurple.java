@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.me.td.World;
 
 import enemies.Enemy;
 
@@ -29,6 +31,9 @@ public class GalagaPurple extends Bullet
 		collider = new Rectangle(center_x, center_y, WIDTH, HEIGHT);
 		this.target = target;
 		active = true;
+		
+		Sound shoot = manager.get("sounds/Galaga_shot_sound.mp3");
+		shoot.play(World.volume);
 		
 		// attributes - change for each new Bullet
 		tex = manager.get("data/bullets/purple-bullet.png");

@@ -4,9 +4,11 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.me.td.World;
 
 import enemies.Enemy;
 
@@ -19,6 +21,8 @@ public class Bomb extends Bullet{
 	private float explodeTimer;
 	private Rectangle explosionCollider;
 	private ArrayList<Enemy> enemies;
+	private Sound blow;
+	private boolean has_been_played = false;
 	
 	public Bomb(Enemy target, float center_x, float center_y, int damagemultiplier, ArrayList<Enemy> enemies,AssetManager manager)
 	{
@@ -28,6 +32,10 @@ public class Bomb extends Bullet{
 		collider = new Rectangle(center_x, center_y, WIDTH, HEIGHT);
 		this.target = target;
 		active = true;
+		
+		Sound shoot = manager.get("sounds/Bomb_Drop.mp3");
+		blow = manager.get("sounds/Bomb_Blow.mp3");
+		shoot.play(World.volume);
 		
 		// attributes - change for each new Bullet
 		tex = manager.get("data/bullets/zeldaBomb.png");
@@ -47,7 +55,14 @@ public class Bomb extends Bullet{
 			if(!exploding)
 				batch.draw(tex, collider.x, collider.y, collider.width, collider.height);
 			else
+			{
 				batch.draw(explodeTex,explosionCollider.x,explosionCollider.y,explosionCollider.width,explosionCollider.height);
+				if (!has_been_played)
+				{
+					blow.play(World.volume);
+					has_been_played = true;
+				}
+			}
 		}
 	}
 	
