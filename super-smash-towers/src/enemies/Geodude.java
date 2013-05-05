@@ -1,5 +1,5 @@
 package enemies;
-
+import com.me.td.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
@@ -11,10 +11,10 @@ import util.Point;
 
 public class Geodude extends Enemy
 {
-	static int maxHealth = 350;
+	static float maxHealth = 350;
 	public Geodude(Point[] waypoints,float difficulty,AssetManager manager)
 	{
-		super(waypoints, maxHealth);
+		super(waypoints, maxHealth*difficulty);
 		
 		name = "Geodude";
 		width = 49;

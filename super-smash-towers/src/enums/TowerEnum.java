@@ -7,6 +7,7 @@ public enum TowerEnum
 	CASTLE		(0),
 	HAMMER_BROS	(1),
 	FLOWER      (2),
+	BILL		(3),
 	
 	FIRE		(0),
 	WATER		(1),
@@ -24,7 +25,7 @@ public enum TowerEnum
 	G4          (3);
 	
 	public final int index;
-	public static final int NUM_MARIO_TOWERS = 3, NUM_POKEMON_TOWERS = 4, NUM_ZELDA_TOWERS = 4, NUM_GALAGA_TOWERS = 4;
+	public static final int NUM_MARIO_TOWERS = 4, NUM_POKEMON_TOWERS = 4, NUM_ZELDA_TOWERS = 4, NUM_GALAGA_TOWERS = 4;
 	
 	private TowerEnum(int index)
 	{

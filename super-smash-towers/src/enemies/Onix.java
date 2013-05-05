@@ -1,5 +1,5 @@
 package enemies;
-
+import com.me.td.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
@@ -11,11 +11,11 @@ import util.Point;
 
 public class Onix extends Enemy
 {
-	static int maxHealth=55000;
+	static float maxHealth=55000;
  	
  	public Onix(Point[] waypoints, float difficulty, AssetManager manager)
  	{
-		super(waypoints,maxHealth);
+		super(waypoints,maxHealth*difficulty);
 		
 		name = "Onix";
 		width = 58;

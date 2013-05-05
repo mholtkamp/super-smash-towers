@@ -8,6 +8,7 @@ import com.badlogic.gdx.utils.Timer;
 
 import com.me.td.Options;
 import com.me.td.TDGame;
+import com.me.td.World;
 
 import enums.Type;
 
@@ -29,7 +30,7 @@ public abstract class Enemy
 	protected boolean dead, hit_tower, toggle, left, attack, can_attack;
 	public boolean burning;
 	protected String name;
-	private int	maxHealth;	// enemy dmg bar
+	private float	maxHealth;	// enemy dmg bar
 	private AssetManager manager = TDGame.manager;
 	protected Texture red, green, burning_tex;
 	protected Type type;
@@ -107,7 +108,7 @@ public abstract class Enemy
 		return false;
 	}
 	
-	public Enemy(Point[] waypoints, int maxHealth)
+	public Enemy(Point[] waypoints, float maxHealth)
 	{
 		this.waypoints = waypoints;
 		cur_waypoint = 0;
@@ -198,6 +199,15 @@ public abstract class Enemy
 			{
 				batch.draw(red,collider.x,collider.y-10, (float)width, 10);
 				batch.draw(green,collider.x,collider.y-10, (health/maxHealth)*(float)width, 10);
+				//System.out.println(health);
+				System.out.println("bowsermax"+maxHealth);
+//
+//				System.out.println("bowserglobal"+World.globaldiff);
+//
+//				System.out.println("bowserdiff"+difficulty);
+//				
+
+				System.out.println("bowserHealth"+health);
 			}
 		}
 	}

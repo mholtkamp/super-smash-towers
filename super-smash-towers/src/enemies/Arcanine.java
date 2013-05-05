@@ -3,6 +3,7 @@ package enemies;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.me.td.World;
 
 import enums.Type;
 
@@ -11,11 +12,11 @@ import util.Point;
 
 public class Arcanine extends Enemy
 {
-	static int maxHealth=500;
+	static float maxHealth=500;
  	
  	public Arcanine(Point[] waypoints, float difficulty, AssetManager manager)
  	{
-		super(waypoints,maxHealth);
+		super(waypoints,maxHealth*difficulty);
 		
  		
  		name = "Arcanine";

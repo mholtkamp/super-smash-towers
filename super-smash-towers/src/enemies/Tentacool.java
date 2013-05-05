@@ -1,5 +1,5 @@
 package enemies;
-
+import com.me.td.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
@@ -11,10 +11,10 @@ import util.Point;
 
 public class Tentacool extends Enemy
 {
-	static int maxHealth = 325;
+	static float maxHealth = 325;
 	public Tentacool(Point[] waypoints,float difficulty,AssetManager manager)
 	{
-		super(waypoints, maxHealth);
+		super(waypoints, maxHealth*difficulty);
 		
 		name = "Tentacool";
 		width = 37;

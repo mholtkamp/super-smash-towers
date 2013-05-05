@@ -1,5 +1,5 @@
 package enemies;
-
+import com.me.td.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
@@ -9,11 +9,11 @@ import util.Point;
 
 public class KnightB extends Enemy
 {
-	static int maxHealth=2000;
+	static float maxHealth=2000;
  	
  	public KnightB(Point[] waypoints, float difficulty, AssetManager manager)
  	{
-		super(waypoints,maxHealth);
+		super(waypoints,maxHealth*difficulty);
 		
 		name = "KnightB";
 		width = 28;

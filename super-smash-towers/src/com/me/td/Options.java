@@ -9,7 +9,7 @@ package com.me.td;
  */
 public class Options {
 
-	static boolean enemyHealthDisplay = true;
+	static boolean enemyHealthDisplay = false;
 
 	public Options()
 	{
@@ -21,11 +21,15 @@ public class Options {
 		return enemyHealthDisplay;
 	}
 
-	public void setEnemyHealthDisplay(boolean enemyHealthDisplay)
+	public static void setEnemyHealthDisplay(boolean enemyHealthDisplay)
 	{
 		Options.enemyHealthDisplay = enemyHealthDisplay;
 	}
 	
+	public static void toggleEnemyHealthDisplay()
+	{
+		Options.enemyHealthDisplay = !enemyHealthDisplay;
+	}
 	
 	
 

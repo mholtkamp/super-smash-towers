@@ -1,5 +1,5 @@
 package enemies;
-
+import com.me.td.World;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
@@ -10,11 +10,11 @@ import util.Point;
 public class galagaEnemy1 extends Enemy
 {
 	
-	static int maxHealth=200;
+	static float maxHealth=200;
  	
  	public galagaEnemy1(Point[] waypoints, float difficulty, AssetManager manager)
  	{
-		super(waypoints,maxHealth);
+		super(waypoints,maxHealth*difficulty);
 		
 		name = "G Enemy 1";
 		width = 28;

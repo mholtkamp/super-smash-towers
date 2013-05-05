@@ -36,7 +36,7 @@ public class World
 	
 	// constants
 	final int NONE = -4, PAUSE = -3, SELL = -2, UPGRADE = -1;
-	final int ENEMY_COUNT = 22, TOWER_COUNT = 15, TIME_BETWEEN_WAVES = 10;
+	final int ENEMY_COUNT = 22, TOWER_COUNT = 16, TIME_BETWEEN_WAVES = 10;
 
 	final int GRID_WIDTH = 40, GRID_HEIGHT = 40;
 	final int BAR_WIDTH = 300, BAR_HEIGHT = 16, BAR_X = 5, BAR_Y = 375;
@@ -45,7 +45,7 @@ public class World
 	// variables
 	int health, gold, wave_number, current_tower, current_enemy, time_between_waves;
 	float difficulty;
-	
+	public static float globaldiff;
 	//EnemyEnum current_enemy;
 	float current_range;
 	Map map;
@@ -90,6 +90,7 @@ public class World
 			map = new GalagaMap(difficulty, manager);
 		
 		this.difficulty = difficulty;
+		globaldiff = difficulty;
 		health = 100;
 		gold = 1000;
 		wave_number = 0;
@@ -713,6 +714,7 @@ public class World
 				case 0:	return new CastleTower(enemies, x, y, manager);
 				case 1: return new HammerBros(enemies, x, y, manager);
 				case 2: return new FlowerTower(enemies, x, y, manager);
+				case 3: return new BulletBill(enemies,x,y,manager);
 				default: return new CastleTower(enemies, x, y, manager);
 			}
 		}
